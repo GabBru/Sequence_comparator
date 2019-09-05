@@ -8,9 +8,10 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="531.0" prefWidth="645.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="com.mycompany.sequence_comparator2.FXMLController">
+<AnchorPane id="AnchorPane" prefHeight="531.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sequence_comparator2.FXMLController">
    <children>
       <TabPane layoutX="-2.0" layoutY="6.0" prefHeight="524.0" prefWidth="645.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -33,10 +34,14 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextArea fx:id="seq" layoutX="62.0" layoutY="149.0" prefHeight="200.0" prefWidth="521.0" AnchorPane.bottomAnchor="149.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="149.0" />
-                        <Button fx:id="button_search" layoutX="220.0" layoutY="359.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="205.0" text="Button" AnchorPane.bottomAnchor="112.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="359.0" />
                         <Text fx:id="text_seq" layoutX="61.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez la sequence au format FASTA" wrappingWidth="523.2060546875" AnchorPane.bottomAnchor="349.0" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="60.7939453125" AnchorPane.topAnchor="132.0" />
                         <TextField fx:id="seq_nom_plante" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" />
                         <Text layoutX="61.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="313.2060546875" />
+                        <Pane layoutX="218.0" layoutY="357.0" prefHeight="30.0" prefWidth="213.0" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="216.0" AnchorPane.rightAnchor="216.0" AnchorPane.topAnchor="357.0">
+                           <children>
+                              <Button fx:id="button_search" layoutX="5.0" mnemonicParsing="false" onMousePressed="#launchBlast" prefHeight="27.0" prefWidth="200.0" text="Button" />
+                           </children>
+                        </Pane>
                      </children>
                   </AnchorPane>
             </content>

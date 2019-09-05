@@ -18,6 +18,15 @@
         <!-- Used as the 'Vendor' for JNLP generation -->
         <name>Your Organisation</name>
     </organization>
+    
+    <dependencies>
+        <dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.11.0</version>
+</dependency>
+
+    </dependencies>
 
     <build>
         <plugins>
