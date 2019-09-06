@@ -1,5 +1,6 @@
 package com.mycompany.sequence_comparator2;
 
+import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
