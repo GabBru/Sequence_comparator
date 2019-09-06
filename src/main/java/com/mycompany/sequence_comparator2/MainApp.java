@@ -10,6 +10,11 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
+    ConnectionDataBase Conmysql; 
+
+    public MainApp() throws ClassNotFoundException, SQLException {
+        this.Conmysql = new ConnectionDataBase();
+    }
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
