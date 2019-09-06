@@ -23,10 +23,21 @@ public class ConnectionDataBase {
     
     public ConnectionDataBase() throws ClassNotFoundException, SQLException{
         // Load the driver class & create the connection object then create the statement of the object
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        con = DriverManager.getConnection(
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(
                 "jdbc:mysql://remotemysql.com:3306/jeho8etZte", "jeho8etZte", "GxTGVa1AvL");
-        stmt = con.createStatement();
+        if (con==null){
+            System.out.println("nope");
+        }
+        else{
+            System.out.println("co ok");
+            stmt = con.createStatement();
+        }
+        
+        }
+        catch(SQLException e){ 
+        }
     }
     
     public void shutdown() throws SQLException {
