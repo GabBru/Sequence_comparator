@@ -1,5 +1,6 @@
 package com.mycompany.sequence_comparator2;
 
+import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,11 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
+    ConnectionDataBase Conmysql; 
+
+    public MainApp() throws ClassNotFoundException, SQLException {
+        this.Conmysql = new ConnectionDataBase();
+    }
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
