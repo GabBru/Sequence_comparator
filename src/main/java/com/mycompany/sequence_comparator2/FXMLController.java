@@ -1,5 +1,6 @@
 package com.mycompany.sequence_comparator2;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -36,16 +37,17 @@ public class FXMLController implements Initializable {
         // TODO
     }    
     @FXML
-    void launchBlast(MouseEvent event) throws InterruptedException {
+    void launchBlast(MouseEvent event) throws InterruptedException, IOException {
         Blast blast = new Blast();
-        LOGGER.info("ras le cul");
         blast.search(getSeq_nom_plante(),getSeq());
+        ResultFile file = new ResultFile();
+        file.readFile();
+        file.deleteFile();
     }
 
     public String getSeq_nom_plante() {
         return seq_nom_plante.getText();
     }
-
         public String getSeq() {
         return seq.getText();
     }
