@@ -41,7 +41,9 @@ public class FXMLController implements Initializable {
         Blast blast = new Blast();
         blast.search(getSeq_nom_plante(),getSeq());
         ResultFile file = new ResultFile();
-        file.readFile();
+//        file.readFile();
+          Clustal clustal = new Clustal();
+          clustal.submit();
         file.deleteFile();
     }
 
