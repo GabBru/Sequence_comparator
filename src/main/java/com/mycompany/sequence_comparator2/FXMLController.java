@@ -45,6 +45,8 @@ public class FXMLController implements Initializable {
           Clustal clustal = new Clustal();
           clustal.submit();
         file.deleteFile();
+        Generate_tree tree = new Generate_tree(clustal.getTree());
+        tree.submit();
     }
 
     public String getSeq_nom_plante() {
