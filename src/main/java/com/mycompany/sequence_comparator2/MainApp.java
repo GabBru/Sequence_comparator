@@ -8,22 +8,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 public class MainApp extends Application {
 
-    ConnectionDataBase Conmysql; 
+    ConnectionDataBase Conmysql;
 
     public MainApp() throws ClassNotFoundException, SQLException {
         this.Conmysql = new ConnectionDataBase();
     }
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-        
+
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
-        
-        stage.setTitle("JavaFX and Maven");
+
+        stage.setTitle("geneBV analytics");
         stage.setScene(scene);
         stage.show();
     }

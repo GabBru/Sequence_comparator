@@ -1,7 +1,10 @@
-com\mycompany\sequence_comparator2\ARN.class
-com\mycompany\sequence_comparator2\Plante.class
-com\mycompany\sequence_comparator2\CIS.class
-com\mycompany\sequence_comparator2\Entite.class
-com\mycompany\sequence_comparator2\MainApp.class
-com\mycompany\sequence_comparator2\FXMLController.class
-com\mycompany\sequence_comparator2\Blast.class
+com/mycompany/sequence_comparator2/Blast.class
+com/mycompany/sequence_comparator2/Entite.class
+com/mycompany/sequence_comparator2/ARN.class
+com/mycompany/sequence_comparator2/ResultFile.class
+com/mycompany/sequence_comparator2/MenuConnexionController.class
+com/mycompany/sequence_comparator2/MainApp.class
+com/mycompany/sequence_comparator2/FXMLController.class
+com/mycompany/sequence_comparator2/Plante.class
+com/mycompany/sequence_comparator2/ConnectionDataBase.class
+com/mycompany/sequence_comparator2/CIS.class

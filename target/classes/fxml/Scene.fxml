@@ -4,13 +4,15 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" prefHeight="730.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sequence_comparator2.FXMLController">
@@ -21,20 +23,34 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ComboBox layoutX="27.0" layoutY="58.0" prefHeight="27.0" prefWidth="224.0" AnchorPane.bottomAnchor="614.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1040.0" AnchorPane.topAnchor="56.0" />
+                        <ComboBox fx:id="combo_nom_plante" layoutX="27.0" layoutY="58.0" prefHeight="27.0" prefWidth="224.0" promptText="Selectionnez un nom" AnchorPane.bottomAnchor="614.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1040.0" AnchorPane.topAnchor="56.0" />
                         <Text layoutX="28.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="130.69854736328125" AnchorPane.bottomAnchor="643.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1121.3014526367188" AnchorPane.topAnchor="37.0" />
-                        <ComboBox layoutX="278.0" layoutY="56.0" prefHeight="27.0" prefWidth="252.0" AnchorPane.bottomAnchor="614.0" AnchorPane.leftAnchor="278.0" AnchorPane.rightAnchor="750.0" AnchorPane.topAnchor="56.0" />
+                        <ComboBox fx:id="combo_type_prot" layoutX="278.0" layoutY="56.0" prefHeight="27.0" prefWidth="252.0" promptText="Selectionnez un type" AnchorPane.bottomAnchor="614.0" AnchorPane.leftAnchor="278.0" AnchorPane.rightAnchor="750.0" AnchorPane.topAnchor="56.0" />
                         <Text layoutX="279.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de protéine" wrappingWidth="130.69854736328125" AnchorPane.bottomAnchor="643.0" AnchorPane.leftAnchor="278.0" AnchorPane.rightAnchor="871.3014526367188" AnchorPane.topAnchor="37.0" />
-                        <ComboBox layoutX="559.0" layoutY="55.0" prefHeight="27.0" prefWidth="252.0" AnchorPane.bottomAnchor="615.0" AnchorPane.leftAnchor="559.0" AnchorPane.rightAnchor="469.0" AnchorPane.topAnchor="56.0" />
+                        <ComboBox fx:id="combo_nom_prot" layoutX="559.0" layoutY="55.0" prefHeight="27.0" prefWidth="252.0" promptText="Selectionnez la proteine a visualiser" AnchorPane.bottomAnchor="615.0" AnchorPane.leftAnchor="559.0" AnchorPane.rightAnchor="469.0" AnchorPane.topAnchor="56.0" />
                         <Text layoutX="560.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la protéine" wrappingWidth="130.69854736328125" AnchorPane.bottomAnchor="644.2578125" AnchorPane.leftAnchor="560.0" AnchorPane.rightAnchor="589.3014526367188" AnchorPane.topAnchor="37.0" />
-                        <TreeTableView layoutX="811.0" layoutY="-1.0" prefHeight="697.0" prefWidth="442.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="838.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Line fx:id="arrow_gene" endX="578.3290405273438" layoutX="179.0" layoutY="253.0" startX="-100.0" strokeLineCap="ROUND" AnchorPane.bottomAnchor="443.5" AnchorPane.leftAnchor="78.5" AnchorPane.rightAnchor="522.1709594726562" AnchorPane.topAnchor="252.5">
+                           <effect>
+                              <Glow />
+                           </effect></Line>
+                        <Text fx:id="text_nom_gene" fill="#4400ff" layoutX="25.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom du gene" visible="false" wrappingWidth="336.2060546875" AnchorPane.bottomAnchor="549.203125" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="920.0" AnchorPane.topAnchor="125.0">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="text_lien_ncbi" layoutX="23.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lien NCBI" visible="false" wrappingWidth="339.2060546875" AnchorPane.bottomAnchor="522.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="917.0" AnchorPane.topAnchor="160.0" />
+                        <TableView fx:id="tab_CIS" layoutX="29.0" layoutY="373.0" prefHeight="133.0" prefWidth="777.0" AnchorPane.bottomAnchor="191.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="469.0" AnchorPane.topAnchor="373.0">
                           <columns>
-                            <TreeTableColumn prefWidth="140.823974609375" text="C1" />
-                            <TreeTableColumn prefWidth="142.176025390625" text="C2" />
-                              <TreeTableColumn prefWidth="158.3072509765625" text="C3" />
+                            <TableColumn fx:id="col_nom_CIS" prefWidth="187.98360633850098" text="Nom CIS" />
+                            <TableColumn fx:id="col_pos_CIS" prefWidth="117.01638793945312" text="Positions" />
+                              <TableColumn fx:id="col_seq_CIS" prefWidth="480.29510498046875" text="Sequence" />
                           </columns>
-                        </TreeTableView>
-                        <Line endX="578.3290405273438" layoutX="202.0" layoutY="191.0" startX="-100.0" AnchorPane.bottomAnchor="505.5" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="190.5" />
+                        </TableView>
+                        <TextArea fx:id="text_seq_ARN" layoutX="155.0" layoutY="521.0" prefHeight="46.0" prefWidth="656.0" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="469.0" AnchorPane.topAnchor="521.0" />
+                        <Text layoutX="25.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ARN" wrappingWidth="122.61585235595703" AnchorPane.bottomAnchor="143.689453125" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1132.384147644043" AnchorPane.topAnchor="538.0" />
+                        <TextArea fx:id="text_seq_ADN" layoutX="155.0" layoutY="580.0" prefHeight="46.0" prefWidth="656.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="469.0" AnchorPane.topAnchor="580.0" />
+                        <Text layoutX="25.0" layoutY="610.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ADN" wrappingWidth="122.61585235595703" AnchorPane.bottomAnchor="84.2578125" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1132.384147644043" AnchorPane.topAnchor="597.431640625" />
+                        <Pane fx:id="fiels_icon" layoutX="835.0" layoutY="26.0" prefHeight="371.0" prefWidth="420.0" AnchorPane.bottomAnchor="300.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="26.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -47,9 +63,21 @@
                         <Text fx:id="text_seq" layoutX="61.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez la sequence au format FASTA" wrappingWidth="523.2060546875" AnchorPane.bottomAnchor="349.0" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="60.7939453125" AnchorPane.topAnchor="132.0" />
                         <TextField fx:id="seq_nom_plante" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" />
                         <Text layoutX="61.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="313.2060546875" />
-                        <Pane layoutX="218.0" layoutY="357.0" prefHeight="30.0" prefWidth="213.0" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="216.0" AnchorPane.rightAnchor="216.0" AnchorPane.topAnchor="357.0">
+                        <Pane layoutX="714.0" layoutY="572.0" prefHeight="42.0" prefWidth="222.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="710.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="570.0">
                            <children>
-                              <Button fx:id="button_search" layoutX="5.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="200.0" text="Button" />
+                              <Button fx:id="button_search" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#launchBlast" prefHeight="43.0" prefWidth="208.0" style="-fx-background-color: green;" text="RECHERCHER" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font></Button>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="419.0" layoutY="563.0" prefHeight="42.0" prefWidth="222.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="710.0" AnchorPane.topAnchor="570.0">
+                           <children>
+                              <Button fx:id="button_search_silent" layoutY="-2.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="208.0" style="-fx-background-color: green;" text="RECHERCHER (silencieux)" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </Pane>
                      </children>
