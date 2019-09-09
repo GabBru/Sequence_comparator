@@ -18,6 +18,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
  */
 public class Clustal {
     protected static final Logger LOGGER = Logger.getLogger(Clustal.class.getName());
+    String tree ;
     public void Clustal(){}
     
     public void submit() throws IOException, InterruptedException{
@@ -49,7 +50,12 @@ public class Clustal {
         // extract the tree 
         driver.findElement(By.cssSelector(".actionPanel>li>#phylotree")).click();
         driver.findElement(By.cssSelector(".actionPanel > li > #tree")).click();
-        String tree = driver.findElement(By.cssSelector("pre")).getText();
-        LOGGER.info("tree => "+ tree);        
+        tree = driver.findElement(By.cssSelector("pre")).getText();
+        LOGGER.info("tree => "+ tree);
     }
+
+    public String getTree() {
+        return tree;
+    }
+    
 }
