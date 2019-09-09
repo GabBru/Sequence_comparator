@@ -2,11 +2,8 @@ package com.mycompany.sequence_comparator2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -14,16 +11,16 @@ import java.util.List;
  */
 public class ConnectionDataBase {
 
-    private Connection con;
+    private final Connection con;
 
     private Statement stmt;
 
     public ConnectionDataBase() throws ClassNotFoundException, SQLException {
         // Load the driver class & create the connection object then create the statement of the object
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:8888/sequence_comparator", "root", "");
-            stmt = con.createStatement();
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        this.con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:8889/sequence_comparator?zeroDateTimeBehavior=convertToNull", "root", "root");
+        this.stmt = con.createStatement();
     }
 
     public void shutdown(Connection con) throws SQLException {
@@ -47,5 +44,4 @@ public class ConnectionDataBase {
     public Statement getStmt() {
         return stmt;
     }
-
 }
