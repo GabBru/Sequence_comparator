@@ -7,13 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -62,23 +62,23 @@ public class FXMLController implements Initializable {
         Image image = new Image("/src/main/resources/images/Logo_geneBVanalytics.png");
         view_logo.setImage(image);
         view_logo.setSmooth(true);
-//        try {
-//            dataAccess = new ConnectionDataBase();
-//            LOGGER.info("dataAccess = " + dataAccess);
-//        } catch (ClassNotFoundException | SQLException ex) {
-//            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        ObservableList<String> list_plante = FXCollections.observableArrayList();
-//        try {
-//            list_plante = getNomPlante(dataAccess);
-//        } catch (SQLException | ClassNotFoundException ex) {
-//            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        combo_nom_plante.setItems(list_plante);
+
+        try {
+            dataAccess = new ConnectionDataBase();
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ObservableList<String> list_plante = FXCollections.observableArrayList();
+        try {
+            list_plante = getNomPlante(dataAccess);
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        combo_nom_plante.setItems(list_plante);                             
     }
 
     public ObservableList<String> getNomPlante(ConnectionDataBase dataAccess) throws SQLException, ClassNotFoundException {
-        
+        System.out.println("Getnomplante");
         Connection con = dataAccess.getCon();
         ObservableList<String> list = FXCollections.observableArrayList();
         // execute query
