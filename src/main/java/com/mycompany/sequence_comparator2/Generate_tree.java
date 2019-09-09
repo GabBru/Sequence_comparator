@@ -20,8 +20,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class Generate_tree {
     String tree;
     Clustal cl = new Clustal();
-    public void Generate_tree(){
-        tree = cl.getTree();
+    public Generate_tree(String arbre){
+        tree = arbre;
 }
     
     public void submit() throws IOException, InterruptedException{
@@ -31,7 +31,6 @@ public class Generate_tree {
         
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
-
         driver.manage().window().maximize();
 
         // Open the clustalo homepage
@@ -39,6 +38,6 @@ public class Generate_tree {
         //add all lines in the input 
         driver.findElement(By.id("newickInSingle")).sendKeys(tree);
         //click on submit button 
-        driver.findElement(By.id("renderButton")).submit();
+        driver.findElement(By.cssSelector("#renderButton")).click();
     }
 }
