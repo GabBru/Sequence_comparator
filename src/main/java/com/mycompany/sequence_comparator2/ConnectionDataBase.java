@@ -19,11 +19,11 @@ public class ConnectionDataBase {
     private Statement stmt;
 
     public ConnectionDataBase() throws ClassNotFoundException, SQLException {
-        // Load the driver class & create the connection object then create the statement of the object
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:8888/sequence_comparator", "root", "");
-            stmt = con.createStatement();
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(
+                "jdbc:mysql://remotemysql.com:3306/jeho8etZte", "jeho8etZte", "GxTGVa1AvL");
+        stmt = con.createStatement();
+
     }
 
     public void shutdown(Connection con) throws SQLException {

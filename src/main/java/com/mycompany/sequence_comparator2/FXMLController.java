@@ -64,7 +64,6 @@ public class FXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             dataAccess = new ConnectionDataBase();
-            LOGGER.info("dataAccess = " + dataAccess);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,14 +73,12 @@ public class FXMLController implements Initializable {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        combo_nom_plante.setItems(list_plante);
+        combo_nom_plante.setItems(list_plante);                             
     }
 
     public ObservableList<String> getNomPlante(ConnectionDataBase dataAccess) throws SQLException, ClassNotFoundException {
-        
+        System.out.println("Getnomplante");
         Connection con = dataAccess.getCon();
-        LOGGER.info("con OK" + con);
-        LOGGER.info("dataAccess = " + dataAccess);
         ObservableList<String> list = FXCollections.observableArrayList();
         // execute query
         Statement stmt = con.createStatement();
