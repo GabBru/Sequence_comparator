@@ -10,6 +10,7 @@ package com.mycompany.sequence_comparator2;
  * @author Fievet
  */
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -35,11 +36,12 @@ public class Blast extends FXMLController {
     public void Blast() {
     }
 
-    public void search(String plante,ObservableList<String> fasta) throws InterruptedException 
+    public List<List<String>> search(String plante,ObservableList<String> fasta) throws InterruptedException, IOException 
     {   
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
         File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        List<List<String>> resultatBlast = new ArrayList<List<String>>();
 
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
@@ -85,10 +87,16 @@ public class Blast extends FXMLController {
         // allow the page change 
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
+// go through the input sequence list 
+ for (int j=1;j<= fasta.size();j++){
+     // select a sequence 
+     driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type("+j+")")).click();
+
+        // go through all of the table lines if there is/are result(s)
+        if(driver.findElement(By.className("results-tabs")).isDisplayed()){
         //get the number of results
         Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector(".selctall>li>.small-text>#slcNum")).getText());
-
-        // go through all of the table lines
+        // go through the result table
         for (int i = 0; i < nbline; i++) {
             String text = driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.c7")).get(i).getText();
             Integer identityx = Integer.valueOf(text.split("\\.")[0]);
@@ -107,8 +115,13 @@ public class Blast extends FXMLController {
 
         //A voir si il faut ajouter encore plus de temps d'attente pour les connexions lentes 
         Thread.sleep(5000);
-        LOGGER.info("il a fini ");
+        ResultFile resultfile = new ResultFile();
+        resultatBlast.add(resultfile.readFile());
+        resultfile.deleteFile();}
+ }
         // Close the browser
         driver.close();
+        return resultatBlast;
     }
+    
 }
