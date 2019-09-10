@@ -44,14 +44,11 @@ public class FXMLController implements Initializable {
 //        file.readFile();
           Clustal clustal = new Clustal();
           clustal.submit();
-        file.deleteFile();
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
-//          Clustal clustal = new Clustal();
-//          clustal.submit();
-          Place place = new Place();
+//          Place place = new Place();
 //          place.tBlastN(getSeq_nom_plante());
-          place.place();
+//          place.place();
 //        file.deleteFile();
     }
 
