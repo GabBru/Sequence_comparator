@@ -176,11 +176,19 @@ public class FXMLController implements Initializable {
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException {
-        Blast blast = new Blast();
-        blast.search(getSeq_nom_plante(), getSeq());
+//        Blast blast = new Blast();
+//        blast.search(getSeq_nom_plante(),getSeq());
+
         ResultFile file = new ResultFile();
-        file.readFile();
-        file.deleteFile();
+//        file.readFile();
+          Clustal clustal = new Clustal();
+          clustal.submit();
+        Generate_tree tree = new Generate_tree(clustal.getTree());
+        tree.submit();
+//          Place place = new Place();
+//          place.tBlastN(getSeq_nom_plante());
+//          place.place();
+//        file.deleteFile();
     }
 
     public String getSeq_nom_plante() {
