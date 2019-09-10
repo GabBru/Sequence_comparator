@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -230,12 +231,12 @@ public class FXMLController implements Initializable {
         Collections.sort(list);
         LOGGER.info("list " + list.size());
         Blast blast = new Blast();
-        blast.search(getSeq_nom_plante(),list);
+        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),list);
 
         ResultFile file = new ResultFile();
 //        file.readFile();
           Clustal clustal = new Clustal();
-          clustal.submit();
+          clustal.submit(blastResult);
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
 //          Place place = new Place();
