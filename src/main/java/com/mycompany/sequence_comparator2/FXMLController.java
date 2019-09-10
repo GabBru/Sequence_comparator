@@ -1,5 +1,6 @@
 package com.mycompany.sequence_comparator2;
 
+import static com.mycompany.sequence_comparator2.Blast.LOGGER;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -183,7 +184,7 @@ public class FXMLController implements Initializable {
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from TYPE_PROTEINE");
         while (rs.next()) {
-            list_type_prot.add(rs.getString(2));
+            list_type_prot.add(rs.getString(1));
         }
         Collections.sort(list_type_prot);
         return list_type_prot;
@@ -221,14 +222,15 @@ public class FXMLController implements Initializable {
         ObservableList<String> list = FXCollections.observableArrayList();
         // execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante in (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='"+getSeq_nom_plante()+"'");
+        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='"+combo_analyse_type.getSelectionModel().getSelectedItem().toString()+"'");
         while (rs.next()) {
-            list.add(">\n"+rs.getString(1));
+            System.out.println("Dans la boucle while");
+            list.add(">\n"+rs.getString(1)+"\n");
         }
         Collections.sort(list);
-      
-//        Blast blast = new Blast();
-//        blast.search(getSeq_nom_plante(),getSeq());
+        LOGGER.info("list " + list.size());
+        Blast blast = new Blast();
+        blast.search(getSeq_nom_plante(),list);
 
         ResultFile file = new ResultFile();
 //        file.readFile();
