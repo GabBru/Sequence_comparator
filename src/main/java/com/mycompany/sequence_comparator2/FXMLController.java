@@ -28,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import static javax.swing.UIManager.getInt;
 
 public class FXMLController implements Initializable {
 
@@ -46,20 +47,20 @@ public class FXMLController implements Initializable {
     @FXML
     protected Text text_lien_ncbi;
     @FXML
-    protected TableView <CIS> tab_CIS;
+    protected TableView<CIS> tab_CIS;
     @FXML
-    protected TableColumn <CIS, String> col_nom_CIS;
+    protected TableColumn<CIS, String> col_nom_CIS;
     @FXML
-    protected TableColumn <CIS, Integer> col_pos_CIS;
+    protected TableColumn<CIS, Integer> col_pos_CIS;
     @FXML
-    protected TableColumn <CIS, String> col_seq_CIS;
+    protected TableColumn<CIS, String> col_seq_CIS;
     @FXML
     protected TextArea text_seq_ARN;
     @FXML
     protected TextArea text_seq_ADN;
     @FXML
     protected ImageView view_logo;
-    
+
     //// Onglet AJOUT REFERENCE ////
     @FXML
     protected TextField ref_nom_plante;
@@ -83,13 +84,12 @@ public class FXMLController implements Initializable {
     protected Label pop_type_prot;
     @FXML
     protected Label pop_nom_prot;
-    
+
     //// Onglet ANALYSE ////
     @FXML
     protected ComboBox combo_analyse_type;
     @FXML
     protected TextField text_new_type;
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,8 +104,7 @@ public class FXMLController implements Initializable {
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         //// Onglet CONSULTATION ////
         ObservableList<String> list_plante = FXCollections.observableArrayList();
         try {
@@ -134,6 +133,18 @@ public class FXMLController implements Initializable {
                 } catch (SQLException | ClassNotFoundException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        });
+
+        combo_nom_prot.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    text_seq_ARN.clear();
+                    text_seq_ARN.setText(getARN(combo_nom_prot.getSelectionModel().getSelectedItem().toString(), combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
+                } catch (SQLException | ClassNotFoundException ex) {
+                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                } 
             }
         });
         
@@ -165,22 +176,22 @@ public class FXMLController implements Initializable {
         ObservableList<String> list_type_prot = FXCollections.observableArrayList();
         //execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from PLANTE join TYPE_ENTITE on `id_entite`=`id_type` where nom_plante = '" + nom_plante + "'");
+        ResultSet rs = stmt.executeQuery("select * from PLANTE join TYPE_PROTEINE on `id_entite`=`id_type` where nom_plante = '" + nom_plante + "'");
         while (rs.next()) {
             list_type_prot.add(rs.getString(5));
         }
         Collections.sort(list_type_prot);
         return list_type_prot;
     }
-    
+
     public ObservableList<String> getTypeProtAna() throws SQLException, ClassNotFoundException {
         Connection con = dataAccess.getCon();
         ObservableList<String> list_type_prot = FXCollections.observableArrayList();
         //execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from TYPE_ENTITE");
+        ResultSet rs = stmt.executeQuery("select * from TYPE_PROTEINE");
         while (rs.next()) {
-            list_type_prot.add(rs.getString(2));
+            list_type_prot.add(rs.getString(1));
         }
         Collections.sort(list_type_prot);
         return list_type_prot;
@@ -191,12 +202,36 @@ public class FXMLController implements Initializable {
         ObservableList<String> list_prot = FXCollections.observableArrayList();
         //execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from PLANTE natural join TYPE_ENTITE natural join SEQ_ARN NATURAL JOIN PROTEINE where nom_plante = '" + nom_plante + "' and nom_type = '" + nom_type_plante + "'");
+        ResultSet rs = stmt.executeQuery("select * from PLANTE join TYPE_PROTEINE join SEQUENCES where nom_plante = '" + nom_plante + "' and nom_type = '" + nom_type_plante + "'");
         while (rs.next()) {
             list_prot.add(rs.getString(10));
         }
         Collections.sort(list_prot);
         return list_prot;
+    }
+
+    public ObservableList<CIS> getElementCIS(String nom_plante, String type_prot) throws SQLException, ClassNotFoundException {
+        Connection con = dataAccess.getCon();
+        ObservableList<CIS> list_CIS = FXCollections.observableArrayList();
+        //execute query
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("Select * from ELEMENT_CIS where nom_plante = '" + nom_plante + "' and ");
+        while (rs.next()) {
+            list_CIS.add(new CIS(rs.getString(1), rs.getString(2), getInt(3), getInt(4)));
+        }
+        return list_CIS;
+    }
+
+    public String getARN(String nom_prot, String nom_plante) throws SQLException, ClassNotFoundException {
+        Connection con = dataAccess.getCon();
+        String sequence_ARN = "Aucun résultats en base de données.";
+        //execute query
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT seq_prot from SEQUENCES natural join PLANTE where nom_plante = '" + nom_plante + "' and nom_prot = '" + nom_prot + "'");
+        while (rs.next()) {
+            sequence_ARN = rs.getString(1);
+        }
+        return sequence_ARN;
     }
 
     @FXML
@@ -206,8 +241,8 @@ public class FXMLController implements Initializable {
 
         ResultFile file = new ResultFile();
 //        file.readFile();
-          Clustal clustal = new Clustal();
-          clustal.submit();
+        Clustal clustal = new Clustal();
+        clustal.submit();
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
 //          Place place = new Place();
@@ -225,11 +260,11 @@ public class FXMLController implements Initializable {
     }
 
     /// POP HELP ///
-    public void help_nom_plante(MouseEvent event) throws IOException{
+    public void help_nom_plante(MouseEvent event) throws IOException {
         info_nom_plante = new Tooltip();
         info_nom_plante.setText("Renseignez le nom complet de la \n "
                 + "plante en utilisant de préférence son nom dans \n"
                 + "la nomenclature officiel (latin).");
         pop_nom_plante.setTooltip(info_nom_plante);
-        }
+    }
 }

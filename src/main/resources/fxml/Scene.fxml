@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="730.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sequence_comparator2.FXMLController">
+<AnchorPane id="AnchorPane" prefHeight="730.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sequence_comparator2.FXMLController">
    <children>
       <TabPane layoutX="-2.0" layoutY="6.0" prefHeight="524.0" prefWidth="645.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -50,7 +50,7 @@
                           </columns>
                         </TableView>
                         <TextArea fx:id="text_seq_ARN" layoutX="155.0" layoutY="521.0" prefHeight="46.0" prefWidth="656.0" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="521.0" />
-                        <Text layoutX="25.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ARN" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="538.0" />
+                        <Text layoutX="25.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence protéique" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="538.0" />
                         <TextArea fx:id="text_seq_ADN" layoutX="155.0" layoutY="580.0" prefHeight="46.0" prefWidth="656.0" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="580.0" />
                         <Text layoutX="25.0" layoutY="610.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ADN" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="597.431640625" />
                         <ImageView fx:id="view_logo" fitHeight="256.0" fitWidth="363.0" layoutX="865.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="865.0" AnchorPane.topAnchor="30.0" />
@@ -76,7 +76,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Button>
-                        <Label fx:id="pop_nom_plante" layoutX="171.0" layoutY="61.0" text="ⓘ" textFill="#1400f2" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="60.0">
+                        <Label fx:id="pop_nom_plante" layoutX="171.0" layoutY="61.0" onMouseClicked="#help_nom_plante" onMouseDragged="#help_nom_plante" onMouseEntered="#help_nom_plante" onMousePressed="#help_nom_plante" text="ⓘ" textFill="#1400f2" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="60.0">
                            <font>
                               <Font size="18.0" />
                            </font>
