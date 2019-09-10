@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.AutoCompleteTextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -63,11 +64,8 @@
             <content>
               <AnchorPane fx:id="onglet_ajout_ref" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="ref_nom_plante" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="61.0" AnchorPane.topAnchor="90.0" />
                         <Text layoutX="61.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="61.0" AnchorPane.topAnchor="70.0" />
-                        <TextField fx:id="ref_type_prot" layoutX="402.0" layoutY="87.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="90.0" />
                         <Text layoutX="402.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de protéine" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="70.0" />
-                        <TextField fx:id="ref_nom_prot" layoutX="739.0" layoutY="88.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="740.0" AnchorPane.topAnchor="90.0" />
                         <Text fx:id="seq_nom_prot" layoutX="741.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom complet de la protéine" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="741.0" AnchorPane.topAnchor="70.0" />
                         <TextArea fx:id="ref_seq" layoutX="62.0" layoutY="149.0" prefHeight="200.0" prefWidth="1073.0" AnchorPane.leftAnchor="62.0" AnchorPane.topAnchor="149.0" />
                         <Text fx:id="text_seq" layoutX="61.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez la sequence au format FASTA du génome correspondant" wrappingWidth="523.2060546875" AnchorPane.leftAnchor="61.0" AnchorPane.topAnchor="128.0" />
@@ -92,6 +90,9 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
+                        <AutoCompleteTextField fx:id="ref_nom_plante" layoutX="122.0" layoutY="77.0" prefHeight="27.0" prefWidth="316.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="90.0" />
+                        <AutoCompleteTextField fx:id="ref_type_prot" layoutX="436.0" layoutY="90.0" prefHeight="27.0" prefWidth="322.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="90.0" />
+                        <AutoCompleteTextField fx:id="ref_nom_prot" layoutX="814.0" layoutY="90.0" prefHeight="27.0" prefWidth="330.0" AnchorPane.leftAnchor="740.0" AnchorPane.topAnchor="90.0" />
                      </children>
                   </AnchorPane>
             </content>

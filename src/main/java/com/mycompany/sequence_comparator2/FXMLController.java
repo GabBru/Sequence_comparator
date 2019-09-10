@@ -150,14 +150,19 @@ public class FXMLController implements Initializable {
                 try {
                     text_seq_ARN.clear();
                     text_seq_ADN.clear();
+                    text_nom_gene.setText("");
+                    text_lien_ncbi.setText("");
+                    
                     tab_CIS.getItems().removeAll(tab_CIS.getItems());
-                    try {
-                        text_seq_ARN.setText(getARN(combo_nom_prot.getSelectionModel().getSelectedItem().toString(), combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
-                        text_seq_ADN.setText(getADN(combo_nom_prot.getSelectionModel().getSelectedItem().toString(), combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
-                    } catch (SQLException | ClassNotFoundException ex) {
-                        Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    
+                    text_nom_gene.setText(combo_nom_prot.getSelectionModel().getSelectedItem().toString());
+                    text_lien_ncbi.setText(getLienNCBI(combo_nom_plante.getSelectionModel().getSelectedItem().toString(), combo_nom_prot.getSelectionModel().getSelectedItem().toString()));
+                    
+                    text_seq_ARN.setText(getARN(combo_nom_prot.getSelectionModel().getSelectedItem().toString(), combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
+                    text_seq_ADN.setText(getADN(combo_nom_prot.getSelectionModel().getSelectedItem().toString(), combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
+                    
                     ObservableList<CIS> list_CIS = getElementCIS(combo_nom_plante.getSelectionModel().getSelectedItem().toString(), combo_nom_prot.getSelectionModel().getSelectedItem().toString());
+                    
                     col_nom_CIS.setCellValueFactory(
                             new PropertyValueFactory<CIS, String>("name"));
                     col_pos1_CIS.setCellValueFactory(
@@ -236,6 +241,18 @@ public class FXMLController implements Initializable {
         }
         Collections.sort(list_prot);
         return list_prot;
+    }
+    
+    public String getLienNCBI(String nom_plante, String nom_prot) throws SQLException, ClassNotFoundException {
+        Connection con = dataAccess.getCon();
+        String lien = "Aucun résultats en base de données.";
+        //execute query
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select lien from SEQUENCES natural join PLANTE where nom_plante = '" + nom_plante + "' and nom_prot = '" + nom_prot + "'");
+        while (rs.next()) {
+            lien = rs.getString(1);
+        }
+        return lien;
     }
 
     public ObservableList<String> GenerateSeqTypePro(ConnectionDataBase dataAccess, String nom_type_plante) throws SQLException, ClassNotFoundException {
@@ -329,6 +346,7 @@ public class FXMLController implements Initializable {
                 + "la nomenclature officielle (latin).");
         pop_nom_plante.setTooltip(info_nom_plante);
     }
+
     public void help_type_prot(MouseEvent event) throws IOException {
         info_type_prot = new Tooltip();
         info_type_prot.setText("Renseignez le type de protéine concernée. \n"
@@ -336,6 +354,7 @@ public class FXMLController implements Initializable {
                 + "en base de données, utilisez la fonction d'auto-remplissage.");
         pop_type_prot.setTooltip(info_type_prot);
     }
+
     public void help_nom_prot(MouseEvent event) throws IOException {
         info_nom_prot = new Tooltip();
         info_nom_prot.setText("Renseignez le nom complet de la \n "
