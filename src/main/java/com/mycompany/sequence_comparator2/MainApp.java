@@ -23,7 +23,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
 
-        stage.setTitle("geneBV analytics");
+        stage.setTitle("GENEBV analytics");
         stage.setScene(scene);
         stage.show();
     }
