@@ -65,6 +65,8 @@ public class FXMLController implements Initializable {
     @FXML
     protected TextField seq_nom_plante1;
     @FXML
+    protected TextField ref_nom_plante;
+    @FXML
     protected TextField ref_type_prot;
     @FXML
     protected TextField ref_nom_prot;
@@ -149,8 +151,57 @@ public class FXMLController implements Initializable {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        /// Onglet /////
+        button_add.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    ajouter_ref(dataAccess, ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText());
+                } catch (SQLException ex) {
+                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
+    public void ajouter_ref(ConnectionDataBase dataAccess, String nom_plante, String nom_prot, String fasta, String type_prot) throws SQLException{
+        Connection con = dataAccess.getCon();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        // execute query
+        Statement stmt = con.createStatement();
+        Statement stmt1 = con.createStatement();
+        Statement stmt2 = con.createStatement();
+        Statement stmt3 = con.createStatement();
+        Statement stmt4 = con.createStatement();
+        Statement stmt5 = con.createStatement();
+        System.out.println("le nom de la plante "+nom_plante);
+        ResultSet rs = stmt.executeQuery("select id_plante from PLANTE where nom_plante= '"+nom_plante+"'");
+        ResultSet rs1 = stmt1.executeQuery("select * from TYPE_PROTEINE where nom_type= '"+type_prot+"'");
+        
+        String id_plante="";
+        if (rs.next()){
+            System.out.println("plante existe");
+            id_plante = rs.getString(1);
+        }else{
+            System.out.println("pas de plante");
+            int rs3 = stmt3.executeUpdate("Insert into PLANTE values (1,'"+ nom_plante+"')");
+            ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante= '"+nom_plante+"'");
+            if (rs4.next()){
+                id_plante = rs4.getString(1);
+            }
+        }
+        if (rs1.next()){
+            System.out.println("type prot existe");
+            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES values (1,'"+ nom_prot+"', NULL,'"+ fasta+"', NULL, NULL, NULL, '"+id_plante+"','"+ type_prot+"', NULL)");
+        }else{
+            System.out.println("pas de type prot");
+            int rs5 = stmt5.executeUpdate("Insert into TYPE_PROTEINE values ('"+ nom_prot+"')");
+            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES values (1,'"+ nom_prot+"', NULL,'"+ fasta+"', NULL, NULL, NULL, '"+id_plante+"','"+ type_prot+"', NULL)");
+            
+        }
+    
+    }
+    
     public ObservableList<String> getNomPlante(ConnectionDataBase dataAccess) throws SQLException, ClassNotFoundException {
         Connection con = dataAccess.getCon();
         ObservableList<String> list = FXCollections.observableArrayList();
