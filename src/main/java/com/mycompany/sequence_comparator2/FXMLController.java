@@ -63,7 +63,7 @@ public class FXMLController implements Initializable {
 
     //// Onglet AJOUT REFERENCE ////
     @FXML
-    protected TextField ref_nom_plante;
+    protected TextField seq_nom_plante1;
     @FXML
     protected TextField ref_type_prot;
     @FXML
@@ -90,6 +90,8 @@ public class FXMLController implements Initializable {
     protected ComboBox combo_analyse_type;
     @FXML
     protected TextField text_new_type;
+    @FXML
+    protected Button button_new_type;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -156,6 +158,7 @@ public class FXMLController implements Initializable {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     public ObservableList<String> getNomPlante(ConnectionDataBase dataAccess) throws SQLException, ClassNotFoundException {
@@ -163,7 +166,7 @@ public class FXMLController implements Initializable {
         ObservableList<String> list = FXCollections.observableArrayList();
         // execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select DISTINCT nom_plante from PLANTE");
+        ResultSet rs = stmt.executeQuery("select nom_plante from PLANTE");
         while (rs.next()) {
             list.add(rs.getString(1));
         }
@@ -176,7 +179,7 @@ public class FXMLController implements Initializable {
         ObservableList<String> list_type_prot = FXCollections.observableArrayList();
         //execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from PLANTE join TYPE_PROTEINE on `id_entite`=`id_type` where nom_plante = '" + nom_plante + "'");
+        ResultSet rs = stmt.executeQuery("select * from SEQUENCES join TYPE_PROTEINE on nom_type where id-plante in (select id_plante from PLANTE where nom_plante= '"+nom_plante+"')");
         while (rs.next()) {
             list_type_prot.add(rs.getString(5));
         }
@@ -209,6 +212,19 @@ public class FXMLController implements Initializable {
         Collections.sort(list_prot);
         return list_prot;
     }
+    
+    public ObservableList<String> GenerateSeqTypePro(ConnectionDataBase dataAccess, String nom_type_plante) throws SQLException, ClassNotFoundException {
+        Connection con = dataAccess.getCon();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        // execute query
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select DISTINCT nom_plante from PLANTE where TYPE_PROTEINE.nom_type ='"+nom_type_plante+"'");
+        while (rs.next()) {
+            list.add(rs.getString(1));
+        }
+        Collections.sort(list);
+        return list;
+    }
 
     public ObservableList<CIS> getElementCIS(String nom_plante, String type_prot) throws SQLException, ClassNotFoundException {
         Connection con = dataAccess.getCon();
@@ -235,7 +251,17 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    void launchBlast(MouseEvent event) throws InterruptedException, IOException {
+    void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
+        Connection con = dataAccess.getCon();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        // execute query
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante in (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='"+getSeq_nom_plante()+"'");
+        while (rs.next()) {
+            list.add(">\n"+rs.getString(1));
+        }
+        Collections.sort(list);
+      
 //        Blast blast = new Blast();
 //        blast.search(getSeq_nom_plante(),getSeq());
 
@@ -252,7 +278,7 @@ public class FXMLController implements Initializable {
     }
 
     public String getSeq_nom_plante() {
-        return ref_nom_plante.getText();
+        return seq_nom_plante1.getText();
     }
 
     public String getSeq() {
