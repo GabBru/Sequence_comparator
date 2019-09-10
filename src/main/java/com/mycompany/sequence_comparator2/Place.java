@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -29,8 +30,8 @@ public class Place {
     ResultFile resultFile = new ResultFile();
     
     public void Place(){}
-    
-    public void tBlastN(String plante) throws IOException, InterruptedException
+    //get ARNm sequences from invertase protein 
+    public void blastN(String plante)
     {
          // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
         File file = new File(System.getProperty("user.dir")+"/chromedriver.exe");
@@ -44,22 +45,97 @@ public class Place {
 //        options.addArguments("--headless");
 //        WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-
-        // Open the Ncbi homepage
+          // Open the Ncbi homepage
         driver.get("https://www.ncbi.nlm.nih.gov/gene");
-        // Enter the organism to study 
+        
+// Enter the organism to study 
        driver.findElement(By.id("term")).clear();
         driver.findElement(By.id("term")).sendKeys(plante);
         driver.findElement(By.id("search")).click();
         driver.findElement(By.id("assembly_blast")).click();
+        
+    }
+       
+    public void tBlastN(String plante) throws IOException, InterruptedException
+    {
+        List<String> futurBlast = new ArrayList<>();
+         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+        File file = new File(System.getProperty("user.dir")+"/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        
+        // Create a Chrome Web Driver with visual
+        WebDriver driver = new ChromeDriver();
+        // TO DO: add a  button to switch between the hidden and the visible option
+//        Create a Chrome Web Driver without visual 
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+//        WebDriver driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
+
+        // Open the tblastn page  
+        driver.get("https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=tblastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome");
+        
 //        // set the sequences into the input field
         driver.findElement(By.id("seq")).clear();
         for (int i=0;i<resultFile.readFile().size();i++){
         driver.findElement(By.id("seq")).sendKeys(resultFile.readFile().get(i)+"\n");}
         
+        // Enter the organism to study 
+        driver.findElement(By.id("qorganism")).clear();
+        driver.findElement(By.id("qorganism")).sendKeys(plante);
+        
+        //pause to allow the selector to be displayed 
+        Thread.sleep(3000);
+//        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+
+        //click the first line of the selector
+        WebElement el = driver.findElement(By.cssSelector(".ui-ncbiautocomplete-holder > .ui-ncbiautocomplete-options >li"));
+        el.click();
+        
        // Click the FindJobs button for searching
        driver.findElement(By.id("b1")).click();
+       driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+       Thread.sleep(20000);
+//       driver.findElement(By.cssSelector(".deflnDesc")).click();
+//       driver.findElement(By.cssSelector(".alnAll>div>div>span>span>a")).click();
+//download the results on fasta format : 
+        File seqfile = new File("C:\\Users\\Fievet\\Downloads\\seqdump (1).txt");
+        Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector("#hjbt>a>span")).getText().split("\\ ")[0]);
+ for (int i=1;i<= nbline;i++){
+     
+        driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type("+i+")")).click();
+       driver.findElement(By.cssSelector(".selctall>li")).click();
+       driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(0).click();
+        driver.findElement(By.cssSelector(".right-tools> li > #btnDwnld")).click();
+        driver.findElement(By.cssSelector(".right-tools> li > #dsDownload > li > #dwFSTAl")).click();
+        
+       Thread.sleep(15000);
        
+       InputStream flux =new FileInputStream(seqfile);
+        InputStreamReader lecture=new InputStreamReader(flux);
+         BufferedReader buff=new BufferedReader(lecture);
+    
+    String ligne;
+    String result = "";
+    List<String> sequences = new ArrayList<String>();
+        // concat all lines in a single one in result 
+    while ((ligne=buff.readLine())!=null){
+    result = result+"\n"+ligne;
+    }
+    buff.close();
+  seqfile.delete();
+   LOGGER.info("il y a le file " + seqfile);
+    sequences.add(">"+result.split(">")[1]);
+//    for(int i=1;i<result.split(">").length;i++){
+//        LOGGER.info("match "+ i + " : "+result.split(">")[i]);
+//        sequences.add(">"+result.split(">")[i]);
+//           sequences.add(ligne);
+//    }
+    LOGGER.info("a la fin " + sequences.get(0));
+    futurBlast.add(sequences.get(0));
+    sequences.clear();}
+ 
+    LOGGER.info("futurBlast " + futurBlast.size());
        // TO DO : 
        // for all sequences go find the 1500 pb before the cDNA sequence obtained in blast (don't take the mARN) 
        
