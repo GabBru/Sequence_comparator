@@ -85,7 +85,10 @@ public class FXMLController implements Initializable {
     protected Label pop_nom_prot;
     
     //// Onglet ANALYSE ////
-    
+    @FXML
+    protected ComboBox combo_analyse_type;
+    @FXML
+    protected TextField text_new_type;
     
 
     @Override
@@ -116,7 +119,7 @@ public class FXMLController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    combo_type_prot.setItems(getNomProt(combo_nom_plante.getSelectionModel().getSelectedItem().toString(), combo_type_prot.getSelectionModel().getSelectedItem().toString()));
+                    combo_type_prot.setItems(getTypeProt(combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
                 } catch (SQLException | ClassNotFoundException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -127,12 +130,21 @@ public class FXMLController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    combo_nom_prot.setItems(getTypeProt(combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
+                    combo_nom_prot.setItems(getNomProt(combo_nom_plante.getSelectionModel().getSelectedItem().toString(), combo_type_prot.getSelectionModel().getSelectedItem().toString()));
                 } catch (SQLException | ClassNotFoundException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+        
+        try {
+            //// Onglet ANALYSE ////
+            combo_analyse_type.setItems(getTypeProtAna());
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public ObservableList<String> getNomPlante(ConnectionDataBase dataAccess) throws SQLException, ClassNotFoundException {
@@ -140,9 +152,9 @@ public class FXMLController implements Initializable {
         ObservableList<String> list = FXCollections.observableArrayList();
         // execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from PLANTE");
+        ResultSet rs = stmt.executeQuery("select DISTINCT nom_plante from PLANTE");
         while (rs.next()) {
-            list.add(rs.getString(2));
+            list.add(rs.getString(1));
         }
         Collections.sort(list);
         return list;
@@ -153,9 +165,22 @@ public class FXMLController implements Initializable {
         ObservableList<String> list_type_prot = FXCollections.observableArrayList();
         //execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from PLANTE natural join TYPE_ENTITE where nom_plante = '" + nom_plante + "'");
+        ResultSet rs = stmt.executeQuery("select * from PLANTE join TYPE_ENTITE on `id_entite`=`id_type` where nom_plante = '" + nom_plante + "'");
         while (rs.next()) {
             list_type_prot.add(rs.getString(5));
+        }
+        Collections.sort(list_type_prot);
+        return list_type_prot;
+    }
+    
+    public ObservableList<String> getTypeProtAna() throws SQLException, ClassNotFoundException {
+        Connection con = dataAccess.getCon();
+        ObservableList<String> list_type_prot = FXCollections.observableArrayList();
+        //execute query
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from TYPE_ENTITE");
+        while (rs.next()) {
+            list_type_prot.add(rs.getString(2));
         }
         Collections.sort(list_type_prot);
         return list_type_prot;
