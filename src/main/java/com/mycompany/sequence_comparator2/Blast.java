@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -34,10 +35,10 @@ public class Blast extends FXMLController {
     public void Blast() {
     }
 
-    public void search(String plante,String fasta) throws InterruptedException 
+    public void search(String plante,ObservableList<String> fasta) throws InterruptedException 
     {   
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir") + "/chromedriver");
+        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
 
         // Create a Chrome Web Driver with visual
@@ -54,7 +55,12 @@ public class Blast extends FXMLController {
 
         // Enter the sequence in the field
         driver.findElement(By.id("seq")).clear();
-        driver.findElement(By.id("seq")).sendKeys(fasta);
+        LOGGER.info("fasta " + fasta.size());
+        for (int i=0;i<fasta.size();i++){
+            System.out.println("liste fasta "+fasta.get(i));
+            driver.findElement(By.id("seq")).sendKeys(fasta.get(i));
+        }
+        System.out.println("après la boucle ");
 
         // Enter the organism to study 
         driver.findElement(By.id("qorganism")).clear();
