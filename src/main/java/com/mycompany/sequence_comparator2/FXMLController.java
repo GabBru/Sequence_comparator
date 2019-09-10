@@ -46,13 +46,13 @@ public class FXMLController implements Initializable {
     @FXML
     protected Text text_lien_ncbi;
     @FXML
-    protected TableView tab_CIS;
+    protected TableView <CIS> tab_CIS;
     @FXML
-    protected TableColumn col_nom_CIS;
+    protected TableColumn <CIS, String> col_nom_CIS;
     @FXML
-    protected TableColumn col_pos_CIS;
+    protected TableColumn <CIS, Integer> col_pos_CIS;
     @FXML
-    protected TableColumn col_seq_CIS;
+    protected TableColumn <CIS, String> col_seq_CIS;
     @FXML
     protected TextArea text_seq_ARN;
     @FXML
