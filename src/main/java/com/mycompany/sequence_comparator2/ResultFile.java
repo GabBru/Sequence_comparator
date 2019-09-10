@@ -26,12 +26,12 @@ public class ResultFile {
     protected static final Logger LOGGER = Logger.getLogger(ResultFile.class.getName());
     // the downloaded file 
     // TO DO : find how to change the path to work with the teacher computer
-    private File file = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
-    
+    //private File file = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
+    private File file = new File("C:\\Users\\gphy\\Downloads\\seqdump.txt");
     public void ResultFile(){}
     
     // read the file and extract sequences from it 
-    public void readFile() throws FileNotFoundException, IOException{
+    public List<String> readFile() throws FileNotFoundException, IOException{
         // create a stream to be read 
     InputStream flux =new FileInputStream(file);
     InputStreamReader lecture=new InputStreamReader(flux);
@@ -43,16 +43,17 @@ public class ResultFile {
     List<String> sequences = new ArrayList<String>();
         // concat all lines in a single one in result 
     while ((ligne=buff.readLine())!=null){
-    result = result+ligne;
+//    result = result+ligne;
+sequences.add(ligne);
     }
         // split all sequences in a list of sequences 
-    for(int i=1;i<result.split(">").length;i++){
-        LOGGER.info("match "+ i + " : "+result.split(">")[i]);
-        sequences.add(result.split(">")[i]);
-}
+//    for(int i=1;i<result.split(">").length;i++){
+//        LOGGER.info("match "+ i + " : "+result.split(">")[i]);
+//        sequences.add(">"+result.split(">")[i]);
+//}
     // close the reader
     buff.close(); 
-    LOGGER.info("sequences => "+ sequences.get(0));
+    return sequences;
 }
     // method to delete the file
     public void deleteFile(){

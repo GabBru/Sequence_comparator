@@ -34,9 +34,8 @@ public class Blast extends FXMLController {
     public void Blast() {
     }
 
-    public void search(String plante, String fasta) throws InterruptedException {
-        String[] namePlante = plante.split("");
-
+    public void search(String plante,String fasta) throws InterruptedException 
+    {   
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
         File file = new File(System.getProperty("user.dir") + "/chromedriver");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
@@ -50,7 +49,7 @@ public class Blast extends FXMLController {
 //        WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
-        // Open the Indeed.com homepage
+        // Open the Blast homepage
         driver.get("https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastx&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome");
 
         // Enter the sequence in the field
