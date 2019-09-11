@@ -149,20 +149,22 @@ public class FXMLController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
+                    String nom_plante = combo_nom_plante.getSelectionModel().getSelectedItem().toString();
+                    String nom_prot = combo_nom_prot.getSelectionModel().getSelectedItem().toString();
                     text_seq_ARN.clear();
                     text_seq_ADN.clear();
-                    text_nom_gene.setText("");
-                    text_lien_ncbi.setText("");
+                    text_nom_gene.setText(nom_prot);
+                    text_lien_ncbi.setText(getLienNCBI(nom_plante, nom_prot));
                     
                     tab_CIS.getItems().removeAll(tab_CIS.getItems());
                     
-                    text_nom_gene.setText(combo_nom_prot.getSelectionModel().getSelectedItem().toString());
-                    text_lien_ncbi.setText(getLienNCBI(combo_nom_plante.getSelectionModel().getSelectedItem().toString(), combo_nom_prot.getSelectionModel().getSelectedItem().toString()));
+                    text_nom_gene.setText(nom_prot);
+                    text_lien_ncbi.setText(getLienNCBI(nom_plante, nom_prot));
                     
-                    text_seq_ARN.setText(getARN(combo_nom_prot.getSelectionModel().getSelectedItem().toString(), combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
-                    text_seq_ADN.setText(getADN(combo_nom_prot.getSelectionModel().getSelectedItem().toString(), combo_nom_plante.getSelectionModel().getSelectedItem().toString()));
+                    text_seq_ARN.setText(getARN(nom_prot, nom_plante));
+                    text_seq_ADN.setText(getADN(nom_prot, nom_plante));
                     
-                    ObservableList<CIS> list_CIS = getElementCIS(combo_nom_plante.getSelectionModel().getSelectedItem().toString(), combo_nom_prot.getSelectionModel().getSelectedItem().toString());
+                    ObservableList<CIS> list_CIS = getElementCIS(nom_plante, nom_prot);
                     
                     col_nom_CIS.setCellValueFactory(
                             new PropertyValueFactory<CIS, String>("name"));
