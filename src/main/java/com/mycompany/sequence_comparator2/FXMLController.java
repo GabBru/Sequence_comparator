@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -19,6 +20,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -116,6 +118,12 @@ public class FXMLController implements Initializable {
     protected ProgressIndicator progress_indicator;
     @FXML
     protected TableView<Sequence> tab_arbre;
+    @FXML
+    private TableColumn<Sequence,CheckBox> col_check_arbre;
+    @FXML
+    private TableColumn<Sequence,String> col_nom_arbre;
+    @FXML
+    private TableColumn<Sequence,String> col_details_arbre; 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -412,36 +420,68 @@ public class FXMLController implements Initializable {
         button_search.setDisable(true);
         button_search_silent.setDisable(true);
         progress_indicator.setVisible(true);
-        Connection con = dataAccess.getCon();
-        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
-        // execute query
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
-        while (rs.next()) {
-            System.out.println("Dans la boucle while");
-            refSeqAra.add(">\n"+rs.getString(1)+"\n");
-
-        }
-        Collections.sort(refSeqAra);
-        LOGGER.info("list " + refSeqAra.size());
-        Blast blast = new Blast();
-        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),refSeqAra);
-
-        ResultFile file = new ResultFile();
-//        file.readFile();
-
-        ////   Arbre  /////
+//        Connection con = dataAccess.getCon();
+//        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
+//        // execute query
+//        Statement stmt = con.createStatement();
+//        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
+//        while (rs.next()) {
+//            System.out.println("Dans la boucle while");
+//            refSeqAra.add(">\n"+rs.getString(1)+"\n");
+//
+//        }
+//        Collections.sort(refSeqAra);
+//        LOGGER.info("list " + refSeqAra.size());
+//        Blast blast = new Blast();
+//        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),refSeqAra);
+//
+//        ResultFile file = new ResultFile();
+////        file.readFile();
+//
+//        ////   Arbre  /////
         progress_indicator.setVisible(false);
 
-        Clustal clustal = new Clustal();
-        clustal.submit(blastResult);
-        Generate_tree tree = new Generate_tree(clustal.getTree());
-        tree.submit();
+//        Clustal clustal = new Clustal();
+//        clustal.submit(blastResult);
+//        Generate_tree tree = new Generate_tree(clustal.getTree());
+        //Generate_tree tree = new Generate_tree(clustal.getTree());
+//        tree.submit();
+        initTable();
+        /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
+        ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
+        MaListTest.add(new Sequence(new CheckBox(),"Le nom de la sequence","elle est cool"));
+        System.out.println("Liste "+MaListTest.get(0).getNom());
+        System.out.println("Liste "+MaListTest.get(0).getDetails());
+        System.out.println("Liste "+MaListTest.get(0).getSelection());
+        loadData(MaListTest);
         tab_arbre.setVisible(true);
 //          Place place = new Place();
 //          place.tBlastN(getSeq_nom_plante());
 //          place.place();
 //        file.deleteFile();
+    }
+    
+    private void initTable(){
+        initColumn();
+    }
+    
+    private void initColumn(){
+        col_check_arbre.setCellValueFactory(new PropertyValueFactory<Sequence, CheckBox>("selection"));
+        col_nom_arbre.setCellValueFactory(new PropertyValueFactory<Sequence, String>("nom"));
+        col_details_arbre.setCellValueFactory(new PropertyValueFactory<Sequence, String>("details"));
+    }
+
+        
+    /**
+     * loadData permet mettre les données dans le tableview
+     */
+    private void loadData(ObservableList<Sequence> ListSeq) {
+        System.out.println("Liste "+ListSeq.get(0).getNom());
+        System.out.println("Liste "+ListSeq.get(0).getDetails());
+        System.out.println("Liste "+ListSeq.get(0).getSelection());
+        
+        System.out.println("arbre "+tab_arbre);
+        tab_arbre.setItems(ListSeq);
     }
 
     public String getSeq_nom_plante() {
