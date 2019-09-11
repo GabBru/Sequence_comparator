@@ -102,6 +102,10 @@ public class FXMLController implements Initializable {
 
     //// Onglet ANALYSE ////
     @FXML
+    protected HBox hbox_arbre;
+    @FXML
+    protected WebView webview_arbre;
+    @FXML
     protected ComboBox combo_analyse_type;
     @FXML
     protected TextField text_new_type;
@@ -115,8 +119,15 @@ public class FXMLController implements Initializable {
         view_logo.setImage(image);
         view_logo.setSmooth(true);
 
-        WebEngine webEngine = web_zone.getEngine();
-        webEngine.load("https://www.ncbi.nlm.nih.gov");
+        WebEngine webEngineConsult = web_zone.getEngine();
+        webEngineConsult.load("https://www.ncbi.nlm.nih.gov");
+        
+        WebEngine webEngineArbre = webview_arbre.getEngine();
+        webEngineArbre.load("http://phylo.io/index.html");
+//        webEngineArbre.
+
+        text_seq_ARN.setEditable(false);
+        text_seq_ADN.setEditable(false);
         
         // --- Connexion BDD --- //
         try {
@@ -167,40 +178,35 @@ public class FXMLController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-
                     String nom_plante = combo_nom_plante.getSelectionModel().getSelectedItem().toString();
                     String nom_prot = combo_nom_prot.getSelectionModel().getSelectedItem().toString();
 
                     text_seq_ARN.clear();
                     text_seq_ADN.clear();
 
-                    text_nom_gene.setVisible(false);
-                    if (nom_prot != "" && nom_prot != null) {
-                        text_nom_gene.setText(nom_prot);
-                        text_nom_gene.setVisible(true);
-
-                        text_lien_ncbi.setVisible(false);
-                        text_lien_ncbi.setText(getLienNCBI(nom_plante, nom_prot));
-                        text_lien_ncbi.setVisible(true);
-                    }
                     tab_CIS.getItems().removeAll(tab_CIS.getItems());
 
                     text_nom_gene.setText(nom_prot);
                     text_lien_ncbi.setText(getLienNCBI(nom_plante, nom_prot));
+                    text_nom_gene.setVisible(true);
+                    text_lien_ncbi.setVisible(true);
 
                     text_seq_ARN.setText(getARN(nom_prot, nom_plante));
                     text_seq_ADN.setText(getADN(nom_prot, nom_plante));
 
                     ObservableList<CIS> list_CIS = getElementCIS(nom_plante, nom_prot);
+                    for (int i = 0; i < list_CIS.size(); i++) {
+                        System.out.println(list_CIS.get(i).getName() + " " + list_CIS.get(i).getStart_position() + " " + list_CIS.get(i).getEnd_position() + " " + list_CIS.get(i).getSequence_CIS() + " ");
+                    }
 
                     col_nom_CIS.setCellValueFactory(
-                            new PropertyValueFactory<CIS, String>("name"));
+                            new PropertyValueFactory<CIS, String>("Name"));
                     col_pos1_CIS.setCellValueFactory(
-                            new PropertyValueFactory<CIS, Integer>("start_position"));
+                            new PropertyValueFactory<CIS, Integer>("Start_position"));
                     col_pos2_CIS.setCellValueFactory(
-                            new PropertyValueFactory<CIS, Integer>("end_position"));
+                            new PropertyValueFactory<CIS, Integer>("End_position"));
                     col_seq_CIS.setCellValueFactory(
-                            new PropertyValueFactory<CIS, String>("sequence_CIS"));
+                            new PropertyValueFactory<CIS, String>("Sequence_CIS"));
                     col_nom_CIS.setSortable(false);
                     col_pos1_CIS.setSortable(false);
                     col_pos2_CIS.setSortable(false);

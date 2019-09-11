@@ -9,9 +9,9 @@ package com.mycompany.sequence_comparator2;
  *
  * @author brunetgabriel
  */
-class CIS {
-    protected String name, sequence_CIS;
-    protected int start_position, end_position;
+public class CIS {
+    private String name, sequence_CIS;
+    private int start_position, end_position;
     
     public CIS(String name, String sequence_CIS, int start_position, int end_position){
         this.name = name;
