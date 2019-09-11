@@ -414,6 +414,7 @@ public class FXMLController implements Initializable {
         while (rs.next()) {
             System.out.println("Dans la boucle while");
             refSeqAra.add(">\n"+rs.getString(1)+"\n");
+
         }
         Collections.sort(refSeqAra);
         LOGGER.info("list " + refSeqAra.size());
@@ -425,6 +426,7 @@ public class FXMLController implements Initializable {
 
         ////   Arbre  /////
         progress_indicator.setVisible(false);
+
         Clustal clustal = new Clustal();
         clustal.submit(blastResult);
         Generate_tree tree = new Generate_tree(clustal.getTree());
