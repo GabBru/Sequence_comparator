@@ -69,7 +69,7 @@ public class Blast extends FXMLController {
         driver.findElement(By.id("qorganism")).sendKeys(plante);
 
         //pause to allow the selector to be displayed 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
 //        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
         //click the first line of the selector

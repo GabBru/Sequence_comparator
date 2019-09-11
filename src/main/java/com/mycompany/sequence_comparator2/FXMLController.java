@@ -220,23 +220,23 @@ public class FXMLController implements Initializable {
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
         Connection con = dataAccess.getCon();
-        ObservableList<String> list = FXCollections.observableArrayList();
+        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
         // execute query
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='"+combo_analyse_type.getSelectionModel().getSelectedItem().toString()+"'");
         while (rs.next()) {
             System.out.println("Dans la boucle while");
-            list.add(">\n"+rs.getString(1)+"\n");
+            refSeqAra.add(">\n"+rs.getString(1)+"\n");
         }
-        Collections.sort(list);
-        LOGGER.info("list " + list.size());
+        Collections.sort(refSeqAra);
+        LOGGER.info("list " + refSeqAra.size());
         Blast blast = new Blast();
-        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),list);
+        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),refSeqAra);
 
         ResultFile file = new ResultFile();
 //        file.readFile();
           Clustal clustal = new Clustal();
-          clustal.submit(blastResult);
+          clustal.submit(blastResult,refSeqAra);
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
 //          Place place = new Place();
