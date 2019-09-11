@@ -109,6 +109,10 @@ public class FXMLController implements Initializable {
     @FXML
     protected Button button_new_type;
     @FXML
+    protected Button button_search_silent;
+    @FXML
+    protected Button button_search;
+    @FXML
     protected ProgressIndicator progress_indicator;
     @FXML
     protected TableView<Sequence> tab_arbre;
@@ -403,8 +407,10 @@ public class FXMLController implements Initializable {
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
-        combo_analyse_type.setDisable(false);
-        seq_nom_plante1.setDisable(false);
+        combo_analyse_type.setDisable(true);
+        seq_nom_plante1.setDisable(true);
+        button_search.setDisable(true);
+        button_search_silent.setDisable(true);
         progress_indicator.setVisible(true);
         Connection con = dataAccess.getCon();
         ObservableList<String> refSeqAra = FXCollections.observableArrayList();
