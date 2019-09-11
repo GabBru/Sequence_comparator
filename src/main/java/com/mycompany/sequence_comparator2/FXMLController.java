@@ -184,7 +184,7 @@ public class FXMLController implements Initializable {
             id_plante = rs.getString(1);
         }else{
             System.out.println("pas de plante");
-            int rs3 = stmt3.executeUpdate("Insert into PLANTE values (1,'"+ nom_plante+"')");
+            int rs3 = stmt3.executeUpdate("Insert into PLANTE (nom_plante) values ('"+nom_plante+"')");
             ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante= '"+nom_plante+"'");
             if (rs4.next()){
                 id_plante = rs4.getString(1);
@@ -192,11 +192,11 @@ public class FXMLController implements Initializable {
         }
         if (rs1.next()){
             System.out.println("type prot existe");
-            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES values (1,'"+ nom_prot+"', NULL,'"+ fasta+"', NULL, NULL, NULL, '"+id_plante+"','"+ type_prot+"', NULL)");
+            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('"+ nom_prot+"', NULL,'"+ fasta+"', NULL, NULL, NULL, '"+id_plante+"','"+ type_prot+"', NULL)");
         }else{
             System.out.println("pas de type prot");
             int rs5 = stmt5.executeUpdate("Insert into TYPE_PROTEINE values ('"+ nom_prot+"')");
-            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES values (1,'"+ nom_prot+"', NULL,'"+ fasta+"', NULL, NULL, NULL, '"+id_plante+"','"+ type_prot+"', NULL)");
+            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('"+ nom_prot+"', NULL,'"+ fasta+"', NULL, NULL, NULL, '"+id_plante+"','"+ type_prot+"', NULL)");
             
         }
     
