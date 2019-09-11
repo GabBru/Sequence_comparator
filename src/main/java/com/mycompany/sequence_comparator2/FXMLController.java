@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -99,6 +100,10 @@ public class FXMLController implements Initializable {
     protected TextField text_new_type;
     @FXML
     protected Button button_new_type;
+    @FXML
+    protected ProgressIndicator progress_indicator;
+    @FXML
+    protected TableView<Sequence> tab_arbre;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -200,6 +205,10 @@ public class FXMLController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
+                    System.out.println("ref nom plante "+ref_nom_plante.getText());
+                    System.out.println("ref nom plante "+ref_seq.getText());
+                    System.out.println("ref nom plante "+ref_type_prot.getText());
+                    System.out.println("ref nom plante "+ref_nom_prot.getText());
                     ajouter_ref(dataAccess, ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText());
                 } catch (SQLException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -361,26 +370,33 @@ public class FXMLController implements Initializable {
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
+        combo_analyse_type.setDisable(false);
+        seq_nom_plante1.setDisable(false);
+        progress_indicator.setVisible(true);
         Connection con = dataAccess.getCon();
-        ObservableList<String> list = FXCollections.observableArrayList();
+        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
         // execute query
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='"+combo_analyse_type.getSelectionModel().getSelectedItem().toString()+"'");
         while (rs.next()) {
             System.out.println("Dans la boucle while");
-            list.add(">\n"+rs.getString(1)+"\n");
+            refSeqAra.add(">\n"+rs.getString(1)+"\n");
         }
-        Collections.sort(list);
-        LOGGER.info("list " + list.size());
+        Collections.sort(refSeqAra);
+        LOGGER.info("list " + refSeqAra.size());
         Blast blast = new Blast();
-        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),list);
+        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),refSeqAra);
 
         ResultFile file = new ResultFile();
 //        file.readFile();
-          Clustal clustal = new Clustal();
-          clustal.submit(blastResult);
+
+        ////   Arbre  /////
+        progress_indicator.setVisible(false);
+        Clustal clustal = new Clustal();
+        clustal.submit(blastResult);
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
+        tab_arbre.setVisible(true);
 //          Place place = new Place();
 //          place.tBlastN(getSeq_nom_plante());
 //          place.place();
