@@ -51,10 +51,10 @@
                               <TableColumn fx:id="col_seq_CIS" editable="false" prefWidth="208.5" sortable="false" text="Séquence" />
                           </columns>
                         </TableView>
-                        <TextArea fx:id="text_seq_ARN" layoutX="155.0" layoutY="440.0" prefHeight="46.0" prefWidth="411.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="440.0" />
-                        <Text layoutX="25.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence protéique" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="457.0" />
-                        <TextArea fx:id="text_seq_ADN" layoutX="155.0" layoutY="499.0" prefHeight="46.0" prefWidth="414.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="499.0" />
-                        <Text layoutX="25.0" layoutY="529.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ADN" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="516.431640625" />
+                        <TextArea fx:id="text_seq_ARN" layoutX="155.0" layoutY="440.0" prefHeight="112.0" prefWidth="414.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="440.0" />
+                        <Text layoutX="25.0" layoutY="479.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence protéique" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="466.0" />
+                        <TextArea fx:id="text_seq_ADN" layoutX="155.0" layoutY="563.0" prefHeight="107.0" prefWidth="414.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="563.0" />
+                        <Text layoutX="25.0" layoutY="595.431640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ADN" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="582.431640625" />
                         <ImageView fx:id="view_logo" fitHeight="130.0" fitWidth="363.0" layoutX="865.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="865.0" AnchorPane.topAnchor="30.0" />
                         <HBox fx:id="hbox_web_view" layoutX="581.0" layoutY="182.0" prefHeight="515.0" prefWidth="839.0" AnchorPane.leftAnchor="581.0" AnchorPane.topAnchor="182.0">
                            <children>
@@ -96,7 +96,7 @@
                         </Label>
                         <TextField fx:id="ref_nom_plante" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="325.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="90.0" />
                         <TextField fx:id="ref_type_prot" layoutX="400.0" layoutY="90.0" prefHeight="27.0" prefWidth="324.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="90.0" />
-                        <TextField layoutX="741.0" layoutY="90.0" prefHeight="27.0" prefWidth="301.0" AnchorPane.leftAnchor="740.0" AnchorPane.topAnchor="90.0" />
+                        <TextField fx:id="ref_nom_prot" layoutX="741.0" layoutY="90.0" prefHeight="27.0" prefWidth="301.0" AnchorPane.leftAnchor="740.0" AnchorPane.topAnchor="90.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -106,7 +106,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="seq_nom_plante1" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="907.0" AnchorPane.topAnchor="90.0" />
-                        <ProgressIndicator fx:id="progress_indicator" layoutY="413.0" prefHeight="90.0" prefWidth="132.0" visible="false" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="413.0" />
+                        <ProgressIndicator fx:id="progress_indicator" layoutX="612.0" layoutY="413.0" prefHeight="53.0" prefWidth="60.0" visible="false" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="413.0" />
                         <Text layoutX="61.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="70.0" />
                         <ComboBox fx:id="combo_analyse_type" layoutX="427.0" layoutY="87.0" prefHeight="27.0" prefWidth="309.0" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="90.0" />
                         <TextField fx:id="text_new_type" layoutX="432.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" visible="false" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="90.0" />
