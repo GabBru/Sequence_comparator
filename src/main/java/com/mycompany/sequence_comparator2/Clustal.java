@@ -21,9 +21,9 @@ public class Clustal {
     String tree ;
     public void Clustal(){}
     
-    public void submit() throws IOException, InterruptedException{
-        ResultFile blastFile = new ResultFile();
-        List<String> sequences = blastFile.readFile();
+    public void submit(List<List<String>> blastResult) throws IOException, InterruptedException{
+//        ResultFile blastFile = new ResultFile();
+//        List<String> sequences = blastFile.readFile();
      // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
         File file = new File(System.getProperty("user.dir")+"/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
@@ -40,8 +40,9 @@ public class Clustal {
         // Open the clustalo homepage
         driver.get("https://www.ebi.ac.uk/Tools/msa/clustalo/");
         //add all lines in the input 
-        for(int i=0;i<sequences.size();i++){
-        driver.findElement(By.id("sequence")).sendKeys(sequences.get(i)+"\n");
+        for(int i=0;i<blastResult.size();i++){
+            for (int j=0;j<blastResult.get(i).size();j++){
+        driver.findElement(By.id("sequence")).sendKeys(blastResult.get(i).get(j)+"\n");}
         }
         //click on submit button 
         driver.findElement(By.cssSelector("#jd_submitButtonPanel")).submit();
@@ -52,6 +53,8 @@ public class Clustal {
         driver.findElement(By.cssSelector(".actionPanel > li > #tree")).click();
         tree = driver.findElement(By.cssSelector("pre")).getText();
         LOGGER.info("tree => "+ tree);
+        Thread.sleep(5000);
+        driver.close();
     }
 
     public String getTree() {

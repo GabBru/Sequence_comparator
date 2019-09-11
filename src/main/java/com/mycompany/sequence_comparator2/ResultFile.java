@@ -26,8 +26,8 @@ public class ResultFile {
     protected static final Logger LOGGER = Logger.getLogger(ResultFile.class.getName());
     // the downloaded file 
     // TO DO : find how to change the path to work with the teacher computer
-    //private File file = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
-    private File file = new File("C:\\Users\\gphy\\Downloads\\seqdump.txt");
+    private File file = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
+//    private File file = new File("C:\\Users\\gphy\\Downloads\\seqdump.txt");
     public void ResultFile(){}
     
     // read the file and extract sequences from it 
