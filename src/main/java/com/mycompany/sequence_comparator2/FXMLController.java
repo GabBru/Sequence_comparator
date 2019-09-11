@@ -194,11 +194,6 @@ public class FXMLController implements Initializable {
                     text_seq_ARN.setText(getARN(nom_prot, nom_plante));
                     text_seq_ADN.setText(getADN(nom_prot, nom_plante));
 
-                    ObservableList<CIS> list_CIS = getElementCIS(nom_plante, nom_prot);
-                    for (int i = 0; i < list_CIS.size(); i++) {
-                        System.out.println(list_CIS.get(i).getName() + " " + list_CIS.get(i).getStart_position() + " " + list_CIS.get(i).getEnd_position() + " " + list_CIS.get(i).getSequence_CIS() + " ");
-                    }
-
                     col_nom_CIS.setCellValueFactory(
                             new PropertyValueFactory<CIS, String>("Name"));
                     col_pos1_CIS.setCellValueFactory(
