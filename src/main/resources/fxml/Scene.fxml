@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Tab?>
@@ -10,13 +11,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.web.WebView?>
 
 <AnchorPane id="AnchorPane" prefHeight="730.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sequence_comparator2.FXMLController">
    <children>
@@ -32,29 +33,34 @@
                         <Text layoutX="279.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de protéine" wrappingWidth="130.69854736328125" AnchorPane.leftAnchor="278.0" AnchorPane.topAnchor="37.0" />
                         <ComboBox fx:id="combo_nom_prot" layoutX="559.0" layoutY="55.0" prefHeight="27.0" prefWidth="252.0" promptText="Selectionnez la proteine a visualiser" AnchorPane.leftAnchor="559.0" AnchorPane.topAnchor="56.0" />
                         <Text layoutX="560.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la protéine" wrappingWidth="130.69854736328125" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="37.0" />
-                        <Line fx:id="arrow_gene" endX="578.3290405273438" layoutX="179.0" layoutY="253.0" startX="-100.0" strokeLineCap="ROUND" AnchorPane.leftAnchor="78.5" AnchorPane.topAnchor="252.5">
-                           <effect>
-                              <Glow />
-                           </effect></Line>
-                        <Text fx:id="text_nom_gene" fill="#4400ff" layoutX="25.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom du gene" visible="false" wrappingWidth="336.2060546875" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="125.0">
+                        <Text fx:id="text_nom_gene" fill="#757575" layoutX="25.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom du gene" visible="false" wrappingWidth="336.2060546875" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="125.0">
                            <font>
-                              <Font name="System Bold" size="18.0" />
+                              <Font name="System Bold" size="24.0" />
                            </font>
                         </Text>
-                        <Text fx:id="text_lien_ncbi" layoutX="23.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lien NCBI" visible="false" wrappingWidth="339.2060546875" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="160.0" />
-                        <TableView fx:id="tab_CIS" layoutX="29.0" layoutY="373.0" prefHeight="133.0" prefWidth="783.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="373.0">
+                        <Hyperlink fx:id="text_lien_ncbi" layoutX="88.0" layoutY="165.0" prefHeight="25.0" prefWidth="384.0" textFill="#2b39ff" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="160.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Hyperlink>
+                        <TableView fx:id="tab_CIS" layoutX="40.0" layoutY="284.0" prefHeight="133.0" prefWidth="544.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="284.0">
                           <columns>
-                            <TableColumn fx:id="col_nom_CIS" editable="false" prefWidth="187.98360633850098" sortable="false" text="Nom CIS" />
-                            <TableColumn fx:id="col_pos1_CIS" editable="false" prefWidth="111.37295532226562" sortable="false" text="Position départ" />
-                              <TableColumn fx:id="col_pos2_CIS" editable="false" prefWidth="106.54074096679688" sortable="false" text="Position fin" />
-                              <TableColumn fx:id="col_seq_CIS" editable="false" prefWidth="375.49993896484375" sortable="false" text="Séquence" />
+                            <TableColumn fx:id="col_nom_CIS" editable="false" prefWidth="145.98211097717285" sortable="false" text="Nom CIS" />
+                            <TableColumn fx:id="col_pos1_CIS" editable="false" prefWidth="103.93467712402344" sortable="false" text="Position départ" />
+                              <TableColumn fx:id="col_pos2_CIS" editable="false" prefWidth="84.46859741210938" sortable="false" text="Position fin" />
+                              <TableColumn fx:id="col_seq_CIS" editable="false" prefWidth="208.5" sortable="false" text="Séquence" />
                           </columns>
                         </TableView>
-                        <TextArea fx:id="text_seq_ARN" layoutX="155.0" layoutY="521.0" prefHeight="46.0" prefWidth="656.0" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="521.0" />
-                        <Text layoutX="25.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence protéique" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="538.0" />
-                        <TextArea fx:id="text_seq_ADN" layoutX="155.0" layoutY="580.0" prefHeight="46.0" prefWidth="656.0" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="580.0" />
-                        <Text layoutX="25.0" layoutY="610.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ADN" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="597.431640625" />
-                        <ImageView fx:id="view_logo" fitHeight="256.0" fitWidth="363.0" layoutX="865.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="865.0" AnchorPane.topAnchor="30.0" />
+                        <TextArea fx:id="text_seq_ARN" layoutX="155.0" layoutY="440.0" prefHeight="46.0" prefWidth="411.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="440.0" />
+                        <Text layoutX="25.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence protéique" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="457.0" />
+                        <TextArea fx:id="text_seq_ADN" layoutX="155.0" layoutY="499.0" prefHeight="46.0" prefWidth="414.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="499.0" />
+                        <Text layoutX="25.0" layoutY="529.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ADN" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="516.431640625" />
+                        <ImageView fx:id="view_logo" fitHeight="130.0" fitWidth="363.0" layoutX="865.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="865.0" AnchorPane.topAnchor="30.0" />
+                        <HBox fx:id="hbox_web_view" layoutX="581.0" layoutY="182.0" prefHeight="515.0" prefWidth="839.0" AnchorPane.leftAnchor="581.0" AnchorPane.topAnchor="182.0">
+                           <children>
+                              <WebView fx:id="web_zone" prefHeight="515.0" prefWidth="697.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
             </content>
@@ -68,7 +74,6 @@
                         <Text fx:id="seq_nom_prot" layoutX="741.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom complet de la protéine" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="741.0" AnchorPane.topAnchor="70.0" />
                         <TextArea fx:id="ref_seq" layoutX="62.0" layoutY="149.0" prefHeight="200.0" prefWidth="1073.0" AnchorPane.leftAnchor="62.0" AnchorPane.topAnchor="149.0" />
                         <Text fx:id="text_seq" layoutX="61.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez la sequence au format FASTA du génome correspondant" wrappingWidth="523.2060546875" AnchorPane.leftAnchor="61.0" AnchorPane.topAnchor="128.0" />
-                        <ProgressIndicator fx:id="progress_indicator" layoutX="618.0" layoutY="450.0" prefHeight="90.0" prefWidth="83.0" visible="false" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="450.0" />
                         <Button fx:id="button_add" layoutX="492.0" layoutY="540.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: green;" text="AJOUTER" textFill="WHITE" AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="540.0">
                            <font>
                               <Font name="System Bold" size="18.0" />
@@ -101,6 +106,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="seq_nom_plante1" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="907.0" AnchorPane.topAnchor="90.0" />
+                        <ProgressIndicator fx:id="progress_indicator" layoutY="413.0" prefHeight="90.0" prefWidth="132.0" visible="false" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="413.0" />
                         <Text layoutX="61.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="70.0" />
                         <ComboBox fx:id="combo_analyse_type" layoutX="427.0" layoutY="87.0" prefHeight="27.0" prefWidth="309.0" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="90.0" />
                         <TextField fx:id="text_new_type" layoutX="432.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" visible="false" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="90.0" />
