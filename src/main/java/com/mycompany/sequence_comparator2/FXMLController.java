@@ -123,11 +123,11 @@ public class FXMLController implements Initializable {
     @FXML
     protected TableView<Sequence> tab_arbre;
     @FXML
-    private TableColumn<Sequence,CheckBox> col_check_arbre;
+    private TableColumn<Sequence, CheckBox> col_check_arbre;
     @FXML
-    private TableColumn<Sequence,String> col_nom_arbre;
+    private TableColumn<Sequence, String> col_nom_arbre;
     @FXML
-    private TableColumn<Sequence,String> col_details_arbre; 
+    private TableColumn<Sequence, String> col_details_arbre;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -138,14 +138,14 @@ public class FXMLController implements Initializable {
 
         WebEngine webEngineConsult = web_zone.getEngine();
         webEngineConsult.load("https://www.ncbi.nlm.nih.gov");
-        
+
         WebEngine webEngineArbre = webview_arbre.getEngine();
         webEngineArbre.load("http://phylo.io/index.html");
 //        webEngineArbre.
 
         text_seq_ARN.setEditable(false);
         text_seq_ADN.setEditable(false);
-        
+
         // --- Connexion BDD --- //
         try {
             dataAccess = new ConnectionDataBase();
@@ -211,6 +211,8 @@ public class FXMLController implements Initializable {
                     text_seq_ARN.setText(getARN(nom_prot, nom_plante));
                     text_seq_ADN.setText(getADN(nom_prot, nom_plante));
 
+                    ObservableList<CIS> list_CIS = getElementCIS(nom_plante, nom_prot);
+
                     col_nom_CIS.setCellValueFactory(
                             new PropertyValueFactory<CIS, String>("Name"));
                     col_pos1_CIS.setCellValueFactory(
@@ -223,6 +225,7 @@ public class FXMLController implements Initializable {
                     col_pos1_CIS.setSortable(false);
                     col_pos2_CIS.setSortable(false);
                     col_seq_CIS.setSortable(false);
+                    col_seq_CIS.setEditable(true);
                     tab_CIS.setItems(list_CIS);
                 } catch (SQLException | ClassNotFoundException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -242,10 +245,10 @@ public class FXMLController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    System.out.println("ref nom plante "+ref_nom_plante.getText());
-                    System.out.println("ref nom plante "+ref_seq.getText());
-                    System.out.println("ref nom plante "+ref_type_prot.getText());
-                    System.out.println("ref nom plante "+ref_nom_prot.getText());
+                    System.out.println("ref nom plante " + ref_nom_plante.getText());
+                    System.out.println("ref nom plante " + ref_seq.getText());
+                    System.out.println("ref nom plante " + ref_type_prot.getText());
+                    System.out.println("ref nom plante " + ref_nom_prot.getText());
                     ajouter_ref(dataAccess, ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText());
                 } catch (SQLException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -414,6 +417,16 @@ public class FXMLController implements Initializable {
         return sequence_ARN;
     }
 
+    public String getHTMLStringFromList(List<List<String>> list_seq){
+        String seq = "";
+        for (List<String> list : list_seq) {
+            for (String ligne : list){
+                seq += list + "<br>" + ligne + "<br/>";
+            }
+        }
+        return seq;
+    }
+    
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
         combo_analyse_type.setDisable(true);
@@ -450,10 +463,53 @@ public class FXMLController implements Initializable {
         initTable();
         /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
         ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
-        MaListTest.add(new Sequence(new CheckBox(),"Le nom de la sequence","elle est cool"));
-        System.out.println("Liste "+MaListTest.get(0).getNom());
-        System.out.println("Liste "+MaListTest.get(0).getDetails());
-        System.out.println("Liste "+MaListTest.get(0).getSelection());
+        
+        List<String> seq1 = FXCollections.observableArrayList();
+        seq1.add("AtCWIN3 Blablabla Nom du gene1");
+        seq1.add("ATGACGTGAGTGATGCTGTAGTAGTAGATGTAGCATGCATGTAGATGCTAG");
+        seq1.add("ACGACGTGACATGCATGCATGCATGATGCATG");
+        
+        List<String> seq2 = FXCollections.observableArrayList();
+        seq2.add("AtCWIN3 Blablabla Nom du gene1");
+        seq2.add("ERHHERZVBZOVREOVZNEIVNZEINVZEROCJVZNEORNVZOEVNHZOERHV");
+        seq2.add("ZERIBVZIERBNVIZERNROGEHNZOGNVZEORNVGZOERNHIZEBFCZREBIV");
+        
+        List<List<String>> list_test_arbre = FXCollections.observableArrayList();
+        list_test_arbre.add(seq1);
+        list_test_arbre.add(seq2);
+        
+        System.out.println(getHTMLStringFromList(list_test_arbre));
+
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+        // On peut executer du code javascript dans le web browser donc potentiellement ajouter du texte dans phylo.io (liste de sequences)
+        // id du textarea phylo.io = newickInSingle.
+        // A HTML Content with a javascript function.
+        WebEngine webEngineArbre = webview_arbre.getEngine();
+        webEngineArbre.setJavaScriptEnabled(true);
+
+        String HTML_STRING;
+        HTML_STRING
+                = "<html>"
+                + "<head> "
+                + "  <script language='javascript'> "
+                + "     function setTextArbre()  { "
+                + "       document.getElementById(\"newickInSingle\").value = "
+                + getHTMLStringFromList(list_test_arbre)
+                + "     } "
+                + "  </script> "
+                + "</head> "
+                + "</html> ";
+        
+        webEngineArbre.load("http://phylo.io/index.html");
+        webEngineArbre.executeScript("     function setTextArbre()  { "
+                + "       document.getElementById(\"newickInSingle\").value = "
+                + getHTMLStringFromList(list_test_arbre)
+                + "     } ");
+
+        MaListTest.add(new Sequence(new CheckBox(), "Le nom de la sequence", "elle est cool"));
+        System.out.println("Liste " + MaListTest.get(0).getNom());
+        System.out.println("Liste " + MaListTest.get(0).getDetails());
+        System.out.println("Liste " + MaListTest.get(0).getSelection());
         loadData(MaListTest);
         tab_arbre.setVisible(true);
 //          Place place = new Place();
@@ -461,27 +517,26 @@ public class FXMLController implements Initializable {
 //          place.place();
 //        file.deleteFile();
     }
-    
-    private void initTable(){
+
+    private void initTable() {
         initColumn();
     }
-    
-    private void initColumn(){
+
+    private void initColumn() {
         col_check_arbre.setCellValueFactory(new PropertyValueFactory<Sequence, CheckBox>("selection"));
         col_nom_arbre.setCellValueFactory(new PropertyValueFactory<Sequence, String>("nom"));
         col_details_arbre.setCellValueFactory(new PropertyValueFactory<Sequence, String>("details"));
     }
 
-        
     /**
      * loadData permet mettre les données dans le tableview
      */
     private void loadData(ObservableList<Sequence> ListSeq) {
-        System.out.println("Liste "+ListSeq.get(0).getNom());
-        System.out.println("Liste "+ListSeq.get(0).getDetails());
-        System.out.println("Liste "+ListSeq.get(0).getSelection());
-        
-        System.out.println("arbre "+tab_arbre);
+        System.out.println("Liste " + ListSeq.get(0).getNom());
+        System.out.println("Liste " + ListSeq.get(0).getDetails());
+        System.out.println("Liste " + ListSeq.get(0).getSelection());
+
+        System.out.println("arbre " + tab_arbre);
         tab_arbre.setItems(ListSeq);
     }
 
