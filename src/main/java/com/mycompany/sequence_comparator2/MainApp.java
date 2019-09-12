@@ -26,6 +26,7 @@ public class MainApp extends Application {
         stage.setTitle("GENEBV analytics");
         stage.setScene(scene);
         stage.show();
+        stage.centerOnScreen();
     }
 
     /**

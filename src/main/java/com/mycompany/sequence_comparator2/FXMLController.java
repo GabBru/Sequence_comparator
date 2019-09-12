@@ -128,6 +128,14 @@ public class FXMLController implements Initializable {
     private TableColumn<Sequence, String> col_nom_arbre;
     @FXML
     private TableColumn<Sequence, String> col_details_arbre;
+    @FXML
+    protected ComboBox combo_ref_nom_plante;
+    @FXML
+    protected ComboBox combo_ref_type_prot;
+    @FXML
+    protected Button add_plante;
+    @FXML
+    protected Button add_type_prot;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -233,8 +241,9 @@ public class FXMLController implements Initializable {
             }
         });
 
+        //// Onglet ANALYSE ////
+        combo_ref_nom_plante.setItems(list_plante);
         try {
-            //// Onglet ANALYSE ////
             combo_analyse_type.setItems(getTypeProtAna());
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -249,7 +258,7 @@ public class FXMLController implements Initializable {
                     System.out.println("ref nom plante " + ref_seq.getText());
                     System.out.println("ref nom plante " + ref_type_prot.getText());
                     System.out.println("ref nom plante " + ref_nom_prot.getText());
-                    ajouter_ref(dataAccess, ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText());
+                    ajouter_ref(ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText());
                 } catch (SQLException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -264,9 +273,47 @@ public class FXMLController implements Initializable {
                 webEngine.load(url);
             }
         });
+
+        combo_ref_nom_plante.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                combo_ref_type_prot.getItems().removeAll(combo_type_prot.getItems());
+                try {
+                    combo_ref_type_prot.setItems(getAllTypeProt());
+                } catch (SQLException | ClassNotFoundException ex) {
+                    Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+        add_plante.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (combo_ref_nom_plante.isVisible()) {
+                    combo_ref_nom_plante.setVisible(false);
+                    ref_nom_plante.setVisible(true);
+                } else {
+                    combo_ref_nom_plante.setVisible(true);
+                    ref_nom_plante.setVisible(false);
+                }
+            }
+        });
+
+        add_type_prot.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (combo_ref_type_prot.isVisible()) {
+                    combo_ref_type_prot.setVisible(false);
+                    ref_type_prot.setVisible(true);
+                } else {
+                    combo_ref_type_prot.setVisible(true);
+                    ref_type_prot.setVisible(false);
+                }
+            }
+        });
     }
 
-    public void ajouter_ref(ConnectionDataBase dataAccess, String nom_plante, String nom_prot, String fasta, String type_prot) throws SQLException {
+    public void ajouter_ref(String nom_plante, String nom_prot, String fasta, String type_prot) throws SQLException {
         Connection con = dataAccess.getCon();
         ObservableList<String> list = FXCollections.observableArrayList();
         // execute query
@@ -287,7 +334,7 @@ public class FXMLController implements Initializable {
         } else {
             System.out.println("pas de plante");
             int rs3 = stmt3.executeUpdate("Insert into PLANTE (nom_plante) values ('" + nom_plante + "')");
-            ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante= '" + nom_plante + "'");
+            ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante = '" + nom_plante + "'");
             if (rs4.next()) {
                 id_plante = rs4.getString(1);
             }
@@ -299,9 +346,21 @@ public class FXMLController implements Initializable {
             System.out.println("pas de type prot");
             int rs5 = stmt5.executeUpdate("Insert into TYPE_PROTEINE values ('" + nom_prot + "')");
             int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
-
         }
 
+    }
+
+    public ObservableList<String> getAllTypeProt() throws SQLException, ClassNotFoundException {
+        Connection con = dataAccess.getCon();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        // execute query
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from TYPE_PROTEINE;");
+        while (rs.next()) {
+            list.add(rs.getString(1));
+        }
+        Collections.sort(list);
+        return list;
     }
 
     public ObservableList<String> getNomPlante(ConnectionDataBase dataAccess) throws SQLException, ClassNotFoundException {
@@ -417,16 +476,16 @@ public class FXMLController implements Initializable {
         return sequence_ARN;
     }
 
-    public String getHTMLStringFromList(List<List<String>> list_seq){
+    public String getHTMLStringFromList(List<List<String>> list_seq) {
         String seq = "";
         for (List<String> list : list_seq) {
-            for (String ligne : list){
+            for (String ligne : list) {
                 seq += list + "<br>" + ligne + "<br/>";
             }
         }
         return seq;
     }
-    
+
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
         combo_analyse_type.setDisable(true);
@@ -463,21 +522,21 @@ public class FXMLController implements Initializable {
         initTable();
         /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
         ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
-        
+
         List<String> seq1 = FXCollections.observableArrayList();
         seq1.add("AtCWIN3 Blablabla Nom du gene1");
         seq1.add("ATGACGTGAGTGATGCTGTAGTAGTAGATGTAGCATGCATGTAGATGCTAG");
         seq1.add("ACGACGTGACATGCATGCATGCATGATGCATG");
-        
+
         List<String> seq2 = FXCollections.observableArrayList();
         seq2.add("AtCWIN3 Blablabla Nom du gene1");
         seq2.add("ERHHERZVBZOVREOVZNEIVNZEINVZEROCJVZNEORNVZOEVNHZOERHV");
         seq2.add("ZERIBVZIERBNVIZERNROGEHNZOGNVZEORNVGZOERNHIZEBFCZREBIV");
-        
+
         List<List<String>> list_test_arbre = FXCollections.observableArrayList();
         list_test_arbre.add(seq1);
         list_test_arbre.add(seq2);
-        
+
         System.out.println(getHTMLStringFromList(list_test_arbre));
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
@@ -499,7 +558,7 @@ public class FXMLController implements Initializable {
                 + "  </script> "
                 + "</head> "
                 + "</html> ";
-        
+
         webEngineArbre.load("http://phylo.io/index.html");
         webEngineArbre.executeScript("     function setTextArbre()  { "
                 + "       document.getElementById(\"newickInSingle\").value = "
