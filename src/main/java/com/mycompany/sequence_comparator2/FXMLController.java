@@ -527,6 +527,8 @@ public class FXMLController implements Initializable {
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
 
+        progress_indicator.setVisible(true);
+        
         Connection con = dataAccess.getCon();
         ObservableList<String> refSeqAra = FXCollections.observableArrayList();
         ObservableList<String> refProAra = FXCollections.observableArrayList();
@@ -557,7 +559,6 @@ public class FXMLController implements Initializable {
         seq_nom_plante1.setDisable(true);
         button_search.setDisable(true);
         button_search_silent.setDisable(true);
-        progress_indicator.setVisible(true);
 
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
