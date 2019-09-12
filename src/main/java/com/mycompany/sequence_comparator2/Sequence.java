@@ -14,10 +14,11 @@ import javafx.scene.control.CheckBox;
 public class Sequence {
     CheckBox selection;
     String nom, details;
-    private Sequence (CheckBox selection, String nom, String details ) {
-    this.selection=selection;
-    this.nom=nom;
-    this.details=details;
+    
+    public Sequence (CheckBox selection, String nom, String details ) {
+        this.selection=selection;
+        this.nom=nom;
+        this.details=details;
 }
 
     public CheckBox getSelection() {

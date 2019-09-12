@@ -41,9 +41,12 @@ public class Blast extends FXMLController {
     //launch blastx between the interested plante and the referenced proteins. parameter : String plante, observableList sequence of referenced proteins. return a list of sequence list
     public List<String> search(String plante,ObservableList<String> fasta) throws InterruptedException, IOException 
     {   
+        List<List<String>> resultatBlast = new ArrayList<List<String>>();
+        try {
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
         File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+
         List<String> resultatBlast = new ArrayList<String>();
 
         // Create a Chrome Web Driver with visual

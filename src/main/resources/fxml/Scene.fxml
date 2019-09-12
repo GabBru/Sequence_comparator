@@ -27,23 +27,23 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ComboBox fx:id="combo_nom_plante" layoutX="27.0" layoutY="58.0" prefHeight="27.0" prefWidth="224.0" promptText="Selectionnez un nom" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="56.0" />
-                        <Text layoutX="28.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="130.69854736328125" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="37.0" />
-                        <ComboBox fx:id="combo_type_prot" layoutX="278.0" layoutY="56.0" prefHeight="27.0" prefWidth="252.0" promptText="Selectionnez un type" AnchorPane.leftAnchor="278.0" AnchorPane.topAnchor="56.0" />
-                        <Text layoutX="279.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de protéine" wrappingWidth="130.69854736328125" AnchorPane.leftAnchor="278.0" AnchorPane.topAnchor="37.0" />
-                        <ComboBox fx:id="combo_nom_prot" layoutX="559.0" layoutY="55.0" prefHeight="27.0" prefWidth="252.0" promptText="Selectionnez la proteine a visualiser" AnchorPane.leftAnchor="559.0" AnchorPane.topAnchor="56.0" />
-                        <Text layoutX="560.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la protéine" wrappingWidth="130.69854736328125" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="37.0" />
-                        <Text fx:id="text_nom_gene" fill="#757575" layoutX="25.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom du gene" visible="false" wrappingWidth="336.2060546875" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="125.0">
+                        <ComboBox fx:id="combo_nom_plante" layoutX="25.0" layoutY="44.0" prefHeight="27.0" prefWidth="224.0" promptText="Selectionnez un nom" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1031.0" AnchorPane.topAnchor="44.0" />
+                        <Text layoutX="25.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="130.69854736328125" AnchorPane.bottomAnchor="655.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1124.3014526367188" AnchorPane.topAnchor="25.0" />
+                        <ComboBox fx:id="combo_type_prot" layoutX="278.0" layoutY="44.0" prefHeight="27.0" prefWidth="252.0" promptText="Selectionnez un type" AnchorPane.leftAnchor="278.0" AnchorPane.rightAnchor="750.0" AnchorPane.topAnchor="44.0" />
+                        <Text layoutX="278.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de protéine" wrappingWidth="130.69854736328125" AnchorPane.bottomAnchor="655.0" AnchorPane.leftAnchor="278.0" AnchorPane.rightAnchor="871.3014526367188" AnchorPane.topAnchor="25.0" />
+                        <ComboBox fx:id="combo_nom_prot" layoutX="559.0" layoutY="44.0" prefHeight="27.0" prefWidth="252.0" promptText="Selectionnez la proteine a visualiser" AnchorPane.leftAnchor="559.0" AnchorPane.rightAnchor="469.0" AnchorPane.topAnchor="44.0" />
+                        <Text layoutX="560.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la protéine" wrappingWidth="130.69854736328125" AnchorPane.bottomAnchor="655.0" AnchorPane.leftAnchor="560.0" AnchorPane.rightAnchor="589.3014526367188" AnchorPane.topAnchor="25.0" />
+                        <Text fx:id="text_nom_gene" fill="#757575" layoutX="25.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom du gene" visible="false" wrappingWidth="336.2060546875" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="918.7939453125" AnchorPane.topAnchor="125.0">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Text>
-                        <Hyperlink fx:id="text_lien_ncbi" layoutX="88.0" layoutY="165.0" prefHeight="25.0" prefWidth="384.0" textFill="#2b39ff" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="160.0">
+                        <Hyperlink fx:id="text_lien_ncbi" layoutX="88.0" layoutY="165.0" prefHeight="25.0" prefWidth="384.0" textFill="#2b39ff" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="871.0" AnchorPane.topAnchor="160.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Hyperlink>
-                        <TableView fx:id="tab_CIS" layoutX="40.0" layoutY="284.0" prefHeight="133.0" prefWidth="544.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="284.0">
+                        <TableView fx:id="tab_CIS" layoutX="25.0" layoutY="215.0" prefHeight="214.0" prefWidth="544.0" AnchorPane.bottomAnchor="268.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="215.0">
                           <columns>
                             <TableColumn fx:id="col_nom_CIS" editable="false" prefWidth="145.98211097717285" sortable="false" text="Nom CIS" />
                             <TableColumn fx:id="col_pos1_CIS" editable="false" prefWidth="103.93467712402344" sortable="false" text="Position départ" />
@@ -51,12 +51,12 @@
                               <TableColumn fx:id="col_seq_CIS" editable="false" prefWidth="208.5" sortable="false" text="Séquence" />
                           </columns>
                         </TableView>
-                        <TextArea fx:id="text_seq_ARN" layoutX="155.0" layoutY="440.0" prefHeight="46.0" prefWidth="411.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="440.0" />
-                        <Text layoutX="25.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence protéique" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="457.0" />
-                        <TextArea fx:id="text_seq_ADN" layoutX="155.0" layoutY="499.0" prefHeight="46.0" prefWidth="414.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="499.0" />
-                        <Text layoutX="25.0" layoutY="529.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ADN" wrappingWidth="122.61585235595703" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="516.431640625" />
-                        <ImageView fx:id="view_logo" fitHeight="130.0" fitWidth="363.0" layoutX="865.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="865.0" AnchorPane.topAnchor="30.0" />
-                        <HBox fx:id="hbox_web_view" layoutX="581.0" layoutY="182.0" prefHeight="515.0" prefWidth="839.0" AnchorPane.leftAnchor="581.0" AnchorPane.topAnchor="182.0">
+                        <TextArea fx:id="text_seq_ARN" layoutX="155.0" layoutY="440.0" prefHeight="112.0" prefWidth="414.0" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="440.0" />
+                        <Text layoutX="25.0" layoutY="479.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence protéique" wrappingWidth="122.61585235595703" AnchorPane.bottomAnchor="97.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1130.0" AnchorPane.topAnchor="466.0" />
+                        <TextArea fx:id="text_seq_ADN" layoutX="155.0" layoutY="563.0" prefHeight="107.0" prefWidth="414.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="711.0" AnchorPane.topAnchor="563.0" />
+                        <Text layoutX="25.0" layoutY="595.431640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Sequence ADN" wrappingWidth="122.61585235595703" AnchorPane.bottomAnchor="97.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1130.0" AnchorPane.topAnchor="582.431640625" />
+                        <ImageView fx:id="view_logo" fitHeight="82.0" fitWidth="295.0" layoutX="906.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="599.0" AnchorPane.leftAnchor="906.0" AnchorPane.rightAnchor="79.0" AnchorPane.topAnchor="16.0" />
+                        <HBox fx:id="hbox_web_view" layoutX="595.0" layoutY="118.0" prefHeight="569.0" prefWidth="685.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="595.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="118.0">
                            <children>
                               <WebView fx:id="web_zone" prefHeight="515.0" prefWidth="697.0" />
                            </children>
@@ -96,7 +96,7 @@
                         </Label>
                         <TextField fx:id="ref_nom_plante" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="325.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="90.0" />
                         <TextField fx:id="ref_type_prot" layoutX="400.0" layoutY="90.0" prefHeight="27.0" prefWidth="324.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="90.0" />
-                        <TextField layoutX="741.0" layoutY="90.0" prefHeight="27.0" prefWidth="301.0" AnchorPane.leftAnchor="740.0" AnchorPane.topAnchor="90.0" />
+                        <TextField fx:id="ref_nom_prot" layoutX="741.0" layoutY="90.0" prefHeight="27.0" prefWidth="393.0" AnchorPane.leftAnchor="740.0" AnchorPane.topAnchor="90.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -105,12 +105,12 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="seq_nom_plante1" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="907.0" AnchorPane.topAnchor="90.0" />
-                        <ProgressIndicator fx:id="progress_indicator" layoutY="413.0" prefHeight="90.0" prefWidth="132.0" visible="false" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="413.0" />
-                        <Text layoutX="61.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="70.0" />
-                        <ComboBox fx:id="combo_analyse_type" layoutX="427.0" layoutY="87.0" prefHeight="27.0" prefWidth="309.0" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="90.0" />
+                        <TextField fx:id="seq_nom_plante1" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1000.0" AnchorPane.topAnchor="90.0" />
+                        <ProgressIndicator fx:id="progress_indicator" layoutX="612.0" layoutY="413.0" prefHeight="53.0" prefWidth="60.0" visible="false" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="413.0" />
+                        <Text layoutX="61.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="70.0" />
+                        <ComboBox fx:id="combo_analyse_type" layoutX="427.0" layoutY="87.0" prefHeight="27.0" prefWidth="309.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="750.0" AnchorPane.topAnchor="90.0" />
                         <TextField fx:id="text_new_type" layoutX="432.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" visible="false" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="90.0" />
-                        <Pane layoutX="167.0" layoutY="149.0" prefHeight="42.0" prefWidth="222.0" AnchorPane.leftAnchor="167.0" AnchorPane.topAnchor="149.0">
+                        <Pane layoutX="167.0" layoutY="149.0" prefHeight="42.0" prefWidth="222.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="1100.0" AnchorPane.topAnchor="149.0">
                            <children>
                               <Button fx:id="button_search" layoutX="-1.0" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#launchBlast" prefHeight="43.0" prefWidth="208.0" style="-fx-background-color: green;" text="RECHERCHER" textFill="WHITE">
                                  <font>
@@ -119,7 +119,7 @@
                               </Button>
                            </children>
                         </Pane>
-                        <Pane layoutX="433.0" layoutY="150.0" prefHeight="42.0" prefWidth="222.0" AnchorPane.leftAnchor="433.0" AnchorPane.topAnchor="150.0">
+                        <Pane layoutX="433.0" layoutY="150.0" prefHeight="42.0" prefWidth="222.0" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="150.0">
                            <children>
                               <Button fx:id="button_search_silent" layoutY="-2.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="208.0" style="-fx-background-color: green;" text="RECHERCHER (silencieux)" textFill="WHITE">
                                  <font>
@@ -128,19 +128,24 @@
                               </Button>
                            </children>
                         </Pane>
-                        <Text layoutX="432.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de protéine" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="70.0" />
-                        <Button fx:id="button_new_type" layoutX="757.0" layoutY="87.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="30.0" text="+" AnchorPane.leftAnchor="757.0" AnchorPane.topAnchor="90.0" />
-                        <TableView fx:id="tab_arbre" layoutX="60.0" layoutY="331.0" prefHeight="200.0" prefWidth="912.0" visible="false" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="331.0">
+                        <Text layoutX="432.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de protéine" wrappingWidth="232.14056396484375" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="748.0" AnchorPane.topAnchor="70.0" />
+                        <Button fx:id="button_new_type" layoutX="757.0" layoutY="87.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="30.0" text="+" AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="90.0" />
+                        <TableView fx:id="tab_arbre" layoutX="60.0" layoutY="331.0" prefHeight="200.0" prefWidth="523.0" visible="false" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="331.0">
                           <columns>
                             <TableColumn fx:id="col_check_arbre" prefWidth="111.85990905761719" text="Check" />
-                            <TableColumn fx:id="col_nom_arbre" prefWidth="204.0081024169922" text="Nom" />
-                              <TableColumn fx:id="col_details_arbre" prefWidth="596.9919738769531" text="Details" />
+                            <TableColumn fx:id="col_nom_arbre" prefWidth="282.5971221923828" text="Nom" />
+                              <TableColumn fx:id="col_details_arbre" prefWidth="127.40289306640625" text="Details" />
                           </columns>
                         </TableView>
                         <Text fx:id="text_arbre" layoutX="62.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des séquences résultante de la recherche BLAST" visible="false" wrappingWidth="493.5646057128906" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="312.0" />
                         <Button fx:id="button_arbre" layoutX="58.0" layoutY="277.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="264.0" text="Accès arbre phylogénétique" visible="false" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="277.0" />
-                        <Text fx:id="text_info_arbre" layoutX="71.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Séléctionnez les séquences que vous souhaitez enregistrer dans la base de données. Aidez-vous de l'arbre généré grâce au bouton &quot;Accès arbre phylogénétique&quot; ci-dessus. Les séquences non séléctionnées ne seront pas prises en compte. La colonne &quot;details&quot; vous permet d'ajouter des commentaires. Le boutton &quot;Soumettre&quot; ci-dessous permet de valider l'enregistrement et lance la recherche des promoteurs et des éléments CIS régulateurs." visible="false" wrappingWidth="902.2292709350586" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="538.431640625" />
-                        <Button fx:id="button_soumettre" layoutX="466.0" layoutY="630.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="Soumettre" visible="false" AnchorPane.leftAnchor="466.0" AnchorPane.topAnchor="630.0" />
+                        <Text fx:id="text_info_arbre" layoutX="71.0" layoutY="550.568359375" strokeType="OUTSIDE" strokeWidth="0.0" text="Séléctionnez les séquences que vous souhaitez enregistrer dans la base de données. Aidez-vous de l'arbre généré grâce au bouton &quot;Accès arbre phylogénétique&quot; ci-dessus. Les séquences non séléctionnées ne seront pas prises en compte. La colonne &quot;details&quot; vous permet d'ajouter des commentaires. Le boutton &quot;Soumettre&quot; ci-dessous permet de valider l'enregistrement et lance la recherche des promoteurs et des éléments CIS régulateurs." visible="false" wrappingWidth="466.87740325927734" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="538.0" />
+                        <Button fx:id="button_soumettre" layoutX="220.0" layoutY="653.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="Soumettre" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="653.0" />
+                        <HBox fx:id="hbox_arbre" layoutX="593.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <children>
+                              <WebView fx:id="webview_arbre" prefHeight="697.0" prefWidth="687.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
                </content>
