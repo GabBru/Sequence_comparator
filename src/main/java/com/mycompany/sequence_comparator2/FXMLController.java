@@ -138,10 +138,10 @@ public class FXMLController implements Initializable {
     @FXML
     private TableColumn<Sequence, String> col_nom_arbre;
     @FXML
-    private TableColumn<Sequence,String> col_details_arbre; 
+    private TableColumn<Sequence, String> col_details_arbre;
     @FXML
     protected Text text_arbre;
-    @FXML 
+    @FXML
     protected Button button_arbre;
     @FXML
     protected Text text_info_arbre;
@@ -355,59 +355,26 @@ public class FXMLController implements Initializable {
         Connection con = dataAccess.getCon();
         //execute query ...
         Statement stmt = con.createStatement();
-        // Verification de l'existence des données en BDD
+        // Verification de l'existence des données en BDD ...
         ResultSet rs = stmt.executeQuery("select * from `SEQUENCES` natural join PLANTE natural join TYPE_PROTEINE where nom_plante = '" + nom_plante + "' and nom_prot = '" + nom_prot + "' and nom_type = '" + type_prot + "'");
-        // Si la plante n'existe pas 
-        int id_plante = 0;
+        // Si la plante n'existe pas ...
         String id_planteStr = "rien";
         if (!rs.next()) {
             // On récupère l'id_plante ...
             Statement stmt_id = con.createStatement();
             ResultSet rs_id = stmt_id.executeQuery("select id_plante from PLANTE where nom_plante = '" + nom_plante + "'");
             if (rs_id.next()) {
-                System.out.println("Dans le WHILE (avant) = " + id_plante);
-                id_plante = rs_id.getInt(1);
+                int id_plante = rs_id.getInt(1);
                 System.out.println("Dans le WHILE (apres) = " + id_plante);
                 id_planteStr = rs.getString(1);
                 System.out.println("Dans le while (apres) = " + id_planteStr);
+                Statement stmt_final = con.createStatement();
+                System.out.println("ID_PLANTE = " + id_plante);
+                int rs_final = stmt_final.executeUpdate("insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, id_plante, nom_type) values ('" + nom_prot + "','" + fasta_prot + "','" + fasta + "'," + id_plante + ",'" + type_prot + "')");
+            } else {
+                ref_seq.setText("PROTEINE DEJA PRESENTE EN BASE DE DONNEES.");
             }
-            // On insère ...
-            Statement stmt_final = con.createStatement();
-            System.out.println("ID_PLANTE = " + id_plante);
-            int rs_final = stmt_final.executeUpdate("insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, id_plante, nom_type) values ('" + nom_prot + "','" + fasta_prot + "','" + fasta + "'," + id_plante + ",'" + type_prot + "')");
-        } else {
-            ref_seq.setText("PROTEINE DEJA PRESENTE EN BASE DE DONNEES.");
         }
-//        Statement stmt1 = con.createStatement();
-//        Statement stmt2 = con.createStatement();
-//        Statement stmt3 = con.createStatement();
-//        Statement stmt4 = con.createStatement();
-//        Statement stmt5 = con.createStatement();
-
-//        System.out.println("le nom de la plante " + nom_plante);
-//        ResultSet rs = stmt.executeQuery("select id_plante from PLANTE where nom_plante= '" + nom_plante + "'");
-//        ResultSet rs1 = stmt1.executeQuery("select * from TYPE_PROTEINE where nom_type= '" + type_prot + "'");
-//
-//        String id_plante = "";
-//        if (rs.next()) {
-//            System.out.println("plante existe");
-//            id_plante = rs.getString(1);
-//        } else {
-//            System.out.println("pas de plante");
-//            int rs3 = stmt3.executeUpdate("Insert into PLANTE (nom_plante) values ('" + nom_plante + "')");
-//            ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante = '" + nom_plante + "'");
-//            if (rs4.next()) {
-//                id_plante = rs4.getString(1);
-//            }
-//        }
-//        if (rs1.next()) {
-//            System.out.println("type prot existe");
-//            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
-//        } else {
-//            System.out.println("pas de type prot");
-//            int rs5 = stmt5.executeUpdate("Insert into TYPE_PROTEINE values ('" + nom_prot + "')");
-//            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
-//        }
     }
 
     public ObservableList<String> getAllTypeProt() throws SQLException, ClassNotFoundException {
@@ -599,7 +566,6 @@ public class FXMLController implements Initializable {
 //        clustal.submit(blastResult);
 //        Generate_tree tree = new Generate_tree(clustal.getTree());
 //        tree.submit();
-
 //        String clustal = "(\n"
 //                + "(\n"
 //                + "(\n"
@@ -640,50 +606,11 @@ public class FXMLController implements Initializable {
 //                + "XP_024632592.1_24-571:-0.00012)\n"
 //                + ":0.00013,\n"
 //                + "KEH39515.1_1-505:-0.00013);";
-      
         initTable();
-        /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
 
+        /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
         ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
 
-//        List<String> seq1 = FXCollections.observableArrayList();
-//        seq1.add("AtCWIN3 Blablabla Nom du gene1");
-//        seq1.add("ATGACGTGAGTGATGCTGTAGTAGTAGATGTAGCATGCATGTAGATGCTAG");
-//        seq1.add("ACGACGTGACATGCATGCATGCATGATGCATG");
-//
-//        List<String> seq2 = FXCollections.observableArrayList();
-//        seq2.add("AtCWIN3 Blablabla Nom du gene1");
-//        seq2.add("ERHHERZVBZOVREOVZNEIVNZEINVZEROCJVZNEORNVZOEVNHZOERHV");
-//        seq2.add("ZERIBVZIERBNVIZERNROGEHNZOGNVZEORNVGZOERNHIZEBFCZREBIV");
-//
-//        List<List<String>> list_test_arbre = FXCollections.observableArrayList();
-//        list_test_arbre.add(seq1);
-//        list_test_arbre.add(seq2);
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-        // On peut executer du code javascript dans le web browser donc potentiellement ajouter du texte dans phylo.io (liste de sequences)
-        // id du textarea phylo.io = newickInSingle.
-        // A HTML Content with a javascript function.
-//        WebEngine webEngineArbre = webview_arbre.getEngine();
-//        webEngineArbre.setJavaScriptEnabled(true);
-//
-//        String HTML_STRING;
-//        HTML_STRING
-//                = "<html>"
-//                + "<head> "
-//                + "  <script language='javascript'> "
-//                + "     function setTextArbre()  { "
-//                + "       document.getElementById(\"newickInSingle\").value = "
-//                + getHTMLStringFromList(list_test_arbre)
-//                + "     } "
-//                + "  </script> "
-//                + "</head> "
-//                + "</html> ";
-//
-//        webEngineArbre.load("http://phylo.io/index.html");
-//        webEngineArbre.executeScript("     function setTextArbre()  { "
-//                + "       document.getElementById(\"newickInSingle\").value = "
-//                + getHTMLStringFromList(list_test_arbre)
-//                + "     } ");
         MaListTest.add(new Sequence(new CheckBox(), "Le nom de la sequence", "elle est cool"));
         System.out.println("Liste " + MaListTest.get(0).getNom());
         System.out.println("Liste " + MaListTest.get(0).getDetails());
@@ -737,15 +664,16 @@ public class FXMLController implements Initializable {
         info_nom_plante = new Tooltip();
         info_nom_plante.setText("Renseignez le nom complet de la \n "
                 + "plante en utilisant de préférence son nom dans \n"
-                + "la nomenclature officielle (latin).");
+                + "la nomenclature officielle (latin). Si elle n'est pas déjà enregistrée \n"
+                + "dans la base de données, utilisez le bouton (+) pour saisir son nom manuellement.");
         pop_nom_plante.setTooltip(info_nom_plante);
     }
 
     public void help_type_prot(MouseEvent event) throws IOException {
         info_type_prot = new Tooltip();
         info_type_prot.setText("Renseignez le type de protéine concernée. \n"
-                + "Par exemple : invertase. Si ce dernier est déjà enregistré \n"
-                + "en base de données, utilisez la fonction d'auto-remplissage.");
+                + "Par exemple : invertase. Si ce dernier n'est pas déjà enregistré \n"
+                + "en base de données, utilisez le bouton (+) pour saisir le type manuellement.");
         pop_type_prot.setTooltip(info_type_prot);
     }
 
