@@ -315,38 +315,57 @@ public class FXMLController implements Initializable {
 
     public void ajouter_ref(String nom_plante, String nom_prot, String fasta, String type_prot) throws SQLException {
         Connection con = dataAccess.getCon();
-        ObservableList<String> list = FXCollections.observableArrayList();
-        // execute query
+        //execute query ...
         Statement stmt = con.createStatement();
-        Statement stmt1 = con.createStatement();
-        Statement stmt2 = con.createStatement();
-        Statement stmt3 = con.createStatement();
-        Statement stmt4 = con.createStatement();
-        Statement stmt5 = con.createStatement();
-        System.out.println("le nom de la plante " + nom_plante);
-        ResultSet rs = stmt.executeQuery("select id_plante from PLANTE where nom_plante= '" + nom_plante + "'");
-        ResultSet rs1 = stmt1.executeQuery("select * from TYPE_PROTEINE where nom_type= '" + type_prot + "'");
-
-        String id_plante = "";
-        if (rs.next()) {
-            System.out.println("plante existe");
-            id_plante = rs.getString(1);
+        // Verification de l'existence des données en BDD
+        ResultSet rs = stmt.executeQuery("select * from sequences natural join plante " 
+                                       + "natural join type_proteine where nom_plante ='" 
+                                       + nom_plante + "' and nom_prot = '" + nom_prot + "' "
+                                       + "and nom_type = '" + type_prot + "'");
+        // Si la plante n'existe pas 
+        int id_plante;
+        if (rs == null) {
+            // On récupère l'id_plante ...
+            Statement stmt_id = con.createStatement();
+            ResultSet rs_id = stmt_id.executeQuery("select id_plante from PLANTE where nom_plante = '" + nom_plante + "'");
+            id_plante = rs_id.getInt(1);
+            // On insère ...
+            Statement stmt_final = con.createStatement();
+            ResultSet rs_final = stmt_final.executeQuery("insert into SEQUENCES (nom_prot, seq_ADN, id_plante, nom_type) values ('" + nom_prot + ",'" + fasta + "," + id_plante + ",'" + type_prot + "'");
         } else {
-            System.out.println("pas de plante");
-            int rs3 = stmt3.executeUpdate("Insert into PLANTE (nom_plante) values ('" + nom_plante + "')");
-            ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante = '" + nom_plante + "'");
-            if (rs4.next()) {
-                id_plante = rs4.getString(1);
-            }
+            ref_seq.setText("SEQUENCE DEJA PRESENTE EN BASE DE DONNEES.");
         }
-        if (rs1.next()) {
-            System.out.println("type prot existe");
-            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
-        } else {
-            System.out.println("pas de type prot");
-            int rs5 = stmt5.executeUpdate("Insert into TYPE_PROTEINE values ('" + nom_prot + "')");
-            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
-        }
+//        Statement stmt1 = con.createStatement();
+//        Statement stmt2 = con.createStatement();
+//        Statement stmt3 = con.createStatement();
+//        Statement stmt4 = con.createStatement();
+//        Statement stmt5 = con.createStatement();
+        
+        
+//        System.out.println("le nom de la plante " + nom_plante);
+//        ResultSet rs = stmt.executeQuery("select id_plante from PLANTE where nom_plante= '" + nom_plante + "'");
+//        ResultSet rs1 = stmt1.executeQuery("select * from TYPE_PROTEINE where nom_type= '" + type_prot + "'");
+//
+//        String id_plante = "";
+//        if (rs.next()) {
+//            System.out.println("plante existe");
+//            id_plante = rs.getString(1);
+//        } else {
+//            System.out.println("pas de plante");
+//            int rs3 = stmt3.executeUpdate("Insert into PLANTE (nom_plante) values ('" + nom_plante + "')");
+//            ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante = '" + nom_plante + "'");
+//            if (rs4.next()) {
+//                id_plante = rs4.getString(1);
+//            }
+//        }
+//        if (rs1.next()) {
+//            System.out.println("type prot existe");
+//            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
+//        } else {
+//            System.out.println("pas de type prot");
+//            int rs5 = stmt5.executeUpdate("Insert into TYPE_PROTEINE values ('" + nom_prot + "')");
+//            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
+//        }
 
     }
 
