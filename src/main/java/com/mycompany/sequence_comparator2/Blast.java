@@ -41,10 +41,19 @@ public class Blast extends FXMLController {
     //launch blastx between the interested plante and the referenced proteins. parameter : String plante, observableList sequence of referenced proteins. return a list of sequence list
     public List<String> search(String plante,ObservableList<String> fasta) throws InterruptedException, IOException 
     {   
+        List<String> resultatBlast = new ArrayList<String>();
+//        try {
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
         File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-        List<String> resultatBlast = new ArrayList<String>();
+
+//        } 
+//        finally {
+//            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+//        File file = new File(System.getProperty("user.dir") + "/chromedriver");
+//        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+//        }
+
 
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
@@ -133,7 +142,7 @@ public class Blast extends FXMLController {
             LOGGER.info("id "+id);
             Matcher matcher = p.matcher(id);
             
-            if (resultatBlast.size()==0){resultatBlast.add(seq);}
+            if (resultatBlast.isEmpty()){resultatBlast.add(seq);}
             for(int m=0;m<resultatBlast.size();m++)
             {
                 LOGGER.info("nombre de séquences en sortie de blast " + resultatBlast.size());
