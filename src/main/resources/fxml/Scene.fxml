@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane id="AnchorPane" prefHeight="730.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sequence_comparator2.FXMLController">
+<AnchorPane id="AnchorPane" prefHeight="730.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sequence_comparator2.FXMLController">
    <children>
       <TabPane layoutX="-2.0" layoutY="6.0" prefHeight="524.0" prefWidth="645.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -103,7 +103,13 @@
                         <TextField fx:id="ref_nom_prot" layoutX="757.0" layoutY="90.0" prefHeight="27.0" prefWidth="378.0" AnchorPane.leftAnchor="757.0" AnchorPane.topAnchor="90.0" />
                         <ComboBox fx:id="combo_ref_nom_plante" layoutX="60.0" layoutY="90.0" prefHeight="27.0" prefWidth="276.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="90.0" />
                         <ComboBox fx:id="combo_ref_type_prot" layoutX="400.0" layoutY="90.0" prefHeight="27.0" prefWidth="295.0" />
-                        <TextArea fx:id="ref_prot" layoutX="62.0" layoutY="350.0" prefHeight="111.0" prefWidth="1074.0" />
+                        <TextArea fx:id="ref_prot" layoutX="62.0" layoutY="393.0" prefHeight="111.0" prefWidth="1074.0" AnchorPane.leftAnchor="62.0" AnchorPane.topAnchor="393.0" />
+                        <Text fx:id="text_seq1" layoutX="62.0" layoutY="388.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez la sequence protéique au format FASTA du génome correspondant" wrappingWidth="523.2060546875" AnchorPane.leftAnchor="62.0" AnchorPane.topAnchor="375.0" />
+                        <Text fx:id="text_ajout_ok" fill="#07b515" layoutX="560.0" layoutY="630.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AJOUT EFFECTUE !" textAlignment="CENTER" visible="false" wrappingWidth="160.2060546875" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="559.7060546875">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
             </content>
