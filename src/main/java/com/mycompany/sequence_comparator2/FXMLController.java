@@ -138,10 +138,10 @@ public class FXMLController implements Initializable {
     @FXML
     private TableColumn<Sequence, String> col_nom_arbre;
     @FXML
-    private TableColumn<Sequence, String> col_details_arbre;
+    private TableColumn<Sequence,String> col_details_arbre; 
     @FXML
     protected Text text_arbre;
-    @FXML
+    @FXML 
     protected Button button_arbre;
     @FXML
     protected Text text_info_arbre;
@@ -598,6 +598,8 @@ public class FXMLController implements Initializable {
 //        Clustal clustal = new Clustal();
 //        clustal.submit(blastResult);
 //        Generate_tree tree = new Generate_tree(clustal.getTree());
+//        tree.submit();
+
 //        String clustal = "(\n"
 //                + "(\n"
 //                + "(\n"
@@ -638,8 +640,10 @@ public class FXMLController implements Initializable {
 //                + "XP_024632592.1_24-571:-0.00012)\n"
 //                + ":0.00013,\n"
 //                + "KEH39515.1_1-505:-0.00013);";
+      
         initTable();
         /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
+
         ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
 
 //        List<String> seq1 = FXCollections.observableArrayList();
@@ -691,10 +695,11 @@ public class FXMLController implements Initializable {
         button_arbre.setVisible(true);
         text_info_arbre.setVisible(true);
         button_soumettre.setVisible(true);
-        //Place place = new Place();
-        //          place.tBlastN(getSeq_nom_plante());
-        //          place.place();
-        //        file.deleteFile();
+//          Place place = new Place();
+//          place.tBlastN(getSeq_nom_plante());
+//          place.place();
+//        file.deleteFile();
+
     }
 
     private void initTable() {
