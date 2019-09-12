@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -43,7 +44,7 @@ public class Blast extends FXMLController {
     {   
 
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir") + "/chromedriver");
+        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
 
         List<String> resultatBlast = new ArrayList<String>();
@@ -108,9 +109,10 @@ public class Blast extends FXMLController {
 
             String text2 = driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.c5")).get(i).getText();
             Integer cover = Integer.valueOf(text2.split("%")[0]);
-
             if (identityx < identity | cover < covery) {
-                driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(i).click();
+               WebElement element= driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(i);
+               ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+               element.click();
             }
         }
 
