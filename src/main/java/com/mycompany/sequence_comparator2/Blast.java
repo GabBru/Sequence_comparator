@@ -42,18 +42,9 @@ public class Blast extends FXMLController {
     public List<String> search(String plante,ObservableList<String> fasta) throws InterruptedException, IOException 
     {   
         List<String> resultatBlast = new ArrayList<String>();
-//        try {
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
         File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-
-//        } 
-//        finally {
-//            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-//        File file = new File(System.getProperty("user.dir") + "/chromedriver");
-//        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-//        }
-
 
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
