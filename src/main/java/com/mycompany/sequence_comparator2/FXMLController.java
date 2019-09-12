@@ -115,6 +115,8 @@ public class FXMLController implements Initializable {
     @FXML
     protected Button button_new_type;
     @FXML
+    private TextArea ref_prot;
+    @FXML
     protected Button button_search_silent;
     @FXML
     protected Button button_search;
@@ -125,10 +127,6 @@ public class FXMLController implements Initializable {
     @FXML
     private TableColumn<Sequence, CheckBox> col_check_arbre;
     @FXML
-    private TableColumn<Sequence, String> col_nom_arbre;
-    @FXML
-    private TableColumn<Sequence, String> col_details_arbre;
-    @FXML
     protected ComboBox combo_ref_nom_plante;
     @FXML
     protected ComboBox combo_ref_type_prot;
@@ -136,6 +134,18 @@ public class FXMLController implements Initializable {
     protected Button add_plante;
     @FXML
     protected Button add_type_prot;
+    @FXML
+    private TableColumn<Sequence, String> col_nom_arbre;
+    @FXML
+    private TableColumn<Sequence, String> col_details_arbre;
+    @FXML
+    protected Text text_arbre;
+    @FXML
+    protected Button button_arbre;
+    @FXML
+    protected Text text_info_arbre;
+    @FXML
+    protected Button button_soumettre;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -216,9 +226,11 @@ public class FXMLController implements Initializable {
                     text_nom_gene.setVisible(true);
                     text_lien_ncbi.setVisible(true);
 
+                    ObservableList<CIS> list_CIS = getElementCIS(nom_plante, nom_prot);
+                    
                     text_seq_ARN.setText(getARN(nom_prot, nom_plante));
                     text_seq_ADN.setText(getADN(nom_prot, nom_plante));
-
+                  
                     ObservableList<CIS> list_CIS = getElementCIS(nom_plante, nom_prot);
 
                     col_nom_CIS.setCellValueFactory(
@@ -249,16 +261,12 @@ public class FXMLController implements Initializable {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        /// Onglet /////
         button_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    System.out.println("ref nom plante " + ref_nom_plante.getText());
-                    System.out.println("ref nom plante " + ref_seq.getText());
-                    System.out.println("ref nom plante " + ref_type_prot.getText());
-                    System.out.println("ref nom plante " + ref_nom_prot.getText());
                     ajouter_ref(ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText());
+
                 } catch (SQLException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -312,6 +320,7 @@ public class FXMLController implements Initializable {
             }
         });
     }
+
 
     public void ajouter_ref(String nom_plante, String nom_prot, String fasta, String type_prot) throws SQLException {
         Connection con = dataAccess.getCon();
@@ -494,6 +503,17 @@ public class FXMLController implements Initializable {
         }
         return sequence_ARN;
     }
+    
+    @FXML
+    void View_tree(MouseEvent event){
+//        Generate_tree tree = new Generate_tree(clustal);
+//        tree.submit();
+    }
+    
+    @FXML
+    void Submission(MouseEvent event){
+        
+    }
 
     public String getHTMLStringFromList(List<List<String>> list_seq) {
         String seq = "";
@@ -507,37 +527,87 @@ public class FXMLController implements Initializable {
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
+
+        Connection con = dataAccess.getCon();
+        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
+        ObservableList<String> refProAra = FXCollections.observableArrayList();
+        // execute query
+        Statement stmt = con.createStatement();
+
+        ResultSet rs = stmt.executeQuery("Select seq_ADN,nom_prot,seq_prot from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
+        while (rs.next()) {
+            System.out.println("Dans la boucle while");
+            refSeqAra.add(">" + rs.getString(2) + "\n" + rs.getString(1) + "\n");
+            refProAra.add(">" + rs.getString(2) + "\n" + rs.getString(3) + "\n");
+        }
+        Collections.sort(refSeqAra);
+        LOGGER.info("list " + refSeqAra.size());
+        Blast blast = new Blast();
+        List<String> blastResult = blast.search(getSeq_nom_plante(), refSeqAra);
+
+        ResultFile file = new ResultFile();
+//        file.readFile();
+        Clustal clustal = new Clustal();
+
+        clustal.submit(blastResult, refProAra);
+
+        Generate_tree tree = new Generate_tree(clustal.getTree());
+        tree.submit();
+
         combo_analyse_type.setDisable(true);
         seq_nom_plante1.setDisable(true);
         button_search.setDisable(true);
         button_search_silent.setDisable(true);
         progress_indicator.setVisible(true);
-//        Connection con = dataAccess.getCon();
-//        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
-//        // execute query
-//        Statement stmt = con.createStatement();
-//        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
-//        while (rs.next()) {
-//            System.out.println("Dans la boucle while");
-//            refSeqAra.add(">\n"+rs.getString(1)+"\n");
-//
-//        }
-//        Collections.sort(refSeqAra);
-//        LOGGER.info("list " + refSeqAra.size());
-//        Blast blast = new Blast();
-//        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),refSeqAra);
-//
-//        ResultFile file = new ResultFile();
-////        file.readFile();
-//
+
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
 
 //        Clustal clustal = new Clustal();
 //        clustal.submit(blastResult);
 //        Generate_tree tree = new Generate_tree(clustal.getTree());
-        //Generate_tree tree = new Generate_tree(clustal.getTree());
-//        tree.submit();
+
+//        String clustal = "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "KEH42003.1_23-563:0.00122,\n"
+//                + "XP_024633157.1_1-504:-0.00122)\n"
+//                + ":0.10261,\n"
+//                + "(\n"
+//                + "XP_003625858.2_26-569:-0.00066,\n"
+//                + "ABD32689.1_26-566:0.00066)\n"
+//                + ":0.10839)\n"
+//                + ":0.17045,\n"
+//                + "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "AES98262.2_22-570:0.00058,\n"
+//                + "XP_024639080.1_22-573:-0.00058)\n"
+//                + ":0.00112,\n"
+//                + "RHN56258.1_11-362:0.00172)\n"
+//                + ":0.00570,\n"
+//                + "XP_003615304.3_2-520:-0.00570)\n"
+//                + ":0.18619)\n"
+//                + ":0.06235,\n"
+//                + "(\n"
+//                + "(\n"
+//                + "KEH18389.1_25-408:0.00615,\n"
+//                + "XP_013444360.1_25-571:-0.00355)\n"
+//                + ":0.00327,\n"
+//                + "KEH18388.1_16-525:-0.00313)\n"
+//                + ":0.09633)\n"
+//                + ":0.10299,\n"
+//                + "AFK37518.1_24-571:0.00306)\n"
+//                + ":0.00066,\n"
+//                + "(\n"
+//                + "ABD28503.1_24-568:0.00012,\n"
+//                + "XP_024632592.1_24-571:-0.00012)\n"
+//                + ":0.00013,\n"
+//                + "KEH39515.1_1-505:-0.00013);";
+
         initTable();
         /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
         ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
@@ -588,12 +658,17 @@ public class FXMLController implements Initializable {
         System.out.println("Liste " + MaListTest.get(0).getNom());
         System.out.println("Liste " + MaListTest.get(0).getDetails());
         System.out.println("Liste " + MaListTest.get(0).getSelection());
+
         loadData(MaListTest);
         tab_arbre.setVisible(true);
-//          Place place = new Place();
-//          place.tBlastN(getSeq_nom_plante());
-//          place.place();
-//        file.deleteFile();
+        text_arbre.setVisible(true);
+        button_arbre.setVisible(true);
+        text_info_arbre.setVisible(true);
+        button_soumettre.setVisible(true);
+        //Place place = new Place();
+        //          place.tBlastN(getSeq_nom_plante());
+        //          place.place();
+        //        file.deleteFile();
     }
 
     private void initTable() {

@@ -1,5 +1,5 @@
 /*
- classe to read and delete file downloaded from Blast
+ class to read and delete file downloaded from Blast
  when blast results are download and results extracted, we have to delete the file for the next Blast request 
 otherwise the extraction won't work because of the new file name 
  */
@@ -39,20 +39,29 @@ public class ResultFile {
     
         // create a variable to put all sequences in a single line to be able to split them
     String ligne;
-    String result = "";
+    String seq1 ="";
     List<String> sequences = new ArrayList<String>();
         // concat all lines in a single one in result 
+    Pattern p = Pattern.compile(">");
     while ((ligne=buff.readLine())!=null){
-//    result = result+ligne;
-sequences.add(ligne);
-    }
-        // split all sequences in a list of sequences 
-//    for(int i=1;i<result.split(">").length;i++){
-//        LOGGER.info("match "+ i + " : "+result.split(">")[i]);
-//        sequences.add(">"+result.split(">")[i]);
-//}
+        Matcher m = p.matcher(ligne);
+        if(!m.find()){
+            seq1=seq1+("\n");
+            seq1=seq1+(ligne);
+            
+        }
+        else{
+            if(seq1.equals("")){seq1=ligne;
+            }
+            else{
+          sequences.add(seq1);
+          seq1=ligne;
+            }
+        }
+        }
     // close the reader
     buff.close(); 
+    LOGGER.info(sequences.get(0));
     return sequences;
 }
     // method to delete the file

@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -36,19 +38,14 @@ public class Blast extends FXMLController {
     public void Blast() {
     }
 
-    public List<List<String>> search(String plante,ObservableList<String> fasta) throws InterruptedException, IOException 
+    //launch blastx between the interested plante and the referenced proteins. parameter : String plante, observableList sequence of referenced proteins. return a list of sequence list
+    public List<String> search(String plante,ObservableList<String> fasta) throws InterruptedException, IOException 
     {   
-        List<List<String>> resultatBlast = new ArrayList<List<String>>();
-        try {
+        List<String> resultatBlast = new ArrayList<String>();
+
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-        } finally {
-            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
         File file = new File(System.getProperty("user.dir") + "/chromedriver");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-        }
-        
 
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
@@ -76,7 +73,7 @@ public class Blast extends FXMLController {
         driver.findElement(By.id("qorganism")).sendKeys(plante);
 
         //pause to allow the selector to be displayed 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
 //        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
         //click the first line of the selector
@@ -123,12 +120,63 @@ public class Blast extends FXMLController {
         //A voir si il faut ajouter encore plus de temps d'attente pour les connexions lentes 
         Thread.sleep(5000);
         ResultFile resultfile = new ResultFile();
-        resultatBlast.add(resultfile.readFile());
+        Pattern p = Pattern.compile(">");
+        List<String> fileResult = resultfile.readFile();
+        boolean exist = false;
+        
+        //add all line of all file in resultBlast
+        for(int l=0;l<fileResult.size();l++)
+        {
+            LOGGER.info("nombre de séquences dans le fichier " + fileResult.size());
+            String seq = fileResult.get(l);
+            LOGGER.info("sequence " + seq);
+            String id = seq.split(":")[0];
+            LOGGER.info("id "+id);
+            Matcher matcher = p.matcher(id);
+            
+            if (resultatBlast.isEmpty()){resultatBlast.add(seq);}
+            for(int m=0;m<resultatBlast.size();m++)
+            {
+                LOGGER.info("nombre de séquences en sortie de blast " + resultatBlast.size());
+                String idline= resultatBlast.get(m).split(":")[0];
+                LOGGER.info("id : " +id + " idline : " + idline);
+                if(id.equals(idline)&&matcher.find()){
+                    exist=true;
+//                fileResult.remove(l);
+                    LOGGER.info("les meme donc remove "+ fileResult.size());
+                }
+                
+                
+            }
+            if(exist==false){
+                resultatBlast.add(fileResult.get(l));}
+            exist=false;
+            LOGGER.info(" id " + id);
+        }
         resultfile.deleteFile();}
+        
  }
         // Close the browser
         driver.close();
         return resultatBlast;
     }
-    
+    // check if the sequence is already in the list. parameters : list of sequence list and sequence list to compare. if the sequence 
+    // is already in the list of sequence list return false
+    public boolean checkDouble(List<List<String>> resultatBlast,List<String> sequences)
+    {
+        boolean dontexist = true ;
+        for(int i=0;i<resultatBlast.size();i++)
+        {
+            LOGGER.info("taille du fragment " + resultatBlast.get(i).size());
+            for(int k=0;k<resultatBlast.get(i).size();k++) {
+               LOGGER.info("trouve une sequence identique ? "+ resultatBlast.get(i).get(k) + "taille de resultatBlast " + resultatBlast.size());
+            for(int j=0;j<sequences.size();j++){
+           if(resultatBlast.get(i).get(k)==sequences.get(j))
+           {
+               LOGGER.info("rentre dans le if ");
+               dontexist = false ;
+           }}}
+        }
+        return dontexist;
+    }
 }

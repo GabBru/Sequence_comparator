@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
  *
@@ -21,7 +22,7 @@ public class Clustal {
     String tree ;
     public void Clustal(){}
     
-    public void submit(List<List<String>> blastResult) throws IOException, InterruptedException{
+    public void submit(List<String> blastResult,List<String> refSeqAra) throws IOException, InterruptedException{
 //        ResultFile blastFile = new ResultFile();
 //        List<String> sequences = blastFile.readFile();
      // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
@@ -29,20 +30,23 @@ public class Clustal {
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
         
         // Create a Chrome Web Driver with visual
-        WebDriver driver = new ChromeDriver();
+//        WebDriver driver = new ChromeDriver();
         // TO DO: add a  button to switch between the hidden and the visible option
 //        Create a Chrome Web Driver without visual 
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
-//        WebDriver driver = new ChromeDriver(options);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
         // Open the clustalo homepage
         driver.get("https://www.ebi.ac.uk/Tools/msa/clustalo/");
         //add all lines in the input 
-        for(int i=0;i<blastResult.size();i++){
-            for (int j=0;j<blastResult.get(i).size();j++){
-        driver.findElement(By.id("sequence")).sendKeys(blastResult.get(i).get(j)+"\n");}
+        for(int i=0;i<blastResult.size();i++){{
+        driver.findElement(By.id("sequence")).sendKeys(blastResult.get(i)+"\n");}
+        }
+        for(int k=0;k<refSeqAra.size();k++)
+        {
+            driver.findElement(By.id("sequence")).sendKeys(refSeqAra.get(k)+"\n");
         }
         //click on submit button 
         driver.findElement(By.cssSelector("#jd_submitButtonPanel")).submit();
@@ -52,9 +56,8 @@ public class Clustal {
         driver.findElement(By.cssSelector(".actionPanel>li>#phylotree")).click();
         driver.findElement(By.cssSelector(".actionPanel > li > #tree")).click();
         tree = driver.findElement(By.cssSelector("pre")).getText();
+        driver.quit();
         LOGGER.info("tree => "+ tree);
-        Thread.sleep(5000);
-        driver.close();
     }
 
     public String getTree() {
