@@ -21,7 +21,7 @@ public class Clustal {
     String tree ;
     public void Clustal(){}
     
-    public void submit(List<List<String>> blastResult,List<String> refSeqAra) throws IOException, InterruptedException{
+    public void submit(List<String> blastResult,List<String> refSeqAra) throws IOException, InterruptedException{
 //        ResultFile blastFile = new ResultFile();
 //        List<String> sequences = blastFile.readFile();
      // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
@@ -40,9 +40,8 @@ public class Clustal {
         // Open the clustalo homepage
         driver.get("https://www.ebi.ac.uk/Tools/msa/clustalo/");
         //add all lines in the input 
-        for(int i=0;i<blastResult.size();i++){
-            for (int j=0;j<blastResult.get(i).size();j++){
-        driver.findElement(By.id("sequence")).sendKeys(blastResult.get(i).get(j)+"\n");}
+        for(int i=0;i<blastResult.size();i++){{
+        driver.findElement(By.id("sequence")).sendKeys(blastResult.get(i)+"\n");}
         }
         for(int k=0;k<refSeqAra.size();k++)
         {
