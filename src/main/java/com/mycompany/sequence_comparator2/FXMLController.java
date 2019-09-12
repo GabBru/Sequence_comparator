@@ -247,7 +247,6 @@ public class FXMLController implements Initializable {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        /// Onglet /////
         button_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -423,6 +422,17 @@ public class FXMLController implements Initializable {
         }
         return sequence_ARN;
     }
+    
+    @FXML
+    void View_tree(MouseEvent event){
+//        Generate_tree tree = new Generate_tree(clustal);
+//        tree.submit();
+    }
+    
+    @FXML
+    void Submission(MouseEvent event){
+        
+    }
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
@@ -460,6 +470,7 @@ public class FXMLController implements Initializable {
 //        Clustal clustal = new Clustal();
 //        clustal.submit(blastResult);
 //        Generate_tree tree = new Generate_tree(clustal.getTree());
+
 //        String clustal = "(\n"
 //                + "(\n"
 //                + "(\n"
