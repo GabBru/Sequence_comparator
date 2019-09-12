@@ -416,29 +416,34 @@ public class FXMLController implements Initializable {
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
+
+        Connection con = dataAccess.getCon();
+        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
+        // execute query
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
+        while (rs.next()) {
+            System.out.println("Dans la boucle while");
+            refSeqAra.add(">\n"+rs.getString(1)+"\n");
+        }
+        Collections.sort(refSeqAra);
+        LOGGER.info("list " + refSeqAra.size());
+        Blast blast = new Blast();
+        List<String> blastResult = blast.search(getSeq_nom_plante(),refSeqAra);
+
+        ResultFile file = new ResultFile();
+//        file.readFile();
+          Clustal clustal = new Clustal();
+          clustal.submit(blastResult,refSeqAra);
+        Generate_tree tree = new Generate_tree(clustal.getTree());
+        tree.submit();
+
         combo_analyse_type.setDisable(true);
         seq_nom_plante1.setDisable(true);
         button_search.setDisable(true);
         button_search_silent.setDisable(true);
         progress_indicator.setVisible(true);
-//        Connection con = dataAccess.getCon();
-//        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
-//        // execute query
-//        Statement stmt = con.createStatement();
-//        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
-//        while (rs.next()) {
-//            System.out.println("Dans la boucle while");
-//            refSeqAra.add(">\n"+rs.getString(1)+"\n");
-//
-//        }
-//        Collections.sort(refSeqAra);
-//        LOGGER.info("list " + refSeqAra.size());
-//        Blast blast = new Blast();
-//        List<List<String>> blastResult = blast.search(getSeq_nom_plante(),refSeqAra);
-//
-//        ResultFile file = new ResultFile();
-////        file.readFile();
-//
+
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
 
@@ -451,11 +456,10 @@ public class FXMLController implements Initializable {
         /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
         ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
         MaListTest.add(new Sequence(new CheckBox(),"Le nom de la sequence","elle est cool"));
-        System.out.println("Liste "+MaListTest.get(0).getNom());
-        System.out.println("Liste "+MaListTest.get(0).getDetails());
-        System.out.println("Liste "+MaListTest.get(0).getSelection());
+
         loadData(MaListTest);
         tab_arbre.setVisible(true);
+
 //          Place place = new Place();
 //          place.tBlastN(getSeq_nom_plante());
 //          place.place();
