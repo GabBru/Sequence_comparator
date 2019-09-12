@@ -108,7 +108,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="seq_nom_plante1" layoutX="61.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="1000.0" AnchorPane.topAnchor="90.0" />
-                        <ProgressIndicator fx:id="progress_indicator" layoutX="612.0" layoutY="413.0" prefHeight="53.0" prefWidth="60.0" visible="false" AnchorPane.leftAnchor="620.0" AnchorPane.topAnchor="413.0" />
+                        <ProgressIndicator fx:id="progress_indicator" layoutX="242.0" layoutY="413.0" prefHeight="78.0" prefWidth="430.0" visible="false" AnchorPane.leftAnchor="242.0" AnchorPane.topAnchor="413.0" />
                         <Text layoutX="61.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la plante" wrappingWidth="313.2060546875" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="70.0" />
                         <ComboBox fx:id="combo_analyse_type" layoutX="427.0" layoutY="87.0" prefHeight="27.0" prefWidth="309.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="750.0" AnchorPane.topAnchor="90.0" />
                         <TextField fx:id="text_new_type" layoutX="432.0" layoutY="90.0" prefHeight="27.0" prefWidth="313.0" visible="false" AnchorPane.leftAnchor="430.0" AnchorPane.topAnchor="90.0" />
@@ -142,7 +142,7 @@
                         <Text fx:id="text_arbre" layoutX="62.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des séquences résultante de la recherche BLAST" visible="false" wrappingWidth="493.5646057128906" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="312.0" />
                         <Button fx:id="button_arbre" layoutX="58.0" layoutY="277.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="264.0" text="Accès arbre phylogénétique" visible="false" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="277.0" />
                         <Text fx:id="text_info_arbre" layoutX="71.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Séléctionnez les séquences que vous souhaitez enregistrer dans la base de données. Aidez-vous de l'arbre généré grâce au bouton &quot;Accès arbre phylogénétique&quot; ci-dessus. Les séquences non séléctionnées ne seront pas prises en compte. La colonne &quot;details&quot; vous permet d'ajouter des commentaires. Le boutton &quot;Soumettre&quot; ci-dessous permet de valider l'enregistrement et lance la recherche des promoteurs et des éléments CIS régulateurs." visible="false" wrappingWidth="902.2292709350586" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="538.431640625" />
-                        <Button fx:id="button_soumettre" layoutX="466.0" layoutY="630.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="Soumettre" visible="false" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="630.0" />
+                        <Button fx:id="button_soumettre" layoutX="466.0" layoutY="630.0" mnemonicParsing="false" onMousePressed="#submission" prefHeight="27.0" prefWidth="160.0" text="Soumettre" visible="false" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="630.0" />
                         <HBox fx:id="hbox_arbre" layoutX="593.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <children>
                               <WebView fx:id="webview_arbre" prefHeight="697.0" prefWidth="687.0" />

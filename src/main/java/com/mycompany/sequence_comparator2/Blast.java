@@ -44,7 +44,7 @@ public class Blast extends FXMLController {
         List<String> resultatBlast = new ArrayList<String>();
 
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir") + "/chromedriver");
+        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
 
         // Create a Chrome Web Driver with visual
@@ -159,24 +159,5 @@ public class Blast extends FXMLController {
         // Close the browser
         driver.close();
         return resultatBlast;
-    }
-    // check if the sequence is already in the list. parameters : list of sequence list and sequence list to compare. if the sequence 
-    // is already in the list of sequence list return false
-    public boolean checkDouble(List<List<String>> resultatBlast,List<String> sequences)
-    {
-        boolean dontexist = true ;
-        for(int i=0;i<resultatBlast.size();i++)
-        {
-            LOGGER.info("taille du fragment " + resultatBlast.get(i).size());
-            for(int k=0;k<resultatBlast.get(i).size();k++) {
-               LOGGER.info("trouve une sequence identique ? "+ resultatBlast.get(i).get(k) + "taille de resultatBlast " + resultatBlast.size());
-            for(int j=0;j<sequences.size();j++){
-           if(resultatBlast.get(i).get(k)==sequences.get(j))
-           {
-               LOGGER.info("rentre dans le if ");
-               dontexist = false ;
-           }}}
-        }
-        return dontexist;
     }
 }

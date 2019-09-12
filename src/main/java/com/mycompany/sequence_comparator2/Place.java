@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,7 +28,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
  */
 public class Place {
     protected static final Logger LOGGER = Logger.getLogger(ResultFile.class.getName());
-    ResultFile resultFile = new ResultFile();
+//    ResultFile resultFile = new ResultFile();
     
     public void Place(){}
     //get ARNm sequences from invertase protein 
@@ -56,7 +57,7 @@ public class Place {
         
     }
        
-    public void tBlastN(String plante) throws IOException, InterruptedException
+    public List<String> tBlastN(String plante,List<String> blastResult) throws IOException, InterruptedException
     {
         List<String> futurBlast = new ArrayList<>();
          // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
@@ -77,8 +78,8 @@ public class Place {
         
 //        // set the sequences into the input field
         driver.findElement(By.id("seq")).clear();
-        for (int i=0;i<resultFile.readFile().size();i++){
-        driver.findElement(By.id("seq")).sendKeys(resultFile.readFile().get(i)+"\n");}
+        for (int i=0;i<blastResult.size();i++){
+        driver.findElement(By.id("seq")).sendKeys(blastResult.get(i)+"\n");}
         
         // Enter the organism to study 
         driver.findElement(By.id("qorganism")).clear();
@@ -99,7 +100,7 @@ public class Place {
 //       driver.findElement(By.cssSelector(".deflnDesc")).click();
 //       driver.findElement(By.cssSelector(".alnAll>div>div>span>span>a")).click();
 //download the results on fasta format : 
-        File seqfile = new File("C:\\Users\\Fievet\\Downloads\\seqdump (1).txt");
+        File seqfile = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
         Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector("#hjbt>a>span")).getText().split("\\ ")[0]);
  for (int i=1;i<= nbline;i++){
      
@@ -122,23 +123,25 @@ public class Place {
     while ((ligne=buff.readLine())!=null){
     result = result+"\n"+ligne;
     }
+    LOGGER.info("result => "+ result);
     buff.close();
-  seqfile.delete();
-   LOGGER.info("il y a le file " + seqfile);
-    sequences.add(">"+result.split(">")[1]);
+//  seqfile.delete();
+    sequences.add(result.split(">")[1]);
+    LOGGER.info("sequence " + sequences);
 //    for(int i=1;i<result.split(">").length;i++){
 //        LOGGER.info("match "+ i + " : "+result.split(">")[i]);
 //        sequences.add(">"+result.split(">")[i]);
 //           sequences.add(ligne);
-//    }
-    LOGGER.info("a la fin " + sequences.get(0));
-    futurBlast.add(sequences.get(0));
-    sequences.clear();}
- 
-    LOGGER.info("futurBlast " + futurBlast.size());
+return sequences;
+    }
+//    LOGGER.info("a la fin " + sequences.get(0));
+//    futurBlast.add(sequences.get(0));
+//    sequences.clear();}
+// 
+//    LOGGER.info("futurBlast " + futurBlast.size());
        // TO DO : 
        // for all sequences go find the 1500 pb before the cDNA sequence obtained in blast (don't take the mARN) 
-       
+      return null; 
     } 
     public void place() throws FileNotFoundException, IOException
     {
