@@ -107,6 +107,9 @@ public class FXMLController implements Initializable {
     protected TextField text_new_type;
     @FXML
     protected Button button_new_type;
+      
+    @FXML
+    private TextArea ref_prot;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -224,7 +227,7 @@ public class FXMLController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    ajouter_ref(dataAccess, ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText());
+                    ajouter_ref(dataAccess, ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText(), ref_prot.getText());
                 } catch (SQLException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -241,7 +244,7 @@ public class FXMLController implements Initializable {
         });
     }
 
-    public void ajouter_ref(ConnectionDataBase dataAccess, String nom_plante, String nom_prot, String fasta, String type_prot) throws SQLException {
+    public void ajouter_ref(ConnectionDataBase dataAccess, String nom_plante, String nom_prot, String fasta, String type_prot,String ref_prot) throws SQLException {
         Connection con = dataAccess.getCon();
         ObservableList<String> list = FXCollections.observableArrayList();
         // execute query
@@ -269,11 +272,11 @@ public class FXMLController implements Initializable {
         }
         if (rs1.next()) {
             System.out.println("type prot existe");
-            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
+            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', '"+ ref_prot + "','" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
         } else {
             System.out.println("pas de type prot");
             int rs5 = stmt5.executeUpdate("Insert into TYPE_PROTEINE values ('" + nom_prot + "')");
-            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', NULL,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
+            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "','"+ref_prot+"' ,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
 
         }
 
@@ -396,12 +399,15 @@ public class FXMLController implements Initializable {
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
         Connection con = dataAccess.getCon();
         ObservableList<String> refSeqAra = FXCollections.observableArrayList();
+        ObservableList<String> refProAra = FXCollections.observableArrayList();
         // execute query
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("Select seq_ADN from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
+        
+        ResultSet rs = stmt.executeQuery("Select seq_ADN,nom_prot,seq_prot from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
         while (rs.next()) {
             System.out.println("Dans la boucle while");
-            refSeqAra.add(">\n"+rs.getString(1)+"\n");
+            refSeqAra.add(">"+rs.getString(2)+"\n"+rs.getString(1)+"\n");
+            refProAra.add(">"+rs.getString(2)+"\n"+rs.getString(3)+"\n");
         }
         Collections.sort(refSeqAra);
         LOGGER.info("list " + refSeqAra.size());
@@ -411,7 +417,7 @@ public class FXMLController implements Initializable {
         ResultFile file = new ResultFile();
 //        file.readFile();
           Clustal clustal = new Clustal();
-          clustal.submit(blastResult,refSeqAra);
+          clustal.submit(blastResult,refProAra);
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
 //          Place place = new Place();

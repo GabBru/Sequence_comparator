@@ -45,7 +45,7 @@ public class ResultFile {
     Pattern p = Pattern.compile(">");
     while ((ligne=buff.readLine())!=null){
         Matcher m = p.matcher(ligne);
-        if(m.find()==false){
+        if(!m.find()){
             seq1=seq1+("\n");
             seq1=seq1+(ligne);
             
