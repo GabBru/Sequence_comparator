@@ -130,6 +130,14 @@ public class FXMLController implements Initializable {
     private TableColumn<Sequence, String> col_nom_arbre;
     @FXML
     private TableColumn<Sequence, String> col_details_arbre;
+    @FXML
+    protected Text text_arbre;
+    @FXML
+    protected Button button_arbre;
+    @FXML
+    protected Text text_info_arbre;
+    @FXML
+    protected Button button_soumettre;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -210,6 +218,8 @@ public class FXMLController implements Initializable {
                     text_nom_gene.setVisible(true);
                     text_lien_ncbi.setVisible(true);
 
+                    ObservableList<CIS> list_CIS = getElementCIS(nom_plante, nom_prot);
+                    
                     text_seq_ARN.setText(getARN(nom_prot, nom_plante));
                     text_seq_ADN.setText(getADN(nom_prot, nom_plante));
                     
@@ -241,7 +251,6 @@ public class FXMLController implements Initializable {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        /// Onglet /////
         button_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -413,6 +422,17 @@ public class FXMLController implements Initializable {
         }
         return sequence_ARN;
     }
+    
+    @FXML
+    void View_tree(MouseEvent event){
+//        Generate_tree tree = new Generate_tree(clustal);
+//        tree.submit();
+    }
+    
+    @FXML
+    void Submission(MouseEvent event){
+        
+    }
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
@@ -437,7 +457,9 @@ public class FXMLController implements Initializable {
         ResultFile file = new ResultFile();
 //        file.readFile();
         Clustal clustal = new Clustal();
+
         clustal.submit(blastResult, refProAra);
+
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
 
@@ -453,8 +475,48 @@ public class FXMLController implements Initializable {
 //        Clustal clustal = new Clustal();
 //        clustal.submit(blastResult);
 //        Generate_tree tree = new Generate_tree(clustal.getTree());
-        //Generate_tree tree = new Generate_tree(clustal.getTree());
-//        tree.submit();
+
+//        String clustal = "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "KEH42003.1_23-563:0.00122,\n"
+//                + "XP_024633157.1_1-504:-0.00122)\n"
+//                + ":0.10261,\n"
+//                + "(\n"
+//                + "XP_003625858.2_26-569:-0.00066,\n"
+//                + "ABD32689.1_26-566:0.00066)\n"
+//                + ":0.10839)\n"
+//                + ":0.17045,\n"
+//                + "(\n"
+//                + "(\n"
+//                + "(\n"
+//                + "AES98262.2_22-570:0.00058,\n"
+//                + "XP_024639080.1_22-573:-0.00058)\n"
+//                + ":0.00112,\n"
+//                + "RHN56258.1_11-362:0.00172)\n"
+//                + ":0.00570,\n"
+//                + "XP_003615304.3_2-520:-0.00570)\n"
+//                + ":0.18619)\n"
+//                + ":0.06235,\n"
+//                + "(\n"
+//                + "(\n"
+//                + "KEH18389.1_25-408:0.00615,\n"
+//                + "XP_013444360.1_25-571:-0.00355)\n"
+//                + ":0.00327,\n"
+//                + "KEH18388.1_16-525:-0.00313)\n"
+//                + ":0.09633)\n"
+//                + ":0.10299,\n"
+//                + "AFK37518.1_24-571:0.00306)\n"
+//                + ":0.00066,\n"
+//                + "(\n"
+//                + "ABD28503.1_24-568:0.00012,\n"
+//                + "XP_024632592.1_24-571:-0.00012)\n"
+//                + ":0.00013,\n"
+//                + "KEH39515.1_1-505:-0.00013);";
+
         initTable();
         /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
         ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
@@ -462,11 +524,14 @@ public class FXMLController implements Initializable {
 
         loadData(MaListTest);
         tab_arbre.setVisible(true);
-
-//          Place place = new Place();
-//          place.tBlastN(getSeq_nom_plante());
-//          place.place();
-//        file.deleteFile();
+        text_arbre.setVisible(true);
+        button_arbre.setVisible(true);
+        text_info_arbre.setVisible(true);
+        button_soumettre.setVisible(true);
+        //Place place = new Place();
+        //          place.tBlastN(getSeq_nom_plante());
+        //          place.place();
+        //        file.deleteFile();
     }
 
     private void initTable() {
