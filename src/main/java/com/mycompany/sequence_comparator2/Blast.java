@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -39,7 +40,7 @@ public class Blast extends FXMLController {
     }
 
     //launch blastx between the interested plante and the referenced proteins. parameter : String plante, observableList sequence of referenced proteins. return a list of sequence list
-    public List<String> search(String plante,ObservableList<String> fasta) throws InterruptedException, IOException 
+    public List<String> search(String plante,ObservableList<String> fasta,Integer coverpercent,Integer idpercent) throws InterruptedException, IOException 
     {   
         List<String> resultatBlast = new ArrayList<String>();
 
@@ -85,9 +86,12 @@ public class Blast extends FXMLController {
 
         // take parameters to select results 
         // TO DO : change to take user input value
-        Integer covery = 50;
-        Integer identity = 50;
-
+//        Integer covery = 50;
+//        Integer identity = 50;
+            Integer covery = coverpercent;
+            Integer identity = idpercent;
+            
+            LOGGER.info(" coverBlast " + covery + " identity " + identity);
         // allow the page change 
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
@@ -107,9 +111,10 @@ public class Blast extends FXMLController {
 
             String text2 = driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.c5")).get(i).getText();
             Integer cover = Integer.valueOf(text2.split("%")[0]);
-
             if (identityx < identity | cover < covery) {
-                driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(i).click();
+               WebElement element= driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(i);
+               ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+               element.click();
             }
         }
 

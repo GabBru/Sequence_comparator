@@ -30,12 +30,12 @@ public class Clustal {
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
         
         // Create a Chrome Web Driver with visual
-//        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new ChromeDriver();
         // TO DO: add a  button to switch between the hidden and the visible option
 //        Create a Chrome Web Driver without visual 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        WebDriver driver = new ChromeDriver(options);
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+//        WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
         // Open the clustalo homepage

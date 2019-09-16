@@ -102,9 +102,15 @@ public class Place {
 //download the results on fasta format : 
         File seqfile = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
         Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector("#hjbt>a>span")).getText().split("\\ ")[0]);
- for (int i=1;i<= nbline;i++){
-     
-        driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type("+i+")")).click();
+// for (int i=1;i<= nbline;i++){
+LOGGER.info(" taille de blastresult " + blastResult.size());
+     for(int i=1;i<blastResult.size();i++)
+     {
+         driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type("+i+")")).click();
+
+        // go through all of the table lines if there is/are result(s)
+        if(driver.findElement(By.className("results-tabs")).isDisplayed()){
+        driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type(1)")).click();}
        driver.findElement(By.cssSelector(".selctall>li")).click();
        driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(0).click();
         driver.findElement(By.cssSelector(".right-tools> li > #btnDwnld")).click();
@@ -124,7 +130,6 @@ public class Place {
     result = result+"\n"+ligne;
     }
     LOGGER.info("result => "+ result);
-    buff.close();
 //  seqfile.delete();
     sequences.add(result.split(">")[1]);
     LOGGER.info("sequence " + sequences);
@@ -132,16 +137,18 @@ public class Place {
 //        LOGGER.info("match "+ i + " : "+result.split(">")[i]);
 //        sequences.add(">"+result.split(">")[i]);
 //           sequences.add(ligne);
+    buff.close();
 return sequences;
-    }
+     }
+        return null;
+    
 //    LOGGER.info("a la fin " + sequences.get(0));
 //    futurBlast.add(sequences.get(0));
 //    sequences.clear();}
 // 
 //    LOGGER.info("futurBlast " + futurBlast.size());
        // TO DO : 
-       // for all sequences go find the 1500 pb before the cDNA sequence obtained in blast (don't take the mARN) 
-      return null; 
+       // for all sequences go find the 1500 pb before the cDNA sequence obtained in blast (don't take the mARN)  
     } 
     public void place() throws FileNotFoundException, IOException
     {

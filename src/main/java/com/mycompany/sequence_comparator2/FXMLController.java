@@ -13,18 +13,23 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -33,12 +38,17 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import static javax.swing.UIManager.getInt;
+import javax.swing.event.ChangeEvent;
 
 public class FXMLController implements Initializable {
 
@@ -102,6 +112,8 @@ public class FXMLController implements Initializable {
     protected Label pop_type_prot;
     @FXML
     protected Label pop_nom_prot;
+    @FXML
+    protected Text text_ajout_ok;
 
     //// Onglet ANALYSE ////
     @FXML
@@ -127,6 +139,14 @@ public class FXMLController implements Initializable {
     @FXML
     private TableColumn<Sequence, CheckBox> col_check_arbre;
     @FXML
+    protected ComboBox combo_ref_nom_plante;
+    @FXML
+    protected ComboBox combo_ref_type_prot;
+    @FXML
+    protected Button add_plante;
+    @FXML
+    protected Button add_type_prot;
+    @FXML
     private TableColumn<Sequence, String> col_nom_arbre;
     @FXML
     private TableColumn<Sequence, String> col_details_arbre;
@@ -138,6 +158,19 @@ public class FXMLController implements Initializable {
     protected Text text_info_arbre;
     @FXML
     protected Button button_soumettre;
+    
+    @FXML
+    private Slider cover;
+
+    @FXML
+    private Slider identity;
+    
+    
+    @FXML
+    private Label coverPercent;
+
+    @FXML
+    private Label identityPercent;
 
     protected ObservableList<Sequence> listSeq = FXCollections.observableArrayList();
 
@@ -237,6 +270,7 @@ public class FXMLController implements Initializable {
                     col_pos1_CIS.setSortable(false);
                     col_pos2_CIS.setSortable(false);
                     col_seq_CIS.setSortable(false);
+                    col_seq_CIS.setEditable(true);
                     tab_CIS.setItems(list_CIS);
                 } catch (SQLException | ClassNotFoundException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -244,9 +278,54 @@ public class FXMLController implements Initializable {
             }
         });
 
+        //// Onglet ANALYSE ////
+cover.setMajorTickUnit(10);
+identity.setMajorTickUnit(10);
+cover.setShowTickLabels(true);
+identity.setShowTickLabels(true);
+cover.setShowTickMarks(true);
+identity.setShowTickMarks(true);
+cover.setBlockIncrement(1);
+identity.setBlockIncrement(1);
+//coverPercent.setText("0");
+//identityPercent.setText("0");
+
+    cover.setOnMousePressed(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+             int percent =(int) cover.getValue();
+                coverPercent.setText(String.valueOf(percent));
+            }
+    });
+
+    cover.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                int percent = (int)cover.getValue();
+                coverPercent.setText(String.valueOf(percent));
+            }
+        });
+    
+    identity.setOnMousePressed(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+             int percent =(int) identity.getValue();
+                identityPercent.setText(String.valueOf(percent));
+            }
+    });
+    identity.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                int percent =(int) identity.getValue();
+                identityPercent.setText(String.valueOf(percent));
+            }
+        });
+
+        combo_ref_nom_plante.setItems(list_plante);
         try {
-            //// Onglet ANALYSE ////
+            text_ajout_ok.setVisible(false);
             combo_analyse_type.setItems(getTypeProtAna());
+            combo_ref_type_prot.setItems(getAllTypeProt());
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -255,7 +334,40 @@ public class FXMLController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    ajouter_ref(dataAccess, ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_type_prot.getText(), ref_prot.getText());
+                    // Si texte entré dans le champ nouvelle plante
+                    if (ref_nom_plante.isVisible() == true) {
+                        Connection con = dataAccess.getCon();
+                        Statement stmt = con.createStatement();
+                        // On check si la plante n'est vraiment pas dans la BDD
+                        ResultSet rs = stmt.executeQuery("select nom_plante from PLANTE where nom_plante = '" + ref_nom_plante.getText() + "'");
+                        // Si elle n'y est pas, on l'ajoute
+                        if (!rs.next()) {
+                            Statement stmt_add_plante = con.createStatement();
+                            int rs_add_plante = stmt_add_plante.executeUpdate("insert into PLANTE (nom_plante) values ('" + ref_nom_plante.getText() + "')");
+                        }
+                    }
+
+                    // Si texte dans champ nouveau type
+                    if (ref_type_prot.isVisible() == true) {
+                        Connection con_type = dataAccess.getCon();
+                        Statement stmt_type = con_type.createStatement();
+                        // On check si le type n'est vraiment pas présent.
+                        ResultSet rs_type = stmt_type.executeQuery("select nom_type from TYPE_PROTEINE where nom_type = '" + ref_type_prot.getText() + "'");
+                        // Si il n'y est pas, on l'ajoute
+                        if (!rs_type.next()) {
+                            Statement stmt_add_type = con_type.createStatement();
+                            int rs_add_type = stmt_add_type.executeUpdate("insert into TYPE_PROTEINE values ('" + ref_type_prot.getText() + "')");
+                        }
+                    }
+                    ajouter_ref(ref_nom_plante.getText(), ref_nom_prot.getText(), ref_seq.getText(), ref_prot.getText(), ref_type_prot.getText());
+
+                    ref_nom_plante.clear();
+                    ref_type_prot.clear();
+                    ref_nom_prot.clear();
+                    ref_seq.clear();
+                    ref_prot.clear();
+
+                    text_ajout_ok.setVisible(true);
                 } catch (SQLException ex) {
                     Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -270,44 +382,80 @@ public class FXMLController implements Initializable {
                 webEngine.load(url);
             }
         });
+
+        add_plante.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                text_ajout_ok.setVisible(false);
+                if (combo_ref_nom_plante.isVisible()) {
+                    combo_ref_nom_plante.setVisible(false);
+                    ref_nom_plante.setVisible(true);
+                } else {
+                    combo_ref_nom_plante.setVisible(true);
+                    ref_nom_plante.setVisible(false);
+                }
+            }
+        });
+
+        combo_ref_type_prot.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                text_ajout_ok.setVisible(false);
+            }
+        });
+
+        add_type_prot.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                text_ajout_ok.setVisible(false);
+                if (combo_ref_type_prot.isVisible()) {
+                    combo_ref_type_prot.setVisible(false);
+                    ref_type_prot.setVisible(true);
+                } else {
+                    combo_ref_type_prot.setVisible(true);
+                    ref_type_prot.setVisible(false);
+                }
+            }
+        });
     }
 
-    public void ajouter_ref(ConnectionDataBase dataAccess, String nom_plante, String nom_prot, String fasta, String type_prot, String ref_prot) throws SQLException {
+    public void ajouter_ref(String nom_plante, String nom_prot, String fasta, String fasta_prot, String type_prot) throws SQLException {
+        Connection con = dataAccess.getCon();
+        //execute query ...
+        Statement stmt = con.createStatement();
+        // Verification de l'existence des données en BDD ...
+        ResultSet rs = stmt.executeQuery("select * from `SEQUENCES` natural join PLANTE natural join TYPE_PROTEINE where nom_plante = '" + nom_plante + "' and nom_prot = '" + nom_prot + "' and nom_type = '" + type_prot + "'");
+        // Si la plante n'existe pas ...
+        String id_planteStr = "rien";
+        if (!rs.next()) {
+            // On récupère l'id_plante ...
+            Statement stmt_id = con.createStatement();
+            ResultSet rs_id = stmt_id.executeQuery("select id_plante from PLANTE where nom_plante = '" + nom_plante + "'");
+            if (rs_id.next()) {
+                int id_plante = rs_id.getInt(1);
+                System.out.println("Dans le WHILE (apres) = " + id_plante);
+                id_planteStr = rs.getString(1);
+                System.out.println("Dans le while (apres) = " + id_planteStr);
+                Statement stmt_final = con.createStatement();
+                System.out.println("ID_PLANTE = " + id_plante);
+                int rs_final = stmt_final.executeUpdate("insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, id_plante, nom_type) values ('" + nom_prot + "','" + fasta_prot + "','" + fasta + "'," + id_plante + ",'" + type_prot + "')");
+            } else {
+                ref_seq.setText("PROTEINE DEJA PRESENTE EN BASE DE DONNEES.");
+            }
+        }
+    }
+
+    public ObservableList<String> getAllTypeProt() throws SQLException, ClassNotFoundException {
         Connection con = dataAccess.getCon();
         ObservableList<String> list = FXCollections.observableArrayList();
         // execute query
         Statement stmt = con.createStatement();
-        Statement stmt1 = con.createStatement();
-        Statement stmt2 = con.createStatement();
-        Statement stmt3 = con.createStatement();
-        Statement stmt4 = con.createStatement();
-        Statement stmt5 = con.createStatement();
-        System.out.println("le nom de la plante " + nom_plante);
-        ResultSet rs = stmt.executeQuery("select id_plante from PLANTE where nom_plante= '" + nom_plante + "'");
-        ResultSet rs1 = stmt1.executeQuery("select * from TYPE_PROTEINE where nom_type= '" + type_prot + "'");
-
-        String id_plante = "";
-        if (rs.next()) {
-            System.out.println("plante existe");
-            id_plante = rs.getString(1);
-        } else {
-            System.out.println("pas de plante");
-            int rs3 = stmt3.executeUpdate("Insert into PLANTE (nom_plante) values ('" + nom_plante + "')");
-            ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante= '" + nom_plante + "'");
-            if (rs4.next()) {
-                id_plante = rs4.getString(1);
-            }
+        ResultSet rs = stmt.executeQuery("select * from TYPE_PROTEINE;");
+        while (rs.next()) {
+            list.add(rs.getString(1));
         }
-        if (rs1.next()) {
-            System.out.println("type prot existe");
-            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "', '" + ref_prot + "','" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
-        } else {
-            System.out.println("pas de type prot");
-            int rs5 = stmt5.executeUpdate("Insert into TYPE_PROTEINE values ('" + nom_prot + "')");
-            int rs2 = stmt2.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + nom_prot + "','" + ref_prot + "' ,'" + fasta + "', NULL, NULL, NULL, '" + id_plante + "','" + type_prot + "', NULL)");
-
-        }
-
+        Collections.sort(list);
+        return list;
     }
 
     public ObservableList<String> getNomPlante(ConnectionDataBase dataAccess) throws SQLException, ClassNotFoundException {
@@ -430,6 +578,7 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
+
     void submission(MouseEvent event)throws SQLException {
 
         Connection con = dataAccess.getCon();
@@ -465,14 +614,30 @@ public class FXMLController implements Initializable {
         }
     }
 
+
+    public String getHTMLStringFromList(List<List<String>> list_seq) {
+        String seq = "";
+        for (List<String> list : list_seq) {
+            for (String ligne : list) {
+                seq += list + "<br>" + ligne + "<br/>";
+            }
+        }
+        return seq;
+    }
+
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
+        int covery = (int)cover.getValue();
+        int identityvalue = (int) identity.getValue();
+        LOGGER.info("cover " + covery + " identity " + identityvalue);
         combo_analyse_type.setDisable(true);
         seq_nom_plante1.setDisable(true);
         button_search.setDisable(true);
         button_search_silent.setDisable(true);
         progress_indicator.setVisible(true);
 
+        progress_indicator.setVisible(true);
+        
         Connection con = dataAccess.getCon();
         ObservableList<String> refSeqAra = FXCollections.observableArrayList();
         ObservableList<String> refProAra = FXCollections.observableArrayList();
@@ -490,7 +655,7 @@ public class FXMLController implements Initializable {
         Collections.sort(refSeqAra);
         LOGGER.info("list " + refSeqAra.size());
         Blast blast = new Blast();
-        blastResult = blast.search(getSeq_nom_plante(), refSeqAra);
+        blastResult = blast.search(getSeq_nom_plante(), refSeqAra,covery,identityvalue);
 
         ResultFile file = new ResultFile();
 //        file.readFile();
@@ -501,10 +666,13 @@ public class FXMLController implements Initializable {
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
         
-//        Place tblastn = new Place();
+        Place tblastn = new Place();
         
-//        tBlastNResult.add(tblastn.tBlastN(getSeq_nom_plante()));
-
+        List<String> resultblastn = tblastn.tBlastN(getSeq_nom_plante(),blastResult);
+        
+        for(int i=0;i<resultblastn.size();i++){
+        tBlastNResult.add(resultblastn.get(i));}
+        LOGGER.info("t blast n result "+tBlastNResult);
 
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
@@ -512,6 +680,7 @@ public class FXMLController implements Initializable {
 //        Clustal clustal = new Clustal();
 //        clustal.submit(blastResult);
 //        Generate_tree tree = new Generate_tree(clustal.getTree());
+
         initTable();
         for (int i = 0; i < blastResult.size(); i++) {
             String pre_id = blastResult.get(i).split(":")[0];
@@ -528,10 +697,11 @@ public class FXMLController implements Initializable {
         button_arbre.setVisible(true);
         text_info_arbre.setVisible(true);
         button_soumettre.setVisible(true);
-        //Place place = new Place();
-        //          place.tBlastN(getSeq_nom_plante());
-        //          place.place();
-        //        file.deleteFile();
+//          Place place = new Place();
+//          place.tBlastN(getSeq_nom_plante());
+//          place.place();
+//        file.deleteFile();
+
     }
 
     private void initTable() {
@@ -548,11 +718,6 @@ public class FXMLController implements Initializable {
      * loadData permet mettre les données dans le tableview
      */
     private void loadData(ObservableList<Sequence> listSeq) {
-        System.out.println("Liste " + listSeq.get(0).getNom());
-        System.out.println("Liste " + listSeq.get(0).getDetails());
-        System.out.println("Liste " + listSeq.get(0).getSelection());
-
-        System.out.println("arbre " + tab_arbre);
         tab_arbre.setItems(listSeq);
     }
 
@@ -569,15 +734,16 @@ public class FXMLController implements Initializable {
         info_nom_plante = new Tooltip();
         info_nom_plante.setText("Renseignez le nom complet de la \n "
                 + "plante en utilisant de préférence son nom dans \n"
-                + "la nomenclature officielle (latin).");
+                + "la nomenclature officielle (latin). Si elle n'est pas déjà enregistrée \n"
+                + "dans la base de données, utilisez le bouton (+) pour saisir son nom manuellement.");
         pop_nom_plante.setTooltip(info_nom_plante);
     }
 
     public void help_type_prot(MouseEvent event) throws IOException {
         info_type_prot = new Tooltip();
         info_type_prot.setText("Renseignez le type de protéine concernée. \n"
-                + "Par exemple : invertase. Si ce dernier est déjà enregistré \n"
-                + "en base de données, utilisez la fonction d'auto-remplissage.");
+                + "Par exemple : invertase. Si ce dernier n'est pas déjà enregistré \n"
+                + "en base de données, utilisez le bouton (+) pour saisir le type manuellement.");
         pop_type_prot.setTooltip(info_type_prot);
     }
 
