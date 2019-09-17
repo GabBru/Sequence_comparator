@@ -83,6 +83,7 @@ public class Blast extends FXMLController {
 
         //click the first line of the selector
         WebElement el = driver.findElement(By.cssSelector(".ui-ncbiautocomplete-holder > .ui-ncbiautocomplete-options >li"));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", el);
         el.click();
 
         // Click the FindJobs button for searching
