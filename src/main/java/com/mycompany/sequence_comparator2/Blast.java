@@ -40,7 +40,7 @@ public class Blast extends FXMLController {
     }
 
     //launch blastx between the interested plante and the referenced proteins. parameter : String plante, observableList sequence of referenced proteins. return a list of sequence list
-    public List<String> search(String plante,ObservableList<String> fasta) throws InterruptedException, IOException 
+    public List<String> search(String plante,ObservableList<String> fasta,Integer coverpercent,Integer idpercent) throws InterruptedException, IOException 
     {   
         List<String> resultatBlast = new ArrayList<String>();
 
@@ -86,9 +86,12 @@ public class Blast extends FXMLController {
 
         // take parameters to select results 
         // TO DO : change to take user input value
-        Integer covery = 50;
-        Integer identity = 50;
-
+//        Integer covery = 50;
+//        Integer identity = 50;
+            Integer covery = coverpercent;
+            Integer identity = idpercent;
+            
+            LOGGER.info(" coverBlast " + covery + " identity " + identity);
         // allow the page change 
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
@@ -161,24 +164,5 @@ public class Blast extends FXMLController {
         // Close the browser
         driver.close();
         return resultatBlast;
-    }
-    // check if the sequence is already in the list. parameters : list of sequence list and sequence list to compare. if the sequence 
-    // is already in the list of sequence list return false
-    public boolean checkDouble(List<List<String>> resultatBlast,List<String> sequences)
-    {
-        boolean dontexist = true ;
-        for(int i=0;i<resultatBlast.size();i++)
-        {
-            LOGGER.info("taille du fragment " + resultatBlast.get(i).size());
-            for(int k=0;k<resultatBlast.get(i).size();k++) {
-               LOGGER.info("trouve une sequence identique ? "+ resultatBlast.get(i).get(k) + "taille de resultatBlast " + resultatBlast.size());
-            for(int j=0;j<sequences.size();j++){
-           if(resultatBlast.get(i).get(k)==sequences.get(j))
-           {
-               LOGGER.info("rentre dans le if ");
-               dontexist = false ;
-           }}}
-        }
-        return dontexist;
     }
 }

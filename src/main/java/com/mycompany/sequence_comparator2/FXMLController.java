@@ -7,23 +7,29 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -32,12 +38,17 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import static javax.swing.UIManager.getInt;
+import javax.swing.event.ChangeEvent;
 
 public class FXMLController implements Initializable {
 
@@ -147,6 +158,21 @@ public class FXMLController implements Initializable {
     protected Text text_info_arbre;
     @FXML
     protected Button button_soumettre;
+    
+    @FXML
+    private Slider cover;
+
+    @FXML
+    private Slider identity;
+    
+    
+    @FXML
+    private Label coverPercent;
+
+    @FXML
+    private Label identityPercent;
+
+    protected ObservableList<Sequence> listSeq = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -253,6 +279,48 @@ public class FXMLController implements Initializable {
         });
 
         //// Onglet ANALYSE ////
+cover.setMajorTickUnit(10);
+identity.setMajorTickUnit(10);
+cover.setShowTickLabels(true);
+identity.setShowTickLabels(true);
+cover.setShowTickMarks(true);
+identity.setShowTickMarks(true);
+cover.setBlockIncrement(1);
+identity.setBlockIncrement(1);
+//coverPercent.setText("0");
+//identityPercent.setText("0");
+
+    cover.setOnMousePressed(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+             int percent =(int) cover.getValue();
+                coverPercent.setText(String.valueOf(percent));
+            }
+    });
+
+    cover.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                int percent = (int)cover.getValue();
+                coverPercent.setText(String.valueOf(percent));
+            }
+        });
+    
+    identity.setOnMousePressed(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event) {
+             int percent =(int) identity.getValue();
+                identityPercent.setText(String.valueOf(percent));
+            }
+    });
+    identity.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                int percent =(int) identity.getValue();
+                identityPercent.setText(String.valueOf(percent));
+            }
+        });
+
         combo_ref_nom_plante.setItems(list_plante);
         try {
             text_ajout_ok.setVisible(false);
@@ -510,9 +578,42 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    void Submission(MouseEvent event) {
 
+    void submission(MouseEvent event)throws SQLException {
+
+        Connection con = dataAccess.getCon();
+        ObservableList<Sequence> listSeqCheck = FXCollections.observableArrayList();
+        for (int i = 0; i < listSeq.size(); i++) {
+            if (listSeq.get(i).getSelection().isSelected()) {
+                listSeqCheck.add(listSeq.get(i));
+            }
+        }
+        Statement stmt = con.createStatement();
+        Statement stmt1 = con.createStatement();
+        Statement stmt2 = con.createStatement();
+        Statement stmt3 = con.createStatement();
+        Statement stmt4 = con.createStatement();
+
+        ResultSet rs = stmt.executeQuery("select id_plante from PLANTE where nom_plante= '" + seq_nom_plante1.getText() + "'");
+
+        String id_plante = "";
+        if (rs.next()) {
+            System.out.println("plante existe");
+            id_plante = rs.getString(1);
+        } else {
+            System.out.println("pas de plante");
+            int rs3 = stmt3.executeUpdate("Insert into PLANTE (nom_plante) values ('" + seq_nom_plante1.getText() + "')");
+            ResultSet rs4 = stmt4.executeQuery("select id_plante from PLANTE where nom_plante= '" + seq_nom_plante1.getText() + "'");
+            if (rs4.next()) {
+                id_plante = rs4.getString(1);
+            }
+        }
+
+        for (int i = 0; i < listSeqCheck.size(); i++) {
+            stmt.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + listSeq.get(i).getNom() + "','" + listSeq.get(i).getSequence() + "',NULL, NULL, NULL, NULL, '" + id_plante + "','" + combo_analyse_type.getValue() + "', NULL)");
+        }
     }
+
 
     public String getHTMLStringFromList(List<List<String>> list_seq) {
         String seq = "";
@@ -526,12 +627,22 @@ public class FXMLController implements Initializable {
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
+        int covery = (int)cover.getValue();
+        int identityvalue = (int) identity.getValue();
+        LOGGER.info("cover " + covery + " identity " + identityvalue);
+        combo_analyse_type.setDisable(true);
+        seq_nom_plante1.setDisable(true);
+        button_search.setDisable(true);
+        button_search_silent.setDisable(true);
+        progress_indicator.setVisible(true);
 
         progress_indicator.setVisible(true);
         
         Connection con = dataAccess.getCon();
         ObservableList<String> refSeqAra = FXCollections.observableArrayList();
         ObservableList<String> refProAra = FXCollections.observableArrayList();
+        List<String> blastResult = new ArrayList<String>();
+        List<String> tBlastNResult = new ArrayList<String>();
         // execute query
         Statement stmt = con.createStatement();
 
@@ -544,7 +655,7 @@ public class FXMLController implements Initializable {
         Collections.sort(refSeqAra);
         LOGGER.info("list " + refSeqAra.size());
         Blast blast = new Blast();
-        List<String> blastResult = blast.search(getSeq_nom_plante(), refSeqAra);
+        blastResult = blast.search(getSeq_nom_plante(), refSeqAra,covery,identityvalue);
 
         ResultFile file = new ResultFile();
 //        file.readFile();
@@ -554,11 +665,14 @@ public class FXMLController implements Initializable {
 
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
-
-        combo_analyse_type.setDisable(true);
-        seq_nom_plante1.setDisable(true);
-        button_search.setDisable(true);
-        button_search_silent.setDisable(true);
+        
+        Place tblastn = new Place();
+        
+        List<String> resultblastn = tblastn.tBlastN(getSeq_nom_plante(),blastResult);
+        
+        for(int i=0;i<resultblastn.size();i++){
+        tBlastNResult.add(resultblastn.get(i));}
+        LOGGER.info("t blast n result "+tBlastNResult);
 
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
@@ -566,58 +680,18 @@ public class FXMLController implements Initializable {
 //        Clustal clustal = new Clustal();
 //        clustal.submit(blastResult);
 //        Generate_tree tree = new Generate_tree(clustal.getTree());
-//        tree.submit();
-//        String clustal = "(\n"
-//                + "(\n"
-//                + "(\n"
-//                + "(\n"
-//                + "(\n"
-//                + "(\n"
-//                + "KEH42003.1_23-563:0.00122,\n"
-//                + "XP_024633157.1_1-504:-0.00122)\n"
-//                + ":0.10261,\n"
-//                + "(\n"
-//                + "XP_003625858.2_26-569:-0.00066,\n"
-//                + "ABD32689.1_26-566:0.00066)\n"
-//                + ":0.10839)\n"
-//                + ":0.17045,\n"
-//                + "(\n"
-//                + "(\n"
-//                + "(\n"
-//                + "AES98262.2_22-570:0.00058,\n"
-//                + "XP_024639080.1_22-573:-0.00058)\n"
-//                + ":0.00112,\n"
-//                + "RHN56258.1_11-362:0.00172)\n"
-//                + ":0.00570,\n"
-//                + "XP_003615304.3_2-520:-0.00570)\n"
-//                + ":0.18619)\n"
-//                + ":0.06235,\n"
-//                + "(\n"
-//                + "(\n"
-//                + "KEH18389.1_25-408:0.00615,\n"
-//                + "XP_013444360.1_25-571:-0.00355)\n"
-//                + ":0.00327,\n"
-//                + "KEH18388.1_16-525:-0.00313)\n"
-//                + ":0.09633)\n"
-//                + ":0.10299,\n"
-//                + "AFK37518.1_24-571:0.00306)\n"
-//                + ":0.00066,\n"
-//                + "(\n"
-//                + "ABD28503.1_24-568:0.00012,\n"
-//                + "XP_024632592.1_24-571:-0.00012)\n"
-//                + ":0.00013,\n"
-//                + "KEH39515.1_1-505:-0.00013);";
+
         initTable();
+        for (int i = 0; i < blastResult.size(); i++) {
+            String pre_id = blastResult.get(i).split(":")[0];
+            String id = pre_id.split(">")[1];
+            String seq = blastResult.get(i).split("]")[1];
+//            String CDNA = tblastn.tBlastN(getSeq_nom_plante(),blastResult).get(i).split(".*,.*\n")[1];
+            /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
+            listSeq.add(new Sequence(new CheckBox(), id, "elle est cool", seq));
+        }
 
-        /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
-        ObservableList<Sequence> MaListTest = FXCollections.observableArrayList();
-
-        MaListTest.add(new Sequence(new CheckBox(), "Le nom de la sequence", "elle est cool"));
-        System.out.println("Liste " + MaListTest.get(0).getNom());
-        System.out.println("Liste " + MaListTest.get(0).getDetails());
-        System.out.println("Liste " + MaListTest.get(0).getSelection());
-
-        loadData(MaListTest);
+        loadData(listSeq);
         tab_arbre.setVisible(true);
         text_arbre.setVisible(true);
         button_arbre.setVisible(true);
@@ -643,13 +717,8 @@ public class FXMLController implements Initializable {
     /**
      * loadData permet mettre les données dans le tableview
      */
-    private void loadData(ObservableList<Sequence> ListSeq) {
-        System.out.println("Liste " + ListSeq.get(0).getNom());
-        System.out.println("Liste " + ListSeq.get(0).getDetails());
-        System.out.println("Liste " + ListSeq.get(0).getSelection());
-
-        System.out.println("arbre " + tab_arbre);
-        tab_arbre.setItems(ListSeq);
+    private void loadData(ObservableList<Sequence> listSeq) {
+        tab_arbre.setItems(listSeq);
     }
 
     public String getSeq_nom_plante() {
