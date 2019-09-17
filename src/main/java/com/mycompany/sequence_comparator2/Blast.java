@@ -40,8 +40,7 @@ public class Blast extends FXMLController {
     }
 
     //launch blastx between the interested plante and the referenced proteins. parameter : String plante, observableList sequence of referenced proteins. return a list of sequence list
-    public List<String> search(String plante,ObservableList<String> fasta,Integer coverpercent,Integer idpercent) throws InterruptedException, IOException 
-    {   
+    public List<String> search(String plante, ObservableList<String> fasta, Integer coverpercent, Integer idpercent) throws InterruptedException, IOException {
         List<String> resultatBlast = new ArrayList<String>();
 
         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
@@ -63,8 +62,8 @@ public class Blast extends FXMLController {
         // Enter the sequence in the field
         driver.findElement(By.id("seq")).clear();
         LOGGER.info("fasta " + fasta.size());
-        for (int i=0;i<fasta.size();i++){
-            System.out.println("liste fasta "+fasta.get(i));
+        for (int i = 0; i < fasta.size(); i++) {
+            System.out.println("liste fasta " + fasta.get(i));
             driver.findElement(By.id("seq")).sendKeys(fasta.get(i));
         }
         System.out.println("après la boucle ");
@@ -88,79 +87,80 @@ public class Blast extends FXMLController {
         // TO DO : change to take user input value
 //        Integer covery = 50;
 //        Integer identity = 50;
-            Integer covery = coverpercent;
-            Integer identity = idpercent;
-            
-            LOGGER.info(" coverBlast " + covery + " identity " + identity);
+        Integer covery = coverpercent;
+        Integer identity = idpercent;
+
+        LOGGER.info(" coverBlast " + covery + " identity " + identity);
         // allow the page change 
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
 // go through the input sequence list 
- for (int j=1;j<= fasta.size();j++){
-     // select a sequence 
-     driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type("+j+")")).click();
+        for (int j = 1; j <= fasta.size(); j++) {
+            // select a sequence 
+            driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type(" + j + ")")).click();
 
-        // go through all of the table lines if there is/are result(s)
-        if(driver.findElement(By.className("results-tabs")).isDisplayed()){
-        //get the number of results
-        Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector(".selctall>li>.small-text>#slcNum")).getText());
-        // go through the result table
-        for (int i = 0; i < nbline; i++) {
-            String text = driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.c7")).get(i).getText();
-            Integer identityx = Integer.valueOf(text.split("\\.")[0]);
+            // go through all of the table lines if there is/are result(s)
+            if (driver.findElement(By.className("results-tabs")).isDisplayed()) {
+                //get the number of results
+                Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector(".selctall>li>.small-text>#slcNum")).getText());
+                // go through the result table
+                for (int i = 0; i < nbline; i++) {
+                    String text = driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.c7")).get(i).getText();
+                    Integer identityx = Integer.valueOf(text.split("\\.")[0]);
 
-            String text2 = driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.c5")).get(i).getText();
-            Integer cover = Integer.valueOf(text2.split("%")[0]);
-            if (identityx < identity | cover < covery) {
-               WebElement element= driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(i);
-               ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
-               element.click();
-            }
-        }
-
-        //download the results on fasta format : 
-        driver.findElement(By.cssSelector(".right-tools> li > #btnDwnld")).click();
-        driver.findElement(By.cssSelector(".right-tools> li > #dsDownload > li > #dwFSTAl")).click();
-
-        //A voir si il faut ajouter encore plus de temps d'attente pour les connexions lentes 
-        Thread.sleep(5000);
-        ResultFile resultfile = new ResultFile();
-        Pattern p = Pattern.compile(">");
-        List<String> fileResult = resultfile.readFile();
-        boolean exist = false;
-        
-        //add all line of all file in resultBlast
-        for(int l=0;l<fileResult.size();l++)
-        {
-            LOGGER.info("nombre de séquences dans le fichier " + fileResult.size());
-            String seq = fileResult.get(l);
-            LOGGER.info("sequence " + seq);
-            String id = seq.split(":")[0];
-            LOGGER.info("id "+id);
-            Matcher matcher = p.matcher(id);
-            
-            if (resultatBlast.isEmpty()){resultatBlast.add(seq);}
-            for(int m=0;m<resultatBlast.size();m++)
-            {
-                LOGGER.info("nombre de séquences en sortie de blast " + resultatBlast.size());
-                String idline= resultatBlast.get(m).split(":")[0];
-                LOGGER.info("id : " +id + " idline : " + idline);
-                if(id.equals(idline)&&matcher.find()){
-                    exist=true;
-//                fileResult.remove(l);
-                    LOGGER.info("les meme donc remove "+ fileResult.size());
+                    String text2 = driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.c5")).get(i).getText();
+                    Integer cover = Integer.valueOf(text2.split("%")[0]);
+                    if (identityx < identity | cover < covery) {
+                        WebElement element = driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(i);
+                        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
+                        element.click();
+                    }
                 }
-                
-                
+
+                //download the results on fasta format : 
+                driver.findElement(By.cssSelector(".right-tools> li > #btnDwnld")).click();
+                driver.findElement(By.cssSelector(".right-tools> li > #dsDownload > li > #dwFSTAl")).click();
+
+                //A voir si il faut ajouter encore plus de temps d'attente pour les connexions lentes 
+                Thread.sleep(5000);
+                ResultFile resultfile = new ResultFile();
+                Pattern p = Pattern.compile(">");
+                List<String> fileResult = resultfile.readFile();
+                boolean exist = false;
+
+                //add all line of all file in resultBlast
+                for (int l = 0; l < fileResult.size(); l++) {
+                    LOGGER.info("nombre de séquences dans le fichier " + fileResult.size());
+                    String seq = fileResult.get(l);
+                    LOGGER.info("sequence " + seq);
+                    String id = seq.split(":")[0];
+                    LOGGER.info("id " + id);
+                    Matcher matcher = p.matcher(id);
+
+                    if (resultatBlast.isEmpty()) {
+                        resultatBlast.add(seq);
+                    }
+                    for (int m = 0; m < resultatBlast.size(); m++) {
+                        LOGGER.info("nombre de séquences en sortie de blast " + resultatBlast.size());
+                        String idline = resultatBlast.get(m).split(":")[0];
+                        LOGGER.info("id : " + id + " idline : " + idline);
+                        if (id.equals(idline) && matcher.find()) {
+                            exist = true;
+//                fileResult.remove(l);
+                            LOGGER.info("les meme donc remove " + fileResult.size());
+                        }
+
+                    }
+                    if (exist == false) {
+                        resultatBlast.add(fileResult.get(l));
+                    }
+                    exist = false;
+                    LOGGER.info(" id " + id);
+                }
+                resultfile.deleteFile();
             }
-            if(exist==false){
-                resultatBlast.add(fileResult.get(l));}
-            exist=false;
-            LOGGER.info(" id " + id);
+
         }
-        resultfile.deleteFile();}
-        
- }
         // Close the browser
         driver.close();
         return resultatBlast;
