@@ -12,16 +12,17 @@ import javafx.scene.control.CheckBox;
  * @author Natasha
  */
 public class Sequence {
+
     CheckBox selection;
-    String nom, details,sequence,CDNA;
-    
-    public Sequence (CheckBox selection, String nom, String details, String sequence ) {
-        this.selection=selection;
-        this.nom=nom;
-        this.details=details;
-        this.sequence=sequence;
+    String nom, details, sequence, CDNA;
+
+    public Sequence(CheckBox selection, String nom, String details, String sequence) {
+        this.selection = selection;
+        this.nom = nom;
+        this.details = details;
+        this.sequence = sequence;
 //        this.CDNA=CDNA;
-}
+    }
 
     public CheckBox getSelection() {
         return selection;
@@ -38,5 +39,5 @@ public class Sequence {
     public String getDetails() {
         return details;
     }
-    
+
 }

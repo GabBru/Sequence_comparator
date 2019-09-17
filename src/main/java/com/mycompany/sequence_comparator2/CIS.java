@@ -10,10 +10,11 @@ package com.mycompany.sequence_comparator2;
  * @author brunetgabriel
  */
 public class CIS {
+
     private String name, sequence_CIS;
     private int start_position, end_position;
-    
-    public CIS(String name, String sequence_CIS, int start_position, int end_position){
+
+    public CIS(String name, String sequence_CIS, int start_position, int end_position) {
         this.name = name;
         this.sequence_CIS = sequence_CIS;
         this.start_position = start_position;
@@ -51,5 +52,5 @@ public class CIS {
     public void setEnd_position(int end_position) {
         this.end_position = end_position;
     }
-    
+
 }
