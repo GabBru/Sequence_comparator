@@ -287,14 +287,12 @@ cover.setShowTickMarks(true);
 identity.setShowTickMarks(true);
 cover.setBlockIncrement(1);
 identity.setBlockIncrement(1);
-//coverPercent.setText("0");
-//identityPercent.setText("0");
 
-    cover.setOnMousePressed(new EventHandler<MouseEvent>(){
+    cover.setOnMouseReleased(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event) {
              int percent =(int) cover.getValue();
-                coverPercent.setText(String.valueOf(percent));
+                coverPercent.setText(String.valueOf(percent) + " %");
             }
     });
 
@@ -302,7 +300,7 @@ identity.setBlockIncrement(1);
             @Override
             public void handle(KeyEvent event) {
                 int percent = (int)cover.getValue();
-                coverPercent.setText(String.valueOf(percent));
+                coverPercent.setText(String.valueOf(percent)+" %");
             }
         });
     
@@ -310,14 +308,14 @@ identity.setBlockIncrement(1);
             @Override
             public void handle(MouseEvent event) {
              int percent =(int) identity.getValue();
-                identityPercent.setText(String.valueOf(percent));
+                identityPercent.setText(String.valueOf(percent)+" %");
             }
     });
     identity.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 int percent =(int) identity.getValue();
-                identityPercent.setText(String.valueOf(percent));
+                identityPercent.setText(String.valueOf(percent)+" %");
             }
         });
 
@@ -658,7 +656,6 @@ identity.setBlockIncrement(1);
         blastResult = blast.search(getSeq_nom_plante(), refSeqAra,covery,identityvalue);
 
         ResultFile file = new ResultFile();
-//        file.readFile();
         Clustal clustal = new Clustal();
 
         clustal.submit(blastResult, refProAra);
@@ -666,13 +663,13 @@ identity.setBlockIncrement(1);
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
         
-        Place tblastn = new Place();
-        
-        List<String> resultblastn = tblastn.tBlastN(getSeq_nom_plante(),blastResult);
-        
-        for(int i=0;i<resultblastn.size();i++){
-        tBlastNResult.add(resultblastn.get(i));}
-        LOGGER.info("t blast n result "+tBlastNResult);
+//        Place tblastn = new Place();
+//        
+//        List<String> resultblastn = tblastn.tBlastN(getSeq_nom_plante(),blastResult);
+//        
+//        for(int i=0;i<resultblastn.size();i++){
+//        tBlastNResult.add(resultblastn.get(i));}
+//        LOGGER.info("t blast n result "+tBlastNResult);
 
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
