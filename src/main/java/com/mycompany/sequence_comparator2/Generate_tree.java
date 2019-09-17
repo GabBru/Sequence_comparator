@@ -18,17 +18,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
  * @author gphy
  */
 public class Generate_tree {
+
     String tree;
     Clustal cl = new Clustal();
-    public Generate_tree(String arbre){
+
+    public Generate_tree(String arbre) {
         tree = arbre;
-}
-    
-    public void submit() throws IOException, InterruptedException{
-     // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir")+"/chromedriver.exe");
+    }
+
+    public void submit() throws IOException, InterruptedException {
+        // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-        
+
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();

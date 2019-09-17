@@ -158,14 +158,13 @@ public class FXMLController implements Initializable {
     protected Text text_info_arbre;
     @FXML
     protected Button button_soumettre;
-    
+
     @FXML
     private Slider cover;
 
     @FXML
     private Slider identity;
-    
-    
+
     @FXML
     private Label coverPercent;
 
@@ -279,44 +278,44 @@ public class FXMLController implements Initializable {
         });
 
         //// Onglet ANALYSE ////
-cover.setMajorTickUnit(10);
-identity.setMajorTickUnit(10);
-cover.setShowTickLabels(true);
-identity.setShowTickLabels(true);
-cover.setShowTickMarks(true);
-identity.setShowTickMarks(true);
-cover.setBlockIncrement(1);
-identity.setBlockIncrement(1);
+        cover.setMajorTickUnit(10);
+        identity.setMajorTickUnit(10);
+        cover.setShowTickLabels(true);
+        identity.setShowTickLabels(true);
+        cover.setShowTickMarks(true);
+        identity.setShowTickMarks(true);
+        cover.setBlockIncrement(1);
+        identity.setBlockIncrement(1);
 //coverPercent.setText("0");
 //identityPercent.setText("0");
 
-    cover.setOnMousePressed(new EventHandler<MouseEvent>(){
+        cover.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-             int percent =(int) cover.getValue();
-                coverPercent.setText(String.valueOf(percent));
-            }
-    });
-
-    cover.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                int percent = (int)cover.getValue();
+                int percent = (int) cover.getValue();
                 coverPercent.setText(String.valueOf(percent));
             }
         });
-    
-    identity.setOnMousePressed(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent event) {
-             int percent =(int) identity.getValue();
-                identityPercent.setText(String.valueOf(percent));
-            }
-    });
-    identity.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+        cover.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                int percent =(int) identity.getValue();
+                int percent = (int) cover.getValue();
+                coverPercent.setText(String.valueOf(percent));
+            }
+        });
+
+        identity.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                int percent = (int) identity.getValue();
+                identityPercent.setText(String.valueOf(percent));
+            }
+        });
+        identity.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                int percent = (int) identity.getValue();
                 identityPercent.setText(String.valueOf(percent));
             }
         });
@@ -579,7 +578,7 @@ identity.setBlockIncrement(1);
 
     @FXML
 
-    void submission(MouseEvent event)throws SQLException {
+    void submission(MouseEvent event) throws SQLException {
 
         Connection con = dataAccess.getCon();
         ObservableList<Sequence> listSeqCheck = FXCollections.observableArrayList();
@@ -614,7 +613,6 @@ identity.setBlockIncrement(1);
         }
     }
 
-
     public String getHTMLStringFromList(List<List<String>> list_seq) {
         String seq = "";
         for (List<String> list : list_seq) {
@@ -627,7 +625,7 @@ identity.setBlockIncrement(1);
 
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
-        int covery = (int)cover.getValue();
+        int covery = (int) cover.getValue();
         int identityvalue = (int) identity.getValue();
         LOGGER.info("cover " + covery + " identity " + identityvalue);
         combo_analyse_type.setDisable(true);
@@ -637,7 +635,7 @@ identity.setBlockIncrement(1);
         progress_indicator.setVisible(true);
 
         progress_indicator.setVisible(true);
-        
+
         Connection con = dataAccess.getCon();
         ObservableList<String> refSeqAra = FXCollections.observableArrayList();
         ObservableList<String> refProAra = FXCollections.observableArrayList();
@@ -655,7 +653,7 @@ identity.setBlockIncrement(1);
         Collections.sort(refSeqAra);
         LOGGER.info("list " + refSeqAra.size());
         Blast blast = new Blast();
-        blastResult = blast.search(getSeq_nom_plante(), refSeqAra,covery,identityvalue);
+        blastResult = blast.search(getSeq_nom_plante(), refSeqAra, covery, identityvalue);
 
         ResultFile file = new ResultFile();
 //        file.readFile();
@@ -665,14 +663,15 @@ identity.setBlockIncrement(1);
 
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
-        
+
         Place tblastn = new Place();
-        
-        List<String> resultblastn = tblastn.tBlastN(getSeq_nom_plante(),blastResult);
-        
-        for(int i=0;i<resultblastn.size();i++){
-        tBlastNResult.add(resultblastn.get(i));}
-        LOGGER.info("t blast n result "+tBlastNResult);
+
+        List<String> resultblastn = tblastn.tBlastN(getSeq_nom_plante(), blastResult);
+
+        for (int i = 0; i < resultblastn.size(); i++) {
+            tBlastNResult.add(resultblastn.get(i));
+        }
+        LOGGER.info("t blast n result " + tBlastNResult);
 
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
@@ -680,7 +679,6 @@ identity.setBlockIncrement(1);
 //        Clustal clustal = new Clustal();
 //        clustal.submit(blastResult);
 //        Generate_tree tree = new Generate_tree(clustal.getTree());
-
         initTable();
         for (int i = 0; i < blastResult.size(); i++) {
             String pre_id = blastResult.get(i).split(":")[0];
