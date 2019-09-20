@@ -102,8 +102,9 @@ public class Blast extends FXMLController {
 
 // go through the input sequence list 
         for (int j = 1; j <= fasta.size(); j++) {
-            // select a sequence 
-            driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type(" + j + ")")).click();
+            // select a sequence if there is more than 1 
+            if(fasta.size()!=1){
+            driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type(" + j + ")")).click();}
 
             // go through all of the table lines if there is/are result(s)
             if (driver.findElement(By.className("results-tabs")).isDisplayed()) {
