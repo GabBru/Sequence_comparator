@@ -539,7 +539,7 @@ identity.setBlockIncrement(1);
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("Select * from CIS natural join SEQUENCES natural JOIN PLANTE where nom_plante = '" + nom_plante + "' and nom_prot = '" + nom_prot + "'");
         while (rs.next()) {
-            list_CIS.add(new CIS(rs.getString(4), rs.getString(5), getInt(6), getInt(7)));
+            list_CIS.add(new CIS(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)));
         }
         return list_CIS;
     }

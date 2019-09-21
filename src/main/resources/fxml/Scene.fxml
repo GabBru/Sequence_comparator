@@ -163,7 +163,7 @@
                         <Label fx:id="coverPercent" layoutX="21.0" layoutY="165.0" text="0 %" />
                         <Label fx:id="identityPercent" layoutX="310.0" layoutY="165.0" text="0 %" />
                         <Label layoutX="21.0" layoutY="89.0" prefHeight="18.0" prefWidth="77.0" text="Coverage" />
-                        <Label layoutX="299.0" layoutY="89.0" prefHeight="18.0" prefWidth="77.0" text="Identity" />
+                        <Label layoutX="302.0" layoutY="89.0" prefHeight="18.0" prefWidth="77.0" text="Identity" />
                      </children>
                   </AnchorPane>
                </content>
