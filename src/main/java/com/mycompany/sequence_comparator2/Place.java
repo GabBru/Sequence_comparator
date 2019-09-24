@@ -78,6 +78,7 @@ public class Place {
         
 //        // set the sequences into the input field
         driver.findElement(By.id("seq")).clear();
+        driver.manage().timeouts().pageLoadTimeout(1, TimeUnit.MINUTES);
         for (int i=0;i<blastResult.size();i++){
         driver.findElement(By.id("seq")).sendKeys(blastResult.get(i)+"\n");}
         
@@ -95,22 +96,25 @@ public class Place {
         
        // Click the FindJobs button for searching
        driver.findElement(By.id("b1")).click();
-       driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-       Thread.sleep(20000);
+       Thread.sleep(50000);
 //       driver.findElement(By.cssSelector(".deflnDesc")).click();
 //       driver.findElement(By.cssSelector(".alnAll>div>div>span>span>a")).click();
 //download the results on fasta format : 
         File seqfile = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
-        Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector("#hjbt>a>span")).getText().split("\\ ")[0]);
+//        Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector("#hjbt>a>span")).getText().split("\\ ")[0]);
 // for (int i=1;i<= nbline;i++){
 LOGGER.info(" taille de blastresult " + blastResult.size());
+if (blastResult.size()!=1){
+    LOGGER.info("blastResult >1 ");
+    List<String> sequences = new ArrayList<String>();
      for(int i=1;i<blastResult.size();i++)
      {
+         LOGGER.info("tour => " +i );
          driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type("+i+")")).click();
 
         // go through all of the table lines if there is/are result(s)
-        if(driver.findElement(By.className("results-tabs")).isDisplayed()){
-        driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type(1)")).click();}
+//        if(driver.findElement(By.className("results-tabs")).isDisplayed()){
+//        driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type(1)")).click();}
        driver.findElement(By.cssSelector(".selctall>li")).click();
        driver.findElements(By.cssSelector(".dscTable > tbody >tr>td.l.c0")).get(0).click();
         driver.findElement(By.cssSelector(".right-tools> li > #btnDwnld")).click();
@@ -124,22 +128,21 @@ LOGGER.info(" taille de blastresult " + blastResult.size());
     
     String ligne;
     String result = "";
-    List<String> sequences = new ArrayList<String>();
         // concat all lines in a single one in result 
     while ((ligne=buff.readLine())!=null){
     result = result+"\n"+ligne;
     }
-    LOGGER.info("result => "+ result);
 //  seqfile.delete();
     sequences.add(result.split(">")[1]);
-    LOGGER.info("sequence " + sequences);
 //    for(int i=1;i<result.split(">").length;i++){
 //        LOGGER.info("match "+ i + " : "+result.split(">")[i]);
 //        sequences.add(">"+result.split(">")[i]);
 //           sequences.add(ligne);
     buff.close();
+     seqfile.delete();}
 return sequences;
      }
+LOGGER.info("passé ");
         return null;
     
 //    LOGGER.info("a la fin " + sequences.get(0));
