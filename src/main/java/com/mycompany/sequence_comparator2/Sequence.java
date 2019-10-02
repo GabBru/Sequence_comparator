@@ -12,6 +12,7 @@ import javafx.scene.control.CheckBox;
  * @author Natasha
  */
 public class Sequence {
+
     CheckBox selection;
     String nom, details,sequence,CDNA;
     
@@ -38,5 +39,5 @@ public class Sequence {
     public String getDetails() {
         return details;
     }
-    
+
 }

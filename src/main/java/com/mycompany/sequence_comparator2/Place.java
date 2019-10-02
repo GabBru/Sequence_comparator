@@ -30,8 +30,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class Place {
     protected static final Logger LOGGER = Logger.getLogger(Place.class.getName());
 //    ResultFile resultFile = new ResultFile();
-    
-    public void Place(){}
+
+    public void Place() {
+    }
+
     //get ARNm sequences from invertase protein 
     public String blastN(String plante,List<String> sequences) throws InterruptedException
     {
@@ -48,7 +50,7 @@ public class Place {
 //        options.addArguments("--headless");
 //        WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-          // Open the Ncbi homepage
+        // Open the Ncbi homepage
         driver.get("https://www.ncbi.nlm.nih.gov/gene");
         
 //        // Enter the sequence in the field
@@ -60,7 +62,7 @@ public class Place {
 //        }
 //        System.out.println("après la boucle ");
 // Enter the organism to study 
-       driver.findElement(By.id("term")).clear();
+        driver.findElement(By.id("term")).clear();
         driver.findElement(By.id("term")).sendKeys(plante);
         driver.findElement(By.id("search")).click();
         driver.findElement(By.id("assembly_blast")).click();
@@ -89,14 +91,13 @@ public class Place {
         return null;
         
     }
-       
-    public List<String> tBlastN(String plante,List<String> blastResult) throws IOException, InterruptedException
-    {
+
+    public List<String> tBlastN(String plante, List<String> blastResult) throws IOException, InterruptedException {
         List<String> futurBlast = new ArrayList<>();
-         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir")+"/chromedriver.exe");
+        // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-        
+
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
         // TO DO: add a  button to switch between the hidden and the visible option
@@ -108,7 +109,7 @@ public class Place {
 
         // Open the tblastn page  
         driver.get("https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=tblastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome");
-        
+
 //        // set the sequences into the input field
         driver.findElement(By.id("seq")).clear();
         driver.manage().timeouts().pageLoadTimeout(1, TimeUnit.MINUTES);
@@ -118,7 +119,7 @@ public class Place {
         // Enter the organism to study 
         driver.findElement(By.id("qorganism")).clear();
         driver.findElement(By.id("qorganism")).sendKeys(plante);
-        
+
         //pause to allow the selector to be displayed 
         Thread.sleep(3000);
 //        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
@@ -180,21 +181,21 @@ return sequences;
      }
 LOGGER.info("passé ");
         return null;
-    
+
 //    LOGGER.info("a la fin " + sequences.get(0));
 //    futurBlast.add(sequences.get(0));
 //    sequences.clear();}
 // 
 //    LOGGER.info("futurBlast " + futurBlast.size());
-       // TO DO : 
-       // for all sequences go find the 1500 pb before the cDNA sequence obtained in blast (don't take the mARN)  
-    } 
-    public void place() throws FileNotFoundException, IOException
-    {
-         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir")+"/chromedriver.exe");
+        // TO DO : 
+        // for all sequences go find the 1500 pb before the cDNA sequence obtained in blast (don't take the mARN)  
+    }
+
+    public void place() throws FileNotFoundException, IOException {
+        // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-        
+
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
         // TO DO: add a  button to switch between the hidden and the visible option
@@ -208,52 +209,51 @@ LOGGER.info("passé ");
         driver.get("https://www.dna.affrc.go.jp/PLACE/?action=newplace");
         // add a sequence to find cis element 
         //to do : recuperer les séquences obtenus en blastn et les mettre à la place de la séquence en dure 
-        driver.findElement(By.className("seq")).sendKeys("1 tagaattatg tagttagata tagtttttaa actatttatt tattctctaa aaaaaaaact\n" +
-"       61 atttatttat gtatttttta taacgcactc atattagtta tagataaatt caaatatcac\n" +
-"      121 tacaaaaaaa gaagataaat tcaaatatta agcattcaaa ttagttatag ataaattcaa\n" +
-"      181 atattactag tacgagtgga taggtttatc tgtcattagg tcttcgatct tagccattgg\n" +
-"      241 tgagagaatt acggccaaaa caatgaatta tccaaatcct atttttttta accttcttaa\n" +
-"      301 tcgcaacttc ctcccgtacg cactttattt taacgtatct ttctttacac tttctgtatt\n" +
-"      361 tcctaatttc ctttcctatg ctaattaaat agaaaagtaa gtaagtacta tccgttttgt\n" +
-"      421 tcttgattat atctaatggt tctctcaaag gttgtaacga tctttgttgc ggttctctcc\n" +
-"      481 attagtttat tgcttataaa caatggtgtt gaagcatttc ataaagtata ccctcacctt\n" +
-"      541 caatctgttt cagccatttc cgtgagcgaa gtacatagaa ctggatacca ttttcaacct\n" +
-"      601 cctaggaact ggatcaacgg ttcgtaacat tcttgctttt taaccctact ttattatgaa\n" +
-"      661 tttatgatat attttcggtg cacttttttg tgattcttga attattgtga tgattatacc\n" +
-"      721 ataatggttg gttctacgtc cataatggag atatattttt tttgtggaga ttgcattatt\n" +
-"      781 atataaaatc taaaatgata ataactatct gagggcgcat aataacttga atacaatagt\n" +
-"      841 ggtaggctgg ataaattgtg acgatataac attgaacaac attattgatt ttacaaaaaa\n" +
-"      901 gatttttgaa ccatggtgtg atacaaataa attataaata cttcgaccct taacgatttg\n" +
-"      961 gtctagagtt cgatctcaaa ccgtgtatgt gacgtaaagc ggttatatta acaatcgttt\n" +
-"     1021 tttacctcct tttatagttg ctgttgcacc attttgaaag gaaataaaaa ttacagggaa\n" +
-"     1081 gtcacaaaaa tcaatttgta tctctgaacc tgatatgatg agaatagctt aaaattgaat\n" +
-"     1141 gaatattaat atttttttat tatatttttg ataaattaaa gtgaataatt ttctacacaa\n" +
-"     1201 aaatatatta tatttcaata acacattatt tgatattttt atttcatcat aaagtttgat\n" +
-"     1261 gcataaaccc tcaatttatt ttttacatat aagtatgtta accaaggtta aaaaagggtt\n" +
-"     1321 aagctaacaa gtacctttaa aactcttctt aaagaatcaa aaatgaaaat tattggtaaa\n" +
-"     1381 ttttatgtaa aaaaagttgt ttttttaagt ttcaatatat atatagaata cataattttt\n" +
-"     1441 aaaataaaat tttcccttca gattttttaa caagtgttac aaggtcaata tttagggtgg\n" +
-"     1501 ccatgattcc tctgtgctca ctttaatgaa gtttgcttat aaaaggaaga gtcaaaaagg\n" +
-"     1561 aggatatgat tttaatggtg gagagaaaga aaaataactt tttctcctaa atattttgga\n" +
-"     1621 ggcttaaata tgtatttcaa acgaccccta gttgcaagga tgaaatacat gtttaaactt\n" +
-"     1681 attttggata aaagttgaaa tcaagtgaga ggagttttgt tctcttggat tccgctttcc\n" +
-"     1741 tctcccatta aatcttgatc cagaaaatat aacttaaata attccttttc agttttcatc\n" +
-"     1801 ttcaattatg ctaactttat ttgcttactg attctttcat ggtttctaaa ttggtgtaat\n" +
-"     1861 ggacgcatca atcacatgca gacccaaatg gtaagtaaaa ttcgcatttg actttttttt\n" +
-"     1921 tttttacttc atttgtcaat gtccttcgta ttatctgcat gtacttgaac taattattta\n" +
-"     1981 tgaaccatgc ag");
+        driver.findElement(By.className("seq")).sendKeys("1 tagaattatg tagttagata tagtttttaa actatttatt tattctctaa aaaaaaaact\n"
+                + "       61 atttatttat gtatttttta taacgcactc atattagtta tagataaatt caaatatcac\n"
+                + "      121 tacaaaaaaa gaagataaat tcaaatatta agcattcaaa ttagttatag ataaattcaa\n"
+                + "      181 atattactag tacgagtgga taggtttatc tgtcattagg tcttcgatct tagccattgg\n"
+                + "      241 tgagagaatt acggccaaaa caatgaatta tccaaatcct atttttttta accttcttaa\n"
+                + "      301 tcgcaacttc ctcccgtacg cactttattt taacgtatct ttctttacac tttctgtatt\n"
+                + "      361 tcctaatttc ctttcctatg ctaattaaat agaaaagtaa gtaagtacta tccgttttgt\n"
+                + "      421 tcttgattat atctaatggt tctctcaaag gttgtaacga tctttgttgc ggttctctcc\n"
+                + "      481 attagtttat tgcttataaa caatggtgtt gaagcatttc ataaagtata ccctcacctt\n"
+                + "      541 caatctgttt cagccatttc cgtgagcgaa gtacatagaa ctggatacca ttttcaacct\n"
+                + "      601 cctaggaact ggatcaacgg ttcgtaacat tcttgctttt taaccctact ttattatgaa\n"
+                + "      661 tttatgatat attttcggtg cacttttttg tgattcttga attattgtga tgattatacc\n"
+                + "      721 ataatggttg gttctacgtc cataatggag atatattttt tttgtggaga ttgcattatt\n"
+                + "      781 atataaaatc taaaatgata ataactatct gagggcgcat aataacttga atacaatagt\n"
+                + "      841 ggtaggctgg ataaattgtg acgatataac attgaacaac attattgatt ttacaaaaaa\n"
+                + "      901 gatttttgaa ccatggtgtg atacaaataa attataaata cttcgaccct taacgatttg\n"
+                + "      961 gtctagagtt cgatctcaaa ccgtgtatgt gacgtaaagc ggttatatta acaatcgttt\n"
+                + "     1021 tttacctcct tttatagttg ctgttgcacc attttgaaag gaaataaaaa ttacagggaa\n"
+                + "     1081 gtcacaaaaa tcaatttgta tctctgaacc tgatatgatg agaatagctt aaaattgaat\n"
+                + "     1141 gaatattaat atttttttat tatatttttg ataaattaaa gtgaataatt ttctacacaa\n"
+                + "     1201 aaatatatta tatttcaata acacattatt tgatattttt atttcatcat aaagtttgat\n"
+                + "     1261 gcataaaccc tcaatttatt ttttacatat aagtatgtta accaaggtta aaaaagggtt\n"
+                + "     1321 aagctaacaa gtacctttaa aactcttctt aaagaatcaa aaatgaaaat tattggtaaa\n"
+                + "     1381 ttttatgtaa aaaaagttgt ttttttaagt ttcaatatat atatagaata cataattttt\n"
+                + "     1441 aaaataaaat tttcccttca gattttttaa caagtgttac aaggtcaata tttagggtgg\n"
+                + "     1501 ccatgattcc tctgtgctca ctttaatgaa gtttgcttat aaaaggaaga gtcaaaaagg\n"
+                + "     1561 aggatatgat tttaatggtg gagagaaaga aaaataactt tttctcctaa atattttgga\n"
+                + "     1621 ggcttaaata tgtatttcaa acgaccccta gttgcaagga tgaaatacat gtttaaactt\n"
+                + "     1681 attttggata aaagttgaaa tcaagtgaga ggagttttgt tctcttggat tccgctttcc\n"
+                + "     1741 tctcccatta aatcttgatc cagaaaatat aacttaaata attccttttc agttttcatc\n"
+                + "     1801 ttcaattatg ctaactttat ttgcttactg attctttcat ggtttctaaa ttggtgtaat\n"
+                + "     1861 ggacgcatca atcacatgca gacccaaatg gtaagtaaaa ttcgcatttg actttttttt\n"
+                + "     1921 tttttacttc atttgtcaat gtccttcgta ttatctgcat gtacttgaac taattattta\n"
+                + "     1981 tgaaccatgc ag");
         //click on submit button
         driver.findElement(By.cssSelector(".formed>form>input:nth-of-type(3)")).click();
-        
+
         //recuperer le resultat : la galère 
         String resultat = driver.findElement(By.tagName("pre")).getText();
-       String table= resultat.split("____________________________________________________________________________")[1];
-       LOGGER.info("nb parts "+table.split("\n").length);
-    List<String> sequences = new ArrayList<String>();
-       for(int i=1;i<table.split("\n").length;i++)
-       {
-           sequences.add(table.split("\n")[i]);
-       }
+        String table = resultat.split("____________________________________________________________________________")[1];
+        LOGGER.info("nb parts " + table.split("\n").length);
+        List<String> sequences = new ArrayList<String>();
+        for (int i = 1; i < table.split("\n").length; i++) {
+            sequences.add(table.split("\n")[i]);
+        }
 
 //       InputStream flux =new FileInputStream(table);
 //    InputStreamReader lecture=new InputStreamReader(flux);

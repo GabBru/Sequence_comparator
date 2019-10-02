@@ -159,14 +159,13 @@ public class FXMLController implements Initializable {
     protected Text text_info_arbre;
     @FXML
     protected Button button_soumettre;
-    
+
     @FXML
     private Slider cover;
 
     @FXML
     private Slider identity;
-    
-    
+
     @FXML
     private Label coverPercent;
 
@@ -295,24 +294,24 @@ identity.setBlockIncrement(1);
              int percent =(int) cover.getValue();
                 coverPercent.setText(String.valueOf(percent) + " %");
             }
-    });
+        });
 
-    cover.setOnKeyReleased(new EventHandler<KeyEvent>() {
+        cover.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 int percent = (int)cover.getValue();
                 coverPercent.setText(String.valueOf(percent)+" %");
             }
         });
-    
-    identity.setOnMousePressed(new EventHandler<MouseEvent>(){
+
+        identity.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
              int percent =(int) identity.getValue();
                 identityPercent.setText(String.valueOf(percent)+" %");
             }
-    });
-    identity.setOnKeyReleased(new EventHandler<KeyEvent>() {
+        });
+        identity.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 int percent =(int) identity.getValue();
@@ -578,7 +577,7 @@ identity.setBlockIncrement(1);
 
     @FXML
 
-    void submission(MouseEvent event)throws SQLException {
+    void submission(MouseEvent event) throws SQLException {
 
         Connection con = dataAccess.getCon();
         ObservableList<Sequence> listSeqCheck = FXCollections.observableArrayList();
@@ -612,7 +611,6 @@ identity.setBlockIncrement(1);
             stmt.executeUpdate("Insert into SEQUENCES (nom_prot, seq_prot, seq_ADN, nom_accession, lien, details, id_plante, nom_type, id_prom) values ('" + listSeq.get(i).getNom() + "','" + listSeq.get(i).getSequence() + "',NULL, NULL, NULL, NULL, '" + id_plante + "','" + combo_analyse_type.getValue() + "', NULL)");
         }
     }
-
 
     public String getHTMLStringFromList(List<List<String>> list_seq) {
         String seq = "";
@@ -661,7 +659,7 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
     }
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
-        int covery = (int)cover.getValue();
+        int covery = (int) cover.getValue();
         int identityvalue = (int) identity.getValue();
         LOGGER.info("cover " + covery + " identity " + identityvalue);
         combo_analyse_type.setDisable(true);
@@ -671,7 +669,7 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
         progress_indicator.setVisible(true);
 
         progress_indicator.setVisible(true);
-        
+
         Connection con = dataAccess.getCon();
         ObservableList<String> refSeqAra = FXCollections.observableArrayList();
         ObservableList<String> refProAra = FXCollections.observableArrayList();

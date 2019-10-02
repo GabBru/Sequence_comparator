@@ -74,42 +74,41 @@ public static String searchFile(File f)     //File f is "C:\\"
     }
     
     // read the file and extract sequences from it 
-    public List<String> readFile() throws FileNotFoundException, IOException{
+    public List<String> readFile() throws FileNotFoundException, IOException {
         // create a stream to be read 
-    InputStream flux =new FileInputStream(file);
-    InputStreamReader lecture=new InputStreamReader(flux);
-    BufferedReader buff=new BufferedReader(lecture);
-    
+        InputStream flux = new FileInputStream(file);
+        InputStreamReader lecture = new InputStreamReader(flux);
+        BufferedReader buff = new BufferedReader(lecture);
+
         // create a variable to put all sequences in a single line to be able to split them
-    String ligne;
-    String seq1 ="";
-    List<String> sequences = new ArrayList<String>();
+        String ligne;
+        String seq1 = "";
+        List<String> sequences = new ArrayList<String>();
         // concat all lines in a single one in result 
-    Pattern p = Pattern.compile(">");
-    while ((ligne=buff.readLine())!=null){
-        Matcher m = p.matcher(ligne);
-        if(!m.find()){
-            seq1=seq1+("\n");
-            seq1=seq1+(ligne);
-            
-        }
-        else{
-            if(seq1.equals("")){seq1=ligne;
+        Pattern p = Pattern.compile(">");
+        while ((ligne = buff.readLine()) != null) {
+            Matcher m = p.matcher(ligne);
+            if (!m.find()) {
+                seq1 = seq1 + ("\n");
+                seq1 = seq1 + (ligne);
+
+            } else {
+                if (seq1.equals("")) {
+                    seq1 = ligne;
+                } else {
+                    sequences.add(seq1);
+                    seq1 = ligne;
+                }
             }
-            else{
-          sequences.add(seq1);
-          seq1=ligne;
-            }
         }
-        }
-    // close the reader
-    buff.close(); 
-    LOGGER.info(sequences.get(0));
-    return sequences;
-}
+        // close the reader
+        buff.close();
+        LOGGER.info(sequences.get(0));
+        return sequences;
+    }
+
     // method to delete the file
-    public void deleteFile(){
-    file.delete();
+    public void deleteFile() {
+        file.delete();
     }
 }
-
