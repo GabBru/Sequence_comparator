@@ -1,5 +1,6 @@
 package com.mycompany.sequence_comparator2;
 
+import java.net.URL;
 import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -7,6 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 
 public class MainApp extends Application {
 
@@ -24,6 +28,10 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
 
+        Icon myIcon = new ImageIcon(getClass().getResource("/images/Logo_app.png"));
+        JMenuItem item;
+        item = new JMenuItem(myIcon);
+        
         stage.setTitle("GENEBV analytics");
         stage.setScene(scene);
         stage.show();
