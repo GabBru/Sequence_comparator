@@ -15,12 +15,12 @@ public class Sequence {
     CheckBox selection;
     String nom, details,sequence,CDNA;
     
-    public Sequence (CheckBox selection, String nom, String details, String sequence ) {
+    public Sequence (CheckBox selection, String nom, String details, String sequence,String CDNA ) {
         this.selection=selection;
         this.nom=nom;
         this.details=details;
         this.sequence=sequence;
-//        this.CDNA=CDNA;
+        this.CDNA=CDNA;
 }
 
     public CheckBox getSelection() {
