@@ -1,6 +1,7 @@
 package com.mycompany.sequence_comparator2;
 
 import static com.mycompany.sequence_comparator2.Blast.LOGGER;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -621,6 +622,41 @@ identity.setBlockIncrement(1);
         return seq;
     }
 
+    
+    @FXML
+    void silentSearch(MouseEvent event) throws SQLException, InterruptedException, IOException {
+//        int covery = (int)cover.getValue();
+//        int identityvalue = (int) identity.getValue();
+//        LOGGER.info("cover " + covery + " identity " + identityvalue);
+//        combo_analyse_type.setDisable(true);
+//        seq_nom_plante1.setDisable(true);
+//        button_search.setDisable(true);
+//        button_search_silent.setDisable(true);
+//        progress_indicator.setVisible(true);
+//
+//        progress_indicator.setVisible(true);
+//        
+//        Connection con = dataAccess.getCon();
+//        ObservableList<String> refSeqAra = FXCollections.observableArrayList();
+//        ObservableList<String> refProAra = FXCollections.observableArrayList();
+//        List<String> blastResult = new ArrayList<String>();
+//        List<String> tBlastNResult = new ArrayList<String>();
+//        // execute query
+//        Statement stmt = con.createStatement();
+//
+//        ResultSet rs = stmt.executeQuery("Select seq_ADN,nom_prot,seq_prot from SEQUENCES where id_plante = (Select id_plante from PLANTE where nom_plante= 'Arabidopsis thaliana') and nom_type ='" + combo_analyse_type.getSelectionModel().getSelectedItem().toString() + "'");
+//        while (rs.next()) {
+//            System.out.println("Dans la boucle while");
+//            refSeqAra.add(">" + rs.getString(2) + "\n" + rs.getString(1) + "\n");
+//            refProAra.add(">" + rs.getString(2) + "\n" + rs.getString(3) + "\n");
+//        }
+//        Collections.sort(refSeqAra);
+//        LOGGER.info("list " + refSeqAra.size());
+//        Blast blast = new Blast();
+//        blastResult = blast.search(getSeq_nom_plante(), refSeqAra,covery,identityvalue,true);
+ResultFile file = new ResultFile();
+LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
+    }
     @FXML
     void launchBlast(MouseEvent event) throws InterruptedException, IOException, SQLException {
         int covery = (int) cover.getValue();
@@ -651,7 +687,7 @@ identity.setBlockIncrement(1);
         Collections.sort(refSeqAra);
         LOGGER.info("list " + refSeqAra.size());
         Blast blast = new Blast();
-        blastResult = blast.search(getSeq_nom_plante(), refSeqAra, covery, identityvalue);
+        blastResult = blast.search(getSeq_nom_plante(), refSeqAra,covery,identityvalue,false);
 
         ResultFile file = new ResultFile();
         Clustal clustal = new Clustal();
@@ -661,16 +697,35 @@ identity.setBlockIncrement(1);
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
 
+        Place tblastn = new Place();
+//        
+//        
+//        for(int i=0;i<resultblastn.size();i++){
+//        tBlastNResult.add(resultblastn.get(i));}
+//        LOGGER.info("t blast n result "+tBlastNResult);
+
+
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
+
+
+//        Clustal clustal = new Clustal();
+//        clustal.submit(blastResult);
+//        Generate_tree tree = new Generate_tree(clustal.getTree());
+
+        List<String> resultblastn = tblastn.tBlastN(getSeq_nom_plante(),blastResult);
+        LOGGER.info("resultat du t blast n => " +resultblastn + "taille du resultat "+resultblastn.size());
 
         initTable();
         for (int i = 0; i < blastResult.size(); i++) {
             String pre_id = blastResult.get(i).split(":")[0];
             String id = pre_id.split(">")[1];
             String seq = blastResult.get(i).split("]")[1];
+            String CDNA = resultblastn.get(i).split("\n")[1];
+//            String CDNA = tblastn.tBlastN(getSeq_nom_plante(),blastResult).get(i).split(".*,.*\n")[1];
+
             /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
-            listSeq.add(new Sequence(new CheckBox(), id, "elle est cool", seq));
+            listSeq.add(new Sequence(new CheckBox(), id, "elle est cool", seq,CDNA));
         }
 
         loadData(listSeq);
@@ -679,6 +734,12 @@ identity.setBlockIncrement(1);
         button_arbre.setVisible(true);
         text_info_arbre.setVisible(true);
         button_soumettre.setVisible(true);
+//          Place place = new Place();
+//          place.tBlastN(getSeq_nom_plante());
+//          place.place();
+//        file.deleteFile();
+tblastn.blastN(getSeq_nom_plante(), resultblastn);
+
 
     }
 

@@ -40,7 +40,8 @@ public class Blast extends FXMLController {
     }
 
     //launch blastx between the interested plante and the referenced proteins. parameter : String plante, observableList sequence of referenced proteins. return a list of sequence list
-    public List<String> search(String plante, ObservableList<String> fasta, Integer coverpercent, Integer idpercent) throws InterruptedException, IOException {
+    public List<String> search(String plante,ObservableList<String> fasta,Integer coverpercent,Integer idpercent,boolean silence) throws InterruptedException, IOException 
+    {   
         List<String> resultatBlast = new ArrayList<String>();
 
         // Detect OS running the application ...
@@ -55,12 +56,13 @@ public class Blast extends FXMLController {
             System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
         }
         // Create a Chrome Web Driver with visual
-        WebDriver driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        if(silence){
+        options.addArguments("--headless");
+        }
         // TO DO: add a  button to switch between the hidden and the visible option
 //        Create a Chrome Web Driver without visual 
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
-//        WebDriver driver = new ChromeDriver(options);
+        WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
         // Open the Blast homepage
@@ -80,7 +82,6 @@ public class Blast extends FXMLController {
         //pause to allow the selector to be displayed 
         Thread.sleep(2000);
 //        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-
         //click the first line of the selector
         WebElement el = driver.findElement(By.cssSelector(".ui-ncbiautocomplete-holder > .ui-ncbiautocomplete-options >li"));
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", el);
@@ -100,11 +101,14 @@ public class Blast extends FXMLController {
         // allow the page change 
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
+LOGGER.info("passe après");
 // go through the input sequence list 
-        for (int j = 1; j <= fasta.size(); j++) {
-            // select a sequence if there is more than 1 
-            if(fasta.size()!=1){
-            driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type(" + j + ")")).click();}
+
+ for (int j=1;j<= fasta.size();j++){
+     // select a sequence 
+
+if(fasta.size()!=1){
+     driver.findElement(By.cssSelector("dd>#queryList>option:nth-of-type("+j+")")).click();}
 
             // go through all of the table lines if there is/are result(s)
             if (driver.findElement(By.className("results-tabs")).isDisplayed()) {

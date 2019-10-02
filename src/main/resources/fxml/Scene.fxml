@@ -135,7 +135,7 @@
                         </Pane>
                         <Pane layoutX="300.0" layoutY="198.0" prefHeight="42.0" prefWidth="222.0" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="198.0">
                            <children>
-                              <Button fx:id="button_search_silent" layoutY="-2.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="208.0" style="-fx-background-color: green;" text="RECHERCHER (silencieux)" textFill="WHITE">
+                              <Button fx:id="button_search_silent" layoutY="-2.0" mnemonicParsing="false" onMousePressed="#silentSearch" prefHeight="43.0" prefWidth="208.0" style="-fx-background-color: green;" text="RECHERCHER (silencieux)" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
