@@ -65,7 +65,7 @@ public static String searchFile(File f)     //File f is "C:\\"
     protected static final Logger LOGGER = Logger.getLogger(ResultFile.class.getName());
     // the downloaded file 
     // TO DO : find how to change the path to work with the teacher computer
-    private File file = new File(searchFile(new File("/Users/")));
+    private File file;
     String os = System.getProperty("os.name");
 //    private File file = new File("C:\\Users\\gphy\\Downloads\\seqdump.txt");
     public void ResultFile(){}
@@ -77,9 +77,9 @@ public static String searchFile(File f)     //File f is "C:\\"
     // read the file and extract sequences from it 
     public List<String> readFile() throws FileNotFoundException, IOException {
         if ("Mac OS X".equals(os)) {
-            file = new File("~/Downloads/seqdump.txt");
+            file = new File(searchFile(new File("/Users/")));
         } else {
-            file = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
+            file = new File(searchFile(new File("/Users/")));
         }
         // create a stream to be read 
         InputStream flux = new FileInputStream(file);

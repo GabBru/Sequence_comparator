@@ -22,6 +22,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import com.mycompany.sequence_comparator2.ResultFile;
 
 /**
  *
@@ -30,6 +31,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class Place {
     protected static final Logger LOGGER = Logger.getLogger(Place.class.getName());
 //    ResultFile resultFile = new ResultFile();
+    File file;
 
     public void Place() {
     }
@@ -37,9 +39,17 @@ public class Place {
     //get ARNm sequences from invertase protein 
     public String blastN(String plante,List<String> sequences) throws InterruptedException
     {
-         // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir")+"/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        // Detect OS running the application ...
+        String os = System.getProperty("os.name");
+        if ("Mac OS X".equals(os)) {
+            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+            file = new File(System.getProperty("user.dir") + "/src/main/resources/driver/chromedriver");
+            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        } else {
+            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+            file = new File(System.getProperty("user.dir") + "/src/main/resources/driver/chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        }
         
         for (int i=0;i<sequences.size();i++){
         // Create a Chrome Web Driver with visual
@@ -94,9 +104,17 @@ public class Place {
 
     public List<String> tBlastN(String plante, List<String> blastResult) throws IOException, InterruptedException {
         List<String> futurBlast = new ArrayList<>();
-        // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        // Detect OS running the application ...
+        String os = System.getProperty("os.name");
+        if ("Mac OS X".equals(os)) {
+            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+            file = new File(System.getProperty("user.dir") + "/src/main/resources/driver/chromedriver");
+            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        } else {
+            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+            file = new File(System.getProperty("user.dir") + "/src/main/resources/driver/chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        }
 
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
@@ -134,7 +152,7 @@ public class Place {
 //       driver.findElement(By.cssSelector(".deflnDesc")).click();
 //       driver.findElement(By.cssSelector(".alnAll>div>div>span>span>a")).click();
 //download the results on fasta format : 
-        File seqfile = new File("C:\\Users\\Fievet\\Downloads\\seqdump.txt");
+        File seqfile = new File(ResultFile.searchFile(new File("/Users/")));
 //        Integer nbline = Integer.valueOf(driver.findElement(By.cssSelector("#hjbt>a>span")).getText().split("\\ ")[0]);
 // for (int i=1;i<= nbline;i++){
 LOGGER.info(" taille de blastresult " + blastResult.size());
@@ -192,9 +210,17 @@ LOGGER.info("passé ");
     }
 
     public void place() throws FileNotFoundException, IOException {
-        // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+                // Detect OS running the application ...
+        String os = System.getProperty("os.name");
+        if ("Mac OS X".equals(os)) {
+            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+            file = new File(System.getProperty("user.dir") + "/src/main/resources/driver/chromedriver");
+            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        } else {
+            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+            file = new File(System.getProperty("user.dir") + "/src/main/resources/driver/chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        }
 
         // Create a Chrome Web Driver with visual
         WebDriver driver = new ChromeDriver();
