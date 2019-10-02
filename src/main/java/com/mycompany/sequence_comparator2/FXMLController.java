@@ -540,7 +540,7 @@ identity.setBlockIncrement(1);
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("Select * from CIS natural join SEQUENCES natural JOIN PLANTE where nom_plante = '" + nom_plante + "' and nom_prot = '" + nom_prot + "'");
         while (rs.next()) {
-            list_CIS.add(new CIS(rs.getString(4), rs.getString(5), getInt(6), getInt(7)));
+            list_CIS.add(new CIS(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)));
         }
         return list_CIS;
     }
@@ -696,7 +696,7 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
 
         Generate_tree tree = new Generate_tree(clustal.getTree());
         tree.submit();
-        
+
         Place tblastn = new Place();
 //        
 //        
@@ -704,8 +704,10 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
 //        tBlastNResult.add(resultblastn.get(i));}
 //        LOGGER.info("t blast n result "+tBlastNResult);
 
+
 //        ////   Arbre  /////
         progress_indicator.setVisible(false);
+
 
 //        Clustal clustal = new Clustal();
 //        clustal.submit(blastResult);
@@ -713,6 +715,7 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
 
         List<String> resultblastn = tblastn.tBlastN(getSeq_nom_plante(),blastResult);
         LOGGER.info("resultat du t blast n => " +resultblastn + "taille du resultat "+resultblastn.size());
+
         initTable();
         for (int i = 0; i < blastResult.size(); i++) {
             String pre_id = blastResult.get(i).split(":")[0];
@@ -720,6 +723,7 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
             String seq = blastResult.get(i).split("]")[1];
             String CDNA = resultblastn.get(i).split("\n")[1];
 //            String CDNA = tblastn.tBlastN(getSeq_nom_plante(),blastResult).get(i).split(".*,.*\n")[1];
+
             /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
             listSeq.add(new Sequence(new CheckBox(), id, "elle est cool", seq,CDNA));
         }
@@ -736,7 +740,6 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
 //        file.deleteFile();
 tblastn.blastN(getSeq_nom_plante(), resultblastn);
 
-    
 
     }
 
@@ -777,7 +780,7 @@ tblastn.blastN(getSeq_nom_plante(), resultblastn);
 
     public void help_type_prot(MouseEvent event) throws IOException {
         info_type_prot = new Tooltip();
-        info_type_prot.setText("Renseignez le type de protéine concernée. \n"
+        info_type_prot.setText("Renseignez le type de protéine concerné. \n"
                 + "Par exemple : invertase. Si ce dernier n'est pas déjà enregistré \n"
                 + "en base de données, utilisez le bouton (+) pour saisir le type manuellement.");
         pop_type_prot.setTooltip(info_type_prot);

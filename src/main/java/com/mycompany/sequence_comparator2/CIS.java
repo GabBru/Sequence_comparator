@@ -12,9 +12,9 @@ package com.mycompany.sequence_comparator2;
 public class CIS {
 
     private String name, sequence_CIS;
-    private int start_position, end_position;
+    private String start_position, end_position;
 
-    public CIS(String name, String sequence_CIS, int start_position, int end_position) {
+    public CIS(String name, String sequence_CIS, String start_position, String end_position) {
         this.name = name;
         this.sequence_CIS = sequence_CIS;
         this.start_position = start_position;
@@ -29,11 +29,11 @@ public class CIS {
         return sequence_CIS;
     }
 
-    public int getStart_position() {
+    public String getStart_position() {
         return start_position;
     }
 
-    public int getEnd_position() {
+    public String getEnd_position() {
         return end_position;
     }
 
@@ -45,11 +45,11 @@ public class CIS {
         this.sequence_CIS = sequence_CIS;
     }
 
-    public void setStart_position(int start_position) {
+    public void setStart_position(String start_position) {
         this.start_position = start_position;
     }
 
-    public void setEnd_position(int end_position) {
+    public void setEnd_position(String end_position) {
         this.end_position = end_position;
     }
 
