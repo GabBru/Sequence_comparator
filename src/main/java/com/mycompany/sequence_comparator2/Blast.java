@@ -44,10 +44,17 @@ public class Blast extends FXMLController {
     {   
         List<String> resultatBlast = new ArrayList<String>();
 
-        // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
-        File file = new File(System.getProperty("user.dir") + "/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-
+        // Detect OS running the application ...
+        String os = System.getProperty("os.name");
+        if ("Mac OS X".equals(os)) {
+            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+            File file = new File(System.getProperty("user.dir") + "/src/main/resources/driver/chromedriver");
+            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        } else {
+            // Set the path of the driver to driver executable. For Chrome, set the properties as following:       
+            File file = new File(System.getProperty("user.dir") + "/src/main/resources/driver/chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+        }
         // Create a Chrome Web Driver with visual
         ChromeOptions options = new ChromeOptions();
         if(silence){
@@ -65,10 +72,8 @@ public class Blast extends FXMLController {
         driver.findElement(By.id("seq")).clear();
         LOGGER.info("fasta " + fasta.size());
         for (int i = 0; i < fasta.size(); i++) {
-            System.out.println("liste fasta " + fasta.get(i));
             driver.findElement(By.id("seq")).sendKeys(fasta.get(i));
         }
-        System.out.println("après la boucle ");
 
         // Enter the organism to study 
         driver.findElement(By.id("qorganism")).clear();
@@ -101,6 +106,7 @@ public class Blast extends FXMLController {
 
 LOGGER.info("passe après");
 // go through the input sequence list 
+
  for (int j=1;j<= fasta.size();j++){
      // select a sequence 
 
