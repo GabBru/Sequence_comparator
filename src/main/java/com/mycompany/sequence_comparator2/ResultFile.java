@@ -23,56 +23,54 @@ import java.util.regex.Pattern;
  * @author Fievet
  */
 public class ResultFile {
-    
+
     static boolean fileFound;
-static String fileName = "seqdump.txt";
-public static String searchFile(File f)     //File f is "C:\\"
-{  
-    String found ="";
-   try
-   {
-    if(f.isDirectory())
+    static String fileName = "seqdump.txt";
+
+    public static String searchFile(File f) //File f is "C:\\"
     {
-    File [] fi = f.listFiles();
-    for(int i=0;i<fi.length;i++)
-    {
-    if(fileFound==true) 
-    {
-        found = "ok";
-      break;
-    } 
-    //LOGGER.info("repository " + fi[i].getAbsolutePath());
-    //System.out.println(fi[i].getName());
-    searchFile(fi[i]);
-    
-    {
-    if(f.getName().equalsIgnoreCase(fileName) ||  f.getName().toLowerCase().startsWith(fileName.toLowerCase())||(fi[i].getName().toLowerCase().endsWith(fileName.toLowerCase())))
-    {    
-    System.out.print("file found " + f.getAbsolutePath()); 
-    fileFound=true;
-    found = "oui";
-    fileName=fi[i].getPath();
-    return fi[i].getAbsolutePath();
-    }
-    }}}
-   }
-    catch(Exception e)
-      {
-          found = "non";
-      }
+        String found = "";
+        try {
+            if (f.isDirectory()) {
+                File[] fi = f.listFiles();
+                for (int i = 0; i < fi.length; i++) {
+                    if (fileFound == true) {
+                        found = "ok";
+                        break;
+                    }
+                    //LOGGER.info("repository " + fi[i].getAbsolutePath());
+                    //System.out.println(fi[i].getName());
+                    searchFile(fi[i]);
+
+                    {
+                        if (f.getName().equalsIgnoreCase(fileName) || f.getName().toLowerCase().startsWith(fileName.toLowerCase()) || (fi[i].getName().toLowerCase().endsWith(fileName.toLowerCase()))) {
+                            System.out.print("file found " + f.getAbsolutePath());
+                            fileFound = true;
+                            found = "oui";
+                            fileName = fi[i].getPath();
+                            return fi[i].getAbsolutePath();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            found = "non";
+        }
         return fileName;
- }
+    }
     protected static final Logger LOGGER = Logger.getLogger(ResultFile.class.getName());
     // the downloaded file 
     // TO DO : find how to change the path to work with the teacher computer
     private File file = new File(searchFile(new File("C:\\Users\\")));
 //    private File file = new File("C:\\Users\\gphy\\Downloads\\seqdump.txt");
-    public void ResultFile(){}
+
+    public void ResultFile() {
+    }
 
     public File getFile() {
         return file;
     }
-    
+
     // read the file and extract sequences from it 
     public List<String> readFile() throws FileNotFoundException, IOException {
         // create a stream to be read 

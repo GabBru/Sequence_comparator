@@ -19,9 +19,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  *
@@ -71,21 +75,27 @@ public class Place {
         driver.findElement(By.id("seq")).sendKeys(sequences.get(i)+"\n");
         // launch the blast 
         driver.findElement(By.id("b1")).click();
-        while(driver.findElement(By.cssSelector(".pageTitle")).isDisplayed()){LOGGER.info("not displayed ");
-        Thread.sleep(20000);}
-        LOGGER.info("partie de la boucle ");
-        if(driver.findElement(By.cssSelector(".alignments")).isDisplayed()){
+ 
+        //wait 
+            WebDriverWait wait = new WebDriverWait(driver, 1200);
+            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("secFlitRes")));
         //select the first result 
         driver.findElement(By.cssSelector(".alignments")).click();
-        // click to go on ncbi 
-        driver.findElement(By.cssSelector(".alnAll>div>div>span>span>a")).click();
+    
+        // change the page thanks to the href 
+        WebElement el = driver.findElement(By.cssSelector(".alnAll >div:nth-of-type(1)>div:nth-of-type(1)>span:nth-of-type(1)>span:nth-of-type(1)>a:nth-of-type(1)"));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", el);
+            String url = el.getAttribute("href");
+            LOGGER.info("url =>" + url);
+        
+        // TO DO 
+        driver.navigate().to(url);
         // then go on fasta sequence 
         driver.findElement(By.cssSelector(".aux>span>a")).click();
         //enter the sequence number
         String from = driver.findElement(By.cssSelector(".text")).getText();
         LOGGER.info(from);
-        return "Ok";}
-        else{return null;}
+        return "Ok";
         // maybe wait until : usa-button-secondary is displayed 
         }
         return null;
@@ -177,9 +187,11 @@ if (blastResult.size()!=1){
 //           sequences.add(ligne);
     buff.close();
      seqfile.delete();}
+             driver.close();
 return sequences;
      }
 LOGGER.info("passé ");
+        driver.close();
         return null;
 
 //    LOGGER.info("a la fin " + sequences.get(0));

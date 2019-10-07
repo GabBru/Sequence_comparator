@@ -721,7 +721,7 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
             String CDNA = resultblastn.get(i).split("\n")[1];
 //            String CDNA = tblastn.tBlastN(getSeq_nom_plante(),blastResult).get(i).split(".*,.*\n")[1];
             /// La liste de séquences à récupérer de je ne sais où pour remplacer le truc d'en dessous
-            listSeq.add(new Sequence(new CheckBox(), id, "elle est cool", seq,CDNA));
+            listSeq.add(new Sequence(new CheckBox(), id, "", seq,CDNA));
         }
 
         loadData(listSeq);
@@ -730,12 +730,8 @@ LOGGER.info(file.searchFile(new File("C:\\Users\\Fievet")));
         button_arbre.setVisible(true);
         text_info_arbre.setVisible(true);
         button_soumettre.setVisible(true);
-//          Place place = new Place();
-//          place.tBlastN(getSeq_nom_plante());
-//          place.place();
-//        file.deleteFile();
-tblastn.blastN(getSeq_nom_plante(), resultblastn);
-
+//tblastn.blastN(getSeq_nom_plante(), resultblastn);
+//TO do : correct it and add place 
     
 
     }

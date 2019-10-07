@@ -94,7 +94,10 @@ public class Blast extends FXMLController {
 
         LOGGER.info(" coverBlast " + covery + " identity " + identity);
         // allow the page change 
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+         //wait 
+            WebDriverWait wait = new WebDriverWait(driver, 30);
+           wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("secFlitRes")));
 
 LOGGER.info("passe après");
 // go through the input sequence list 
